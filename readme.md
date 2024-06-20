@@ -2,6 +2,8 @@
 
 An AI Platform that consist of basic, functional modules.
 
+![Overview](AI_Platform_Overview.svg)
+
 
 ## Local Development
 
@@ -19,7 +21,7 @@ cd src/ai_ui
 npm install
 ```
 
-### Running the frontend and backend
+### Running the components
 
 Run the components:
 
@@ -41,3 +43,4 @@ Run tests:
 ## Resources
 
 * [Using FastAPI to Build Python Web APIs - Real Python](https://realpython.com/fastapi-python-web-apis/)
+* [Embeddings and Vector Databases With ChromaDB - Real Python](https://realpython.com/chromadb-vector-database/)
