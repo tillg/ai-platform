@@ -40,6 +40,18 @@ Run tests:
 * `python -m pytest backend_tests --capture=no --log-cli-level=INFO`
   * Note: This is to also see the print and log statements.
 
+### Running the tests
+
+```
+cd src
+
+# Run the tests of one compnenent, for example ai_commons
+python -m unittest discover ai_commons_tests
+
+# Run all the unit tests
+python -m unittest discover . 
+```
+
 ## Resources
 
 * [Using FastAPI to Build Python Web APIs - Real Python](https://realpython.com/fastapi-python-web-apis/)
