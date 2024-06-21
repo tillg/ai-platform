@@ -3,8 +3,8 @@ import fnmatch
 import logging
 import os
 import shutil
-from slack_ai.utils.utils import get_logger
 
+logger = logging.getLogger(__name__)
 
 def find(pattern, path):
     """Utility to find files wrt a regex search"""
@@ -19,7 +19,6 @@ def find(pattern, path):
 def flatten_files(input_folder, output_folder, pattern='*.*'):
     """Utility to flatten files in a folder to another folder."""
     # Inspired / copied from https://github.com/khanfarhan10/FileCopyFilterFlatten
-    logger = get_logger(flatten_files.__name__, logging.INFO)
     logger.info(f"Flattening files from  {input_folder}  to  {output_folder}")
     include_input_foldername = True
 

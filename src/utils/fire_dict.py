@@ -1,6 +1,7 @@
 import logging
-from slack_ai.utils.dict2file import write_dict_to_file, read_dict_from_file
-from slack_ai.utils.utils import get_logger
+from utils.dict2file import write_dict_to_file, read_dict_from_file
+
+logger = logging.getLogger(__name__)
 
 class FireDict(dict):
     """
@@ -18,7 +19,6 @@ class FireDict(dict):
         filename: str, optional
             If provided, the dict is initialized with data from this file and changes are persisted to it.
         """
-        logger = get_logger("FireDict.__init__", logging.INFO)
         self._file = kwargs.pop('filename', None)
         super().__init__(*args, **kwargs)
         if self._file:

@@ -2,12 +2,13 @@ import json
 import logging
 import os
 from typing import Dict, Optional
-from rag_machine.utils.robust_jsonify import robust_jsonify
-from rag_machine.utils.utils import get_logger, get_now_as_string
+from utils.robust_jsonify import robust_jsonify
+from utils.utils import get_now_as_string
+
+logger = logging.getLogger(__name__)
 
 def write_dict_to_file(*, dictionary: Dict, full_filename: str) -> Dict:
     """Writes a dictionary to a file. Also updates the _stats element."""
-    logger = get_logger(write_dict_to_file.__name__, logging.INFO)
     if not isinstance(dictionary, dict):
         raise TypeError("Expected a dictionary, but got a " +
                         str(type(dictionary)))
@@ -40,7 +41,6 @@ def write_dict_to_file(*, dictionary: Dict, full_filename: str) -> Dict:
 
 def read_dict_from_file(*, full_filename: str, skip_file_not_found=True) -> Dict:
     """Reads a dictionary from a file. Checks that the dictionary read has a _stats.lastWritten entry."""
-    logger = get_logger(read_dict_from_file.__name__, logging.INFO)
     data = {}
     try:
         with open(full_filename, "r+") as file:

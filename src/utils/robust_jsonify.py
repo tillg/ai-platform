@@ -1,6 +1,7 @@
 import json
 import logging
-from rag_machine.utils.utils import get_logger
+
+logger = logging.getLogger(__name__)
 
 
 def robust_jsonify(obj, *args, **kwargs):
@@ -12,8 +13,6 @@ def robust_jsonify(obj, *args, **kwargs):
             """
             Default JSON serializer.
             """
-            logger = get_logger(
-                "robust_jsonify.RobustEncoder.default", logging.WARNING)
             logger.info(f"Jsonifying {o} with type {type(o)} id: {id(o)}")
 
             # Take care of circular references
@@ -38,20 +37,15 @@ def robust_jsonify(obj, *args, **kwargs):
                 return str
 
         def encode(self, obj):
-            logger = get_logger(
-                "robust_jsonify.RobustEncoder.encode", logging.WARNING)
             logger.info(f"Encoding {obj} with type {type(obj)} and id {id(obj)}")
             return super().encode(obj)
 
         def iterencode(self, obj, _one_shot=False):
-            logger = get_logger(
-                "robust_jsonify.RobustEncoder.iterencode", logging.WARNING)
             logger.info(f"{obj=}, {_one_shot=}")
             iter = super().iterencode(obj, _one_shot)
             logger.info(f"{iter=}")
             return iter
 
-    logger = get_logger(robust_jsonify.__name__, logging.WARNING)
     logger.info(f"{obj=}, {args=}, {kwargs=}")
     kwargs.setdefault('indent', 3)
     kwargs.setdefault('sort_keys', True)
