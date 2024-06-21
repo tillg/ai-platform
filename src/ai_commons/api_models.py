@@ -2,7 +2,7 @@ from typing import Any, Optional
 import uuid
 from pydantic import BaseModel
 from langchain.docstore.document import Document as lc_Document
-
+import os
 
 class Message(BaseModel):
     content: str
@@ -27,6 +27,13 @@ class Document(BaseModel):
             content=lc_document.page_content,
             uri=lc_document.metadata.get("source", None)
         )
+    
+    @classmethod
+    def from_file(cls, file_path: str) -> 'Document':
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+        title = os.path.splitext(os.path.basename(file_path))[0]
+        return Document(title=title, content=content, uri=file_path)
 
     def to_lc_document(self) -> lc_Document:
         return lc_Document(
@@ -37,7 +44,7 @@ class Document(BaseModel):
 
 
 class Chunk(Document):
-    original_document_id: str
+    original_document_id: uuid.UUID
 
 
 class ChatRequest(BaseModel):

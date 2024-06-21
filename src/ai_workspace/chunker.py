@@ -20,7 +20,7 @@ class Chunker:
 
     def __init__(self, separator: str = CHUNKER_SEPARATOR, chunk_size: int = CHUNKER_CHUNK_SIZE, chunk_overlap: int = CHUNKER_CHUNK_OVERLAP):
         logger.info(f"Chunker initialized with separator: {
-                    separator}, chunk_size: {chunk_size}, chunk_overlap: {chunk_overlap}")
+                    repr(separator)}, chunk_size: {chunk_size}, chunk_overlap: {chunk_overlap}")
         self.text_splitter = CharacterTextSplitter(
             separator=separator,
             chunk_size=chunk_size,
@@ -36,8 +36,10 @@ class Chunker:
                 f"document must be an instance of Document, not {type(document)}")
         lc_document = document.to_lc_document()
         try:
+            logging.getLogger(
+                'langchain_text_splitters.base').setLevel(logging.ERROR)
             lc_chunks = self.text_splitter.create_documents(
-                [document.page_content], metadatas=[lc_document.metadata])
+                [lc_document.page_content], metadatas=[lc_document.metadata])
         except Exception as e:
             logger.error(
                 f"Error while chunkifying document: {robust_jsonify(document)}")
@@ -46,14 +48,14 @@ class Chunker:
         chunks = []
         for lc_chunk in lc_chunks:
             chunk = Chunk(
-                page_content=lc_chunk.page_content, 
+                content=lc_chunk.page_content, 
                 title=lc_chunk.metadata.get("title", None), 
-                uri=lc_chunk.metadata.get("uri", None), 
+                uri=lc_chunk.metadata.get("source", None), 
                 original_document_id=document.id
             )
             chunks.append(chunk)
         logger.debug(f"Chunkified in chunks of length: {
-            [len(chunk.page_content) for chunk in chunks]}")
+            [len(chunk.content) for chunk in chunks]}")
         return chunks
 
     def chunkify_documents(self, documents: List[Document]) -> List[Document]:
