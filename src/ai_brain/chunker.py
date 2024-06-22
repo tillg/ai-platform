@@ -7,39 +7,37 @@ import logging
 from utils.robust_jsonify import robust_jsonify
 import os
 import uuid
+from pydantic import validate_call
 
 load_dotenv()
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
-CHUNKER_SEPARATOR = os.environ.get('CHUNKER_SEPARATOR', "\n\n")
-CHUNKER_CHUNK_SIZE = os.environ.get('CHUNKER_CHUNK_SIZE', 256)
-CHUNKER_CHUNK_OVERLAP = os.environ.get('CHUNKER_CHUNK_OVERLAP', 20)
-
+CHUNKER_SEPARATOR = os.environ.get('CHUNKER_SEPARATOR', '\n')
+if CHUNKER_SEPARATOR == '\\n':
+    CHUNKER_SEPARATOR = '\n'
+CHUNKER_CHUNK_SIZE = int(os.environ.get('CHUNKER_CHUNK_SIZE', 256))
+CHUNKER_CHUNK_OVERLAP = int(os.environ.get('CHUNKER_CHUNK_OVERLAP', 20))
 
 class Chunker:
 
     def __init__(self, separator: str = CHUNKER_SEPARATOR, chunk_size: int = CHUNKER_CHUNK_SIZE, chunk_overlap: int = CHUNKER_CHUNK_OVERLAP):
         logger.info(f"Chunker initialized with separator: {
-                    repr(separator)}, chunk_size: {chunk_size}, chunk_overlap: {chunk_overlap}")
+                    repr(separator)}, chunk_size: {chunk_size} [{type(chunk_size)}], chunk_overlap: {chunk_overlap} [{type(chunk_overlap)}]")
         self.text_splitter = CharacterTextSplitter(
             separator=separator,
             chunk_size=chunk_size,
-            chunk_overlap=chunk_overlap,
-            length_function=len
+            chunk_overlap=chunk_overlap
         )
 
-    def chunkify(self, document: Document) -> List[Document]:
-        if not isinstance(document, Document):
-            logger.error(
-                f"document is not an instance of Document: {document}. It is of type {type(document)}")
-            raise TypeError(
-                f"document must be an instance of Document, not {type(document)}")
-        lc_document = document.to_lc_document()
+    @validate_call
+    def chunkify(self, document: Document) -> List[Chunk]:
+        #lc_document = document.to_lc_document()
         try:
             logging.getLogger(
                 'langchain_text_splitters.base').setLevel(logging.ERROR)
             lc_chunks = self.text_splitter.create_documents(
-                [lc_document.page_content], metadatas=[lc_document.metadata])
+                [document.content], metadatas=[document.get_metadata()])
         except Exception as e:
             logger.error(
                 f"Error while chunkifying document: {robust_jsonify(document)}")
@@ -50,11 +48,11 @@ class Chunker:
             chunk = Chunk(
                 content=lc_chunk.page_content, 
                 title=lc_chunk.metadata.get("title", None), 
-                uri=lc_chunk.metadata.get("source", None), 
+                uri=lc_chunk.metadata.get("uri", None), 
                 original_document_id=document.id
             )
             chunks.append(chunk)
-        logger.debug(f"Chunkified in chunks of length: {
+        logger.info(f"Chunkified a document of length {len(document.content)} in {len(chunks)} chunks of length: {
             [len(chunk.content) for chunk in chunks]}")
         return chunks
 

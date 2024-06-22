@@ -13,7 +13,7 @@ import coloredlogs
 import logging
 import unidecode
 from requests import Response, Session
-
+from pydantic import field_validator, validate_call
 
 INTERNAL_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 coloredlogs.install()
@@ -123,6 +123,7 @@ def load_page(http_session: Session, url: str) -> Optional[Response]:
         return None
 
 
+@validate_call
 def simplify_text(some_text: str) -> str:
     """
     Simplifies a text to be used as a filename

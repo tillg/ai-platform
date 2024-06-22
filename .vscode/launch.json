@@ -4,6 +4,8 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
+
         {
             "name": "Python Debugger: Test Commons",
             "type": "debugpy",
@@ -17,14 +19,25 @@
             "cwd": "${workspaceFolder}/src" // Set the current working directory
         },
         {
-            "name": "Python Debugger: Test Workspaces",
+            "name": "Python Debugger: Test Brains",
             "type": "debugpy",
             "request": "launch",
             "module": "unittest",
             "console": "integratedTerminal",
             "args": [
-                "discover", // Optional: Use discover to auto-find tests
-                "ai_workspace_tests" // Pattern to match test files
+                "discover", 
+                "ai_brain_tests" // Pattern to match test files
+            ],
+            "cwd": "${workspaceFolder}/src" // Set the current working directory
+        },
+        {
+            "name": "Python Debugger: Test Chunker",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "console": "integratedTerminal",
+            "args": [
+                "ai_brain_tests/test_chunker.py" // Pattern to match test files
             ],
             "cwd": "${workspaceFolder}/src" // Set the current working directory
         }

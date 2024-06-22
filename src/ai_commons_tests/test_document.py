@@ -16,11 +16,10 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(doc.content, "Apple are red")
         self.assertIsNotNone(doc.id)
         self.assertIsInstance(
-            doc.id, uuid.UUID, "Document id is not a UUID instance")
-        self.assertEqual(doc.id.version, 4, "Document id is not a valid UUID4")
+            doc.id, str, "Document id is not a string")
 
     def test_document_initialization_with_id(self):
-        doc_id = uuid.uuid4()
+        doc_id = str(uuid.uuid4())
         doc = Document(title="apple", content="Apple are red",
                        uri="some_uri", id=doc_id)
         self.assertEqual(doc.title, "apple")
@@ -41,14 +40,14 @@ class TestDocument(unittest.TestCase):
         lc_doc = doc.to_lc_document()
         self.assertEqual(lc_doc.page_content, "Apple are red")
         self.assertEqual(lc_doc.metadata, {
-                         "source": "some_uri", "title": "apple", "id": doc.id})
+                         "uri": "some_uri", "title": "apple", "id": doc.id})
 
     def test_document_from_file(self):
         file_path = os.path.join(TEST_DATA_DIR, "wikipedia_peru.txt")
         with open(file_path, 'r', encoding='utf-8') as file:
             wikipedia_peru_content = file.read()
 
-        doc = Document.from_file(file_path)
+        doc = Document.from_text_file(file_path)
         self.assertEqual(doc.title, "wikipedia_peru")
         self.assertIsNotNone(doc.content)
         self.assertEqual(doc.uri, file_path)

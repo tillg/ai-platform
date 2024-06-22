@@ -4,9 +4,11 @@ import os
 from typing import Dict, Optional
 from utils.robust_jsonify import robust_jsonify
 from utils.utils import get_now_as_string
+from pydantic import validate_call
 
 logger = logging.getLogger(__name__)
 
+@validate_call
 def write_dict_to_file(*, dictionary: Dict, full_filename: str) -> Dict:
     """Writes a dictionary to a file. Also updates the _stats element."""
     if not isinstance(dictionary, dict):

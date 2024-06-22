@@ -52,7 +52,12 @@ python -m unittest discover ai_commons_tests
 python -m unittest discover . 
 ```
 
+## Todo
+
+* Get type safety with pydantic - see [here](https://realpython.com/python-pydantic/#working-with-validators)
+
 ## Resources
 
+* [Pydantic: Simplifying Data Validation in Python - Real Python](https://realpython.com/python-pydantic/)
 * [Using FastAPI to Build Python Web APIs - Real Python](https://realpython.com/fastapi-python-web-apis/)
 * [Embeddings and Vector Databases With ChromaDB - Real Python](https://realpython.com/chromadb-vector-database/)

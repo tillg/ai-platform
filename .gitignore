@@ -10,6 +10,9 @@ __pycache__/
 # Apple
 .DS_Store
 
+# TMP data
+tmp 
+
 # C extensions
 *.so
 

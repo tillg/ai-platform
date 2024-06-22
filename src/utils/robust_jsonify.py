@@ -2,7 +2,7 @@ import json
 import logging
 
 logger = logging.getLogger(__name__)
-
+logger.setLevel(logging.WARNING)
 
 def robust_jsonify(obj, *args, **kwargs):
 
