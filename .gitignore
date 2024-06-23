@@ -7,7 +7,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Apple
+# Apple stuff
 .DS_Store
 
 # TMP data
