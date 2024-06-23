@@ -48,7 +48,7 @@ class Brain:
 
     def search_chunks_by_text(self, query_text: str, n: int = 10):
         chroma_chunks = self.chroma_collection.query(query_texts=[query_text], n_results= n)
-        chunks = Chunk.chroma_chunks2chunk_array(chroma_chunks)
+        chunks = Chunk.chroma_chunks2chunk_array(chroma_chunks, search_term=query_text)
         return chunks
 
     def search_chunks_by_texts(self, query_texts: List[str]):

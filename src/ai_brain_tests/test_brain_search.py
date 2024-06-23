@@ -2,6 +2,7 @@ import unittest
 import uuid
 from ai_brain.brain import Brain
 from ai_commons.api_models import Document, Chunk
+from utils.utils import get_now_as_string
 import logging
 from dotenv import load_dotenv
 import os
@@ -20,14 +21,11 @@ LONG_ARTICLE = "wikipedia_peru.txt"
 SHORT_ARTICLE = "rectus_abdominus.txt"
 
 
-def generate_random_string(length):
-    characters = string.ascii_letters + string.digits
-    return ''.join(random.choice(characters) for i in range(length))
 
 
 class TestBrainSearch(unittest.TestCase):
 
-    def test_brain_add_multiple_docs(self):
+    def test_brain_search1(self):
         brain = Brain(data_directory=TMP_DATA_DIR)
         brain.delete_all()
         brain_size_pre = len(brain)
@@ -38,7 +36,7 @@ class TestBrainSearch(unittest.TestCase):
         brain.add_documents([doc1, doc2])
         brain_size_post = len(brain)
         self.assertEqual(brain_size_post-brain_size_pre, 2)
-        chunks = brain.search_chunks_by_text("Peru")
+        chunks = brain.search_chunks_by_text("Peru politics")
         self.assertEqual(len(chunks), 10)
         self.assertIsInstance(chunks, list, "Expected 'chunks' to be a list")
 
@@ -46,6 +44,11 @@ class TestBrainSearch(unittest.TestCase):
         for chunk in chunks:
             self.assertIsInstance(
                 chunk, Chunk, "Expected item to be an instance of Chunk")
+        
+        # For inspection write the chunks in a file
+        dir = os.path.join(TMP_DATA_DIR, get_now_as_string())
+        for chunk in chunks:
+            chunk.write_2_file(dir)
             
 if __name__ == '__main__':
     unittest.main()

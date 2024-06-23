@@ -38,7 +38,9 @@ class Document(BaseModel):
         return Document(title=title, content=content, uri=file_path)
     
     @classmethod
-    def get_filename_by_id(cls, directory:str, id:str):
+    def get_filename_by_id(cls, directory:str, id:str, prefix:str=None):
+        if prefix:
+            return os.path.join(directory,  prefix + "_" + id + ".json")
         return os.path.join(directory,  id + ".json")
 
     def to_lc_document(self) -> lc_Document:
@@ -54,17 +56,25 @@ class Document(BaseModel):
 
     def write_2_file(self, directory:str):
         filename = Document.get_filename_by_id(directory, self.id)
+        if hasattr(self, 'search_info'):
+            prefix = f"{self.search_info.distance:07.5f}"
+            filename = Document.get_filename_by_id(directory, self.id, prefix=prefix)
         document_dict = self.model_dump()
-        
+
         # Write to file
         write_dict_to_file(dictionary=document_dict, full_filename=filename)
         return
 
+class SearchInfo(BaseModel):
+    search_term: str
+    distance: float
+
 class Chunk(Document):
     original_document_id: str
-
+    search_info: Optional[SearchInfo] = None
+    
     @classmethod
-    def chroma_chunks2chunk_array(cls, chroma_chunks) -> list['Chunk']:
+    def chroma_chunks2chunk_array(cls, chroma_chunks, search_term: str=None) -> list['Chunk']:
         chunks = []
         for counter, id in enumerate(chroma_chunks['ids'][0]):
             chunk = Chunk(
@@ -74,6 +84,10 @@ class Chunk(Document):
                 id=id,
                 original_document_id=chroma_chunks['metadatas'][0][counter].get("original_document_id", None)
             )
+            if search_term:
+                search_info = SearchInfo(
+                    search_term=search_term, distance=chroma_chunks['distances'][0][counter])
+                chunk.search_info = search_info
             chunks.append(chunk)
         return chunks
 
