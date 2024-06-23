@@ -1,4 +1,4 @@
-# ai-platform
+# ai-platform 🧠
 
 An AI Platform that consist of basic, functional modules.
 
