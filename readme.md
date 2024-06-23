@@ -2,7 +2,7 @@
 
 An AI Platform that consist of basic, functional modules.
 
-![Overview](AI_Platform_Overview.svg)
+![Overview](ai_platform_overview.svg)
 
 
 ## Local Development

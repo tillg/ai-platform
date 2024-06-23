@@ -51,6 +51,20 @@ class Document(BaseModel):
 class Chunk(Document):
     original_document_id: str
 
+    @classmethod
+    def chroma_chunks2chunk_array(cls, chroma_chunks) -> list['Chunk']:
+        chunks = []
+        for counter, id in enumerate(chroma_chunks['ids'][0]):
+            chunk = Chunk(
+                title=chroma_chunks['metadatas'][0][counter].get("title", None),
+                uri=chroma_chunks['metadatas'][0][counter].get("uri", None),
+                content=chroma_chunks['documents'][0][counter],
+                id=id,
+                original_document_id=chroma_chunks['metadatas'][0][counter].get("original_document_id", None)
+            )
+            chunks.append(chunk)
+        return chunks
+
 
 class ChatRequest(BaseModel):
     messages: list[Message]

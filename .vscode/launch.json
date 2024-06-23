@@ -6,6 +6,7 @@
     "configurations": [
 
 
+
         {
             "name": "Python Debugger: Test Commons",
             "type": "debugpy",
@@ -25,8 +26,19 @@
             "module": "unittest",
             "console": "integratedTerminal",
             "args": [
-                "discover", 
+                "discover",
                 "ai_brain_tests" // Pattern to match test files
+            ],
+            "cwd": "${workspaceFolder}/src" // Set the current working directory
+        },
+        {
+            "name": "Python Debugger: Test Brain/Search",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "console": "integratedTerminal",
+            "args": [
+                "ai_brain_tests/test_brain_search.py" // Pattern to match test files
             ],
             "cwd": "${workspaceFolder}/src" // Set the current working directory
         },
