@@ -54,7 +54,8 @@ python -m unittest discover .
 
 ## Todo
 
-* write2file should become a function of the document itself.
+* Calling `python -m ai_brain` or similar should start the fastAPI server
+* Make ability to load a brain with data, have it's configuration in a YAML file
 
 ## Resources
 
