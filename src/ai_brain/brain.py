@@ -11,8 +11,12 @@ import logging
 from typing import Any, List
 from ai_commons.api_models import Document, Chunk
 from pydantic import field_validator, validate_call
+from dotenv import load_dotenv
+from ai_brain.brain_info_model import BrainInfo
 
+load_dotenv()
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 DATA_DIRECTORY = os.environ.get('DATA_DIRECTORY', "data")
 COLLECTION_NAME = os.environ.get('COLLECTION_NAME', 'COLLECTION_NAME')
@@ -46,13 +50,24 @@ class Brain:
         logger.info(f"Brain initialized. Data path: {
                     self.data_directory}, no of document: {len(self)}, no of chunks: {self.number_of_chunks()}")
 
+    def get_brain_info(self) -> BrainInfo:
+
+        return BrainInfo(
+            title="Brain",
+            embedding_model="?",
+            data_directory=self.data_directory,
+            chroma_directory=self.chroma_directory,
+            document_directory=self.document_directory,
+            collection_name=self.collection_name,
+            no_documents=len(self),
+            no_chunks=self.number_of_chunks()
+        )
+    
     def search_chunks_by_text(self, query_text: str, n: int = 10):
         chroma_chunks = self.chroma_collection.query(query_texts=[query_text], n_results= n)
         chunks = Chunk.chroma_chunks2chunk_array(chroma_chunks, search_term=query_text)
         return chunks
 
-    def search_chunks_by_texts(self, query_texts: List[str]):
-        return self.chroma_collection.query(query_texts=query_texts)
 
     def __len__(self):
         if "_stats" in self.document_index:
@@ -190,21 +205,3 @@ class Brain:
 
     def number_of_chunks(self):
         return self.chroma_collection.count()
-
-    def _chroma_results_to_chunks_and_scores(self, results: Any):
-        return [
-            Document(page_content=result[0], metadata=result[1] or {})
-            for result in zip(
-                results["documents"][0],
-                results["metadatas"][0],
-            )
-        ]
-
-    def get_chunks_by_text_proximity(self, texts: List[str], n_results=10):
-        chroma_chunks = self.chroma_collection.query(
-            query_texts=texts,
-            n_results=n_results
-        )
-        chunk_documents = self._chroma_results_to_chunks_and_scores(
-            chroma_chunks)
-        return chunk_documents

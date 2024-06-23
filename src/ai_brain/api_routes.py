@@ -1,18 +1,15 @@
 import fastapi
-from ai_orchestration.rag_chain import RagChain
-from ai_commons.api_models import ChatRequest, ChatResponse
+from ai_commons.api_models import Chunk
+from ai_brain.brain import Brain
+from ai_brain.brain_info_model import BrainInfo
 
 router = fastapi.APIRouter()
+brain = Brain()
 
+@router.post("/search")
+async def search(search_term: str) -> list[Chunk]:
+    return brain.search_chunks_by_text(search_term)
 
-
-@router.post("/chat")
-async def chat_handler(chat_request: ChatRequest) -> ChatResponse:
-    messages = [message.model_dump() for message in chat_request.messages]
-    overrides = chat_request.context.get("overrides", {})
-
-    
-
-    # response = await ragchat.run(messages, overrides=overrides)
-    response = None
-    return response
+@router.get("/info")
+async def info() -> BrainInfo:
+    return brain.get_brain_info()
