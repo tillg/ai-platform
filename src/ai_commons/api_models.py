@@ -3,6 +3,7 @@ import uuid
 from pydantic import BaseModel
 from langchain.docstore.document import Document as lc_Document
 import os
+from utils.dict2file import write_dict_to_file, read_dict_from_file
 
 class Message(BaseModel):
     content: str
@@ -35,6 +36,10 @@ class Document(BaseModel):
             content = file.read()
         title = os.path.splitext(os.path.basename(file_path))[0]
         return Document(title=title, content=content, uri=file_path)
+    
+    @classmethod
+    def get_filename_by_id(cls, directory:str, id:str):
+        return os.path.join(directory,  id + ".json")
 
     def to_lc_document(self) -> lc_Document:
         return lc_Document(
@@ -47,6 +52,13 @@ class Document(BaseModel):
         del doc_dict["content"]
         return doc_dict
 
+    def write_2_file(self, directory:str):
+        filename = Document.get_filename_by_id(directory, self.id)
+        document_dict = self.model_dump()
+        
+        # Write to file
+        write_dict_to_file(dictionary=document_dict, full_filename=filename)
+        return
 
 class Chunk(Document):
     original_document_id: str

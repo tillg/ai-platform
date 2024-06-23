@@ -54,7 +54,7 @@ python -m unittest discover .
 
 ## Todo
 
-* Get type safety with pydantic - see [here](https://realpython.com/python-pydantic/#working-with-validators)
+* write2file should become a function of the document itself.
 
 ## Resources
 

@@ -92,16 +92,6 @@ class Brain:
         return os.path.join(self.document_directory,  id + ".json")
 
     @validate_call
-    def _document_to_file(self, document: Document):
-
-        filename = self._id_to_filename(document.id)
-        document_dict = document.model_dump()
-
-        # Write to file
-        write_dict_to_file(dictionary=document_dict, full_filename=filename)
-        return
-
-    @validate_call
     def get_document_by_id(self, id: str) -> Document:
         # Transform the id to a filename
         filename = self._id_to_filename(id)
@@ -171,7 +161,7 @@ class Brain:
                 return
 
         # Add the document to the file store
-        self._document_to_file(document)
+        document.write_2_file(self.document_directory)
 
         # Add the documen to the index
         self._add_document_to_index(document)
