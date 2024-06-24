@@ -7,7 +7,7 @@ An AI Platform that consist of basic, functional modules.
 
 ## Local Development
 
-### Setting up the environment 
+### Setting up & running
 
 In order to install the server side:
 * Make sure you are in the root directory of the project
@@ -21,9 +21,7 @@ cd src/ai_ui
 npm install
 ```
 
-### Running the components
-
-Run the components:
+Run the backend components:
 
 ```
 # Orchestration
@@ -34,6 +32,12 @@ python -m ai_orchestration.main
 # AI Workspace
 python -m ai_workspace.main
 ```
+
+Run the AI-UI: 
+```bash
+    cd src/ai_ui
+    npm run dev
+    ```
 
 Run tests:
 * Make sure you are in the `src` directory
