@@ -35,9 +35,9 @@ python -m ai_workspace.main
 
 Run the AI-UI: 
 ```bash
-    cd src/ai_ui
-    npm run dev
-    ```
+cd src/ai_ui
+npm run dev
+```
 
 Run tests:
 * Make sure you are in the `src` directory
@@ -63,6 +63,8 @@ python -m unittest discover .
 
 ## Resources
 
+* [Retrieval-Augmented Generation (RAG) from basics to advanced - Medium](https://medium.com/@tejpal.abhyuday/retrieval-augmented-generation-rag-from-basics-to-advanced-a2b068fd576c)
+* [Advanced RAG 01: Small-to-Big Retrieval - Medium](https://towardsdatascience.com/advanced-rag-01-small-to-big-retrieval-172181b396d4)
 * [Pydantic: Simplifying Data Validation in Python - Real Python](https://realpython.com/python-pydantic/)
 * [Using FastAPI to Build Python Web APIs - Real Python](https://realpython.com/fastapi-python-web-apis/)
 * [Embeddings and Vector Databases With ChromaDB - Real Python](https://realpython.com/chromadb-vector-database/)
