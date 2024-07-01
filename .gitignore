@@ -12,6 +12,7 @@ __pycache__/
 
 # TMP data
 tmp 
+data/berlin
 
 # C extensions
 *.so

@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any, Dict, List, Optional
 import uuid
 from pydantic import BaseModel
 from langchain.docstore.document import Document as lc_Document
@@ -15,16 +15,27 @@ class SearchRequest(BaseModel):
     search_term: str
 
 
+class SearchInfo(BaseModel):
+    search_term: str
+    distance: float
+
+
 class Document(BaseModel):
     title: str
     content: str
     uri: str
     id: str = None  # Set default to None
+    search_info: Optional[SearchInfo] = None
 
     def __init__(self, **data):
         if 'id' not in data or data['id'] is None:
             data['id'] = str(uuid.uuid4())
+
         super().__init__(**data)
+
+        # Delete search_info attribute if it is None
+        if getattr(self, 'search_info', None) is None:
+            delattr(self, 'search_info')
 
     @classmethod
     def from_lc_document(cls, lc_document: lc_Document) -> 'Document':
@@ -72,11 +83,6 @@ class Document(BaseModel):
         return
 
 
-class SearchInfo(BaseModel):
-    search_term: str
-    distance: float
-
-
 class Chunk(Document):
     original_document_id: str
     search_info: Optional[SearchInfo] = None
@@ -102,9 +108,16 @@ class Chunk(Document):
         return chunks
 
 
+class SearchResultChunksAndDocuments(BaseModel):
+    chunks: Optional[List[Chunk]] = None
+    documents: Optional[List[Document]] = None
+
+
 class SearchResult(BaseModel):
-    chunks: list[Chunk]
-    
+    result: Optional[SearchResultChunksAndDocuments] = None
+    inner_working: Optional[Dict[str, Any]] = None
+
+
 class ChatRequest(BaseModel):
     messages: list[Message]
     context: dict = {}

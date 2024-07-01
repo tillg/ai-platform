@@ -27,9 +27,9 @@
             "console": "integratedTerminal",
             "args": [
                 "discover",
-                "ai_brain_tests" // Pattern to match test files
+                "ai_brain_tests" 
             ],
-            "cwd": "${workspaceFolder}/src" // Set the current working directory
+            "cwd": "${workspaceFolder}/src" y
         },
         {
             "name": "Python Debugger: Test Brain/Search",
@@ -38,7 +38,19 @@
             "module": "unittest",
             "console": "integratedTerminal",
             "args": [
-                "ai_brain_tests/test_brain_search.py" // Pattern to match test files
+                "ai_brain_tests/test_brain_search.py" 
+            ],
+            "cwd": "${workspaceFolder}/src" 
+        },
+        {
+            "name": "Python Debugger: Test Brain-Loaders",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "console": "integratedTerminal",
+            "args": [
+                "discover",
+                "ai_brain_loader_tests" 
             ],
             "cwd": "${workspaceFolder}/src" // Set the current working directory
         },

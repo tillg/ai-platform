@@ -8,11 +8,10 @@ from ai_brain.chunker import Chunker
 from utils.utils import simplify_text
 from utils.dict2file import write_dict_to_file, read_dict_from_file
 import logging
-from typing import Any, List
-from ai_commons.api_models import Document, Chunk
+from typing import Any, Dict, List
+from ai_commons.api_models import Document, Chunk, SearchResultChunksAndDocuments
 from pydantic import field_validator, validate_call
 from dotenv import load_dotenv
-from ai_brain.brain_info_model import BrainInfo
 
 load_dotenv()
 logger = logging.getLogger(__name__)
@@ -31,8 +30,10 @@ class Brain:
             return read_dict_from_file(full_filename=index_filename)
         return {}
 
-    def __init__(self, data_directory: str = DATA_DIRECTORY, chunker: Chunker = None):
+    def __init__(self, data_directory: str = DATA_DIRECTORY, chunker: Chunker = None, allow_duplicates: bool = False, max_no_of_docs: int = 0):
         self.data_directory = data_directory
+        self.allow_duplicates = allow_duplicates
+        self.max_no_of_docs = max_no_of_docs
         self.chroma_directory = os.path.join(self.data_directory, "chroma")
         self.document_directory = os.path.join(
             self.data_directory, "documents")
@@ -50,29 +51,31 @@ class Brain:
         logger.info(f"Brain initialized. Data path: {
                     self.data_directory}, no of document: {len(self)}, no of chunks: {self.number_of_chunks()}")
 
-    def get_brain_info(self) -> BrainInfo:
+    def get_brain_info(self) -> Dict[str, Any]:
 
-        return BrainInfo(
-            title="Brain",
-            embedding_model="?",
-            data_directory=self.data_directory,
-            chroma_directory=self.chroma_directory,
-            document_directory=self.document_directory,
-            collection_name=self.collection_name,
-            no_documents=len(self),
-            no_chunks=self.number_of_chunks()
-        )
-    
-    def search_chunks_by_text(self, query_text: str, n: int = 10):
-        chroma_chunks = self.chroma_collection.query(query_texts=[query_text], n_results= n)
-        chunks = Chunk.chroma_chunks2chunk_array(chroma_chunks, search_term=query_text)
-        return chunks
+        return {
+            "title": "Brain",
+            "embedding_model": "?",
+            "data_directory": self.data_directory,
+            "allow_duplicates": self.allow_duplicates,
+            "chroma_directory": self.chroma_directory,
+            "document_directory": self.document_directory,
+            "collection_name": self.collection_name,
+            "no_documents": len(self),
+            "no_chunks": self.number_of_chunks()
+        }
 
 
     def __len__(self):
+        """Return the number of documents, ensuring the document index is up-to-date."""
+        # Assuming 'self.data_directory' holds the path to the directory where '_index.json' is located
+        index_filename = os.path.join(self.data_directory, "_index.json")
+        self.document_index = self._read_index_from_file(index_filename)
         if "_stats" in self.document_index:
-            return len(self.document_index)-1
+            # Exclude the '_stats' entry if present
+            return len(self.document_index) - 1
         return len(self.document_index)
+
 
     def __str__(self):
         return f"Brain with {len(self)} documents and {self.number_of_chunks()} chunks, stored in {self.data_directory} directory."
@@ -166,10 +169,21 @@ class Brain:
             logger.warning(f"Document with ID {
                            document_id} not found in index.")
 
-    #@validate_call
-    def add_document(self, document: Document, allow_duplicates=True):
+    # @validate_call
+    def add_document(self, document: Document):
 
-        if not allow_duplicates:
+        if self.max_no_of_docs > 0 and len(self) >= self.max_no_of_docs:
+            logger.warning(
+                f"Max number of documents reached: {self.max_no_of_docs}. Document not added.")
+            return
+        if document.content is None:
+            logger.warning("Document with content None cannot be added.")
+            return
+        if len(document.content) == 0:
+            logger.warning("Document with empty content cannot be added.")
+            return
+
+        if not self.allow_duplicates:
             if self.is_in_by_uri(document.uri):
                 logger.warning(f"Document with URI {
                                document.uri} already exists in the collection.")
@@ -195,7 +209,7 @@ class Brain:
                                    metadatas=chunks_metadatas, ids=chunks_ids)
         return
 
-    #@validate_call
+    # @validate_call
     def add_documents(self, documents: List[Document], show_progress=False):
         if show_progress:
             documents = tqdm(documents)
@@ -205,3 +219,15 @@ class Brain:
 
     def number_of_chunks(self):
         return self.chroma_collection.count()
+
+    def search_chunks_by_text(self, query_text: str, n: int = 10) -> SearchResultChunksAndDocuments:
+        if (query_text is None) or (len(query_text) == 0):
+            logger.warning("Empty search query.")
+            return []
+        logger.warning(f"Searching chunks by text: {query_text}")
+        chroma_chunks = self.chroma_collection.query(
+            query_texts=[query_text], n_results=n)
+        chunks = Chunk.chroma_chunks2chunk_array(
+            chroma_chunks, search_term=query_text)
+        return chunks
+    

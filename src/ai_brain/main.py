@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, Query
 import uvicorn
 
 import ai_brain.api_routes
@@ -7,12 +7,16 @@ import ai_commons.constants as constants
 from dotenv import load_dotenv
 import os
 from fastapi.middleware.cors import CORSMiddleware
+from ai_brain.brain import Brain
 
 load_dotenv()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 AI_BRAIN_PORT = os.environ.get('AI_BRAIN_PORT', 8081)
+AI_BRAINS_DIRECTORY = os.environ.get('AI_BRAINS_DIRECTORY', 'data/brains')
+
+logger.info(f"Brains directory: {AI_BRAINS_DIRECTORY}")
 
 app = FastAPI()
 allowed_origins = ["*"]
@@ -27,11 +31,7 @@ app.add_middleware(
 
 app.include_router(ai_brain.api_routes.router)
 
-
-@app.get("/")
-async def root():
-    return {"message": "This is the AI Brain Service! 🧠"}
-
+brain: Brain = Brain()
 
 if __name__ == "__main__":
     uvicorn.run("ai_brain.main:app",

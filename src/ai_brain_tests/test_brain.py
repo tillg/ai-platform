@@ -12,7 +12,8 @@ logging.basicConfig(level=logging.INFO)
 # in relation to this file my test data resides in ../../data/test_data
 TEST_DATA_DIR = os.path.join(os.path.dirname(
     os.path.dirname(os.path.dirname(__file__))), "data", "test_data")
-TMP_DATA_DIR = os.path.join(TEST_DATA_DIR, "tmp")
+TMP_DATA_DIR = os.path.join(os.path.dirname(
+    os.path.dirname(os.path.dirname(__file__))), "data", "tmp")
 
 LONG_ARTICLE = "wikipedia_peru.txt"
 SHORT_ARTICLE = "rectus_abdominus.txt"

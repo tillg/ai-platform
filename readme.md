@@ -56,8 +56,32 @@ python -m unittest discover ai_commons_tests
 python -m unittest discover . 
 ```
 
+## The Brains
+
+Structure of a brain:
+```json
+{
+  "Name": "Berlin Info",
+  "DataPath": "/data/path/berlin",
+  "EmbeddingModel": "all-MiniLM-L6-v2",
+  "Loader":{                      
+    "LoaderType": "wikipediaLoader",
+    "StartingPage": "Berlin",
+    "Depth": 3,
+    "LastLoaded": "2024-06-27"
+  },
+  "NoOfDocs": 659,
+  "NoOfChunks": 9471
+}
+```
+Notes:
+* The Loader config is specific to the different loaders we have
+* The `NoOfDocs` and `NoOfChunks` values are updated every time the brain info is questioned.
+* 
+
 ## Todo
 
+* API rukle: Every call should return a `ìnner_working` dictionary, For the ai_brain this could contain: Brain name, no of docs/chunks, search time, result size...
 * Calling `python -m ai_brain` or similar should start the fastAPI server
 * Make ability to load a brain with data, have it's configuration in a YAML file
 
