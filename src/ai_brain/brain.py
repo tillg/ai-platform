@@ -9,7 +9,7 @@ from utils.utils import simplify_text
 from utils.dict2file import write_dict_to_file, read_dict_from_file
 import logging
 from typing import Any, Dict, List
-from ai_commons.api_models import Document, Chunk, SearchResultChunksAndDocuments
+from ai_commons.api_models import Document, Chunk, SearchResultChunksAndDocuments, SearchResult
 from pydantic import field_validator, validate_call
 from dotenv import load_dotenv
 
@@ -65,7 +65,6 @@ class Brain:
             "no_chunks": self.number_of_chunks()
         }
 
-
     def __len__(self):
         """Return the number of documents, ensuring the document index is up-to-date."""
         # Assuming 'self.data_directory' holds the path to the directory where '_index.json' is located
@@ -75,7 +74,6 @@ class Brain:
             # Exclude the '_stats' entry if present
             return len(self.document_index) - 1
         return len(self.document_index)
-
 
     def __str__(self):
         return f"Brain with {len(self)} documents and {self.number_of_chunks()} chunks, stored in {self.data_directory} directory."
@@ -220,14 +218,21 @@ class Brain:
     def number_of_chunks(self):
         return self.chroma_collection.count()
 
-    def search_chunks_by_text(self, query_text: str, n: int = 10) -> SearchResultChunksAndDocuments:
+    def search_chunks_by_text(self, query_text: str, n: int = 10) -> SearchResult:
+        search_result = SearchResult()
         if (query_text is None) or (len(query_text) == 0):
-            logger.warning("Empty search query.")
-            return []
-        logger.warning(f"Searching chunks by text: {query_text}")
+            error_text = "Empty search query."
+            logger.warning(error_text)
+            search_result.inner_working = {"error": error_text}
+            return search_result
+        logger.info(f"Searching chunks by text: {query_text}")
         chroma_chunks = self.chroma_collection.query(
             query_texts=[query_text], n_results=n)
         chunks = Chunk.chroma_chunks2chunk_array(
             chroma_chunks, search_term=query_text)
-        return chunks
-    
+        search_result.search_term = query_text
+        result_chunks = SearchResultChunksAndDocuments()
+        result_chunks.chunks = chunks
+        search_result.result = result_chunks
+        logger.info(f"Returning search result: {search_result}")
+        return search_result

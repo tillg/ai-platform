@@ -58,13 +58,28 @@ export type SearchRequest = {
     search_term: String
 }
 
-export type Chunk = {
+type Document = {
     title: string;
     content: string;
     uri: string;
-    id: string;
+    id?: string | null;
+    search_info?: SearchInfo | null;
+};
+
+// Extending Document type to create Chunk type
+export type Chunk = Document & {
     original_document_id: string;
-    search_info: SearchInfo;
+    search_info?: SearchInfo | null;
+};
+
+class SearchResultChunksAndDocuments {
+    chunks?: Chunk[] = [];
+    documents?: Document[] = [];
+
+    constructor(chunks?: Chunk[], documents?: Document[]) {
+        if (chunks) this.chunks = chunks;
+        if (documents) this.documents = documents;
+    }
 }
 
 export type SearchInfo = {
@@ -72,16 +87,14 @@ export type SearchInfo = {
     distance: number;
 }
 
-export type SearchAppResponseOrError = {
-    chunks?: Chunk[];
-    error?: string;
-};
 
-export type SearchAppResponse = {
-    chunks: Chunk[];
-};
+export class SearchResult {
+    search_term?: string;
+    result?: SearchResultChunksAndDocuments;
+    inner_working?: { [key: string]: any };
 
-export type SearchResult = {
-    searchTerm: string;
-    searchAppResponse: SearchAppResponse;
+    constructor(result?: SearchResultChunksAndDocuments, inner_working?: { [key: string]: any }) {
+        this.result = result;
+        this.inner_working = inner_working;
+    }
 }

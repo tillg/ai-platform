@@ -1,14 +1,12 @@
 import { useRef, useState, useEffect } from "react";
 import { Panel, DefaultButton, TextField, SpinButton, Slider, Checkbox } from "@fluentui/react";
 import { BrainCircuitFilled, SparkleFilled } from "@fluentui/react-icons";
-import {COLORS } from "../../constants";
+import { COLORS } from "../../constants";
 import styles from "./Search.module.css";
 
 import {
     searchApi,
     SearchRequest,
-    SearchAppResponseOrError,
-    SearchAppResponse,
     SearchResult
 } from "../../api";
 import { Answer, AnswerError, AnswerLoading } from "../../components/Answer";
@@ -52,13 +50,9 @@ const Search = () => {
             if (!response.body) {
                 throw Error("No response body");
             }
-            const parsedResponse: SearchAppResponseOrError = await response.json();
+            const newSearchResult: SearchResult = await response.json();
             if (response.status > 299 || !response.ok) {
-                throw Error(parsedResponse.error || "Unknown error");
-            }
-            const newSearchResult: SearchResult = {
-                searchTerm: question,
-                searchAppResponse: parsedResponse as SearchAppResponse
+                throw Error("Unknown error");
             }
             setSearchResults([...searchResults, newSearchResult]);
         } catch (e) {

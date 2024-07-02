@@ -114,6 +114,7 @@ class SearchResultChunksAndDocuments(BaseModel):
 
 
 class SearchResult(BaseModel):
+    search_term: Optional[str] = None
     result: Optional[SearchResultChunksAndDocuments] = None
     inner_working: Optional[Dict[str, Any]] = None
 

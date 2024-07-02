@@ -2,7 +2,7 @@ from typing import Any, Dict, Optional
 import fastapi
 from fastapi import Depends, FastAPI, Query, Request, Body, HTTPException
 import logging
-from ai_commons.api_models import Chunk, SearchRequest, SearchResultChunksAndDocuments
+from ai_commons.api_models import Chunk, SearchRequest, SearchResultChunksAndDocuments, SearchResult
 from ai_brain.brain import Brain
 from ai_brain_loaders.ai_brain_loader_wikipedia import load_page_tree_to_brain
 
@@ -36,7 +36,7 @@ def delete_all():
 
 
 @router.post("/search")
-async def search(request: Request, q: Optional[str] = None, body: Optional[SearchRequest] = Body(default=None)) -> SearchResultChunksAndDocuments:
+async def search(request: Request, q: Optional[str] = None, body: Optional[SearchRequest] = Body(default=None)) -> SearchResult:
     logger.info(f"Search query: q={q}, body={body}")
 
     search_term = q or (body.search_term if body else None)
@@ -44,6 +44,7 @@ async def search(request: Request, q: Optional[str] = None, body: Optional[Searc
     if not search_term:
         raise HTTPException(
             status_code=400, detail="A search term must be provided either as a query parameter or in the request body.")
-    chunks = brain.search_chunks_by_text(search_term)
-    search_result = SearchResultChunksAndDocuments(chunks=chunks)
+    search_result = brain.search_chunks_by_text(search_term)
+    #search_result = SearchResultChunksAndDocuments(chunks=chunks)
+    logger.info(f"Search result: {search_result}")
     return search_result

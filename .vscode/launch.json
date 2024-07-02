@@ -64,6 +64,14 @@
                 "ai_brain_tests/test_chunker.py" // Pattern to match test files
             ],
             "cwd": "${workspaceFolder}/src" // Set the current working directory
+        },
+        {
+            "name": "Python Debugger: Brain/Main",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "ai_brain.main",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/src" // Set the current working directory
         }
     ]
 }
