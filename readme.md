@@ -77,10 +77,11 @@ Structure of a brain:
 Notes:
 * The Loader config is specific to the different loaders we have
 * The `NoOfDocs` and `NoOfChunks` values are updated every time the brain info is questioned.
-* 
+
 
 ## Todo
 
+* Data Loader for Emails
 * API rukle: Every call should return a `ìnner_working` dictionary, For the ai_brain this could contain: Brain name, no of docs/chunks, search time, result size...
 * Calling `python -m ai_brain` or similar should start the fastAPI server
 * Make ability to load a brain with data, have it's configuration in a YAML file
@@ -93,3 +94,4 @@ Notes:
 * [Pydantic: Simplifying Data Validation in Python - Real Python](https://realpython.com/python-pydantic/)
 * [Using FastAPI to Build Python Web APIs - Real Python](https://realpython.com/fastapi-python-web-apis/)
 * [Embeddings and Vector Databases With ChromaDB - Real Python](https://realpython.com/chromadb-vector-database/)
+* Original inspiration taken from [RAG on PostgreSQL - Github](https://github.com/Azure-Samples/rag-postgres-openai-python#) as explained in this video: [Building a RAG-powered AI chat app with Python and VS Code](https://www.youtube.com/watch?v=3ctFWU492xk&t=1177s)
