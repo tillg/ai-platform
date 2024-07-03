@@ -12,10 +12,11 @@ import { ChunkViewer } from "./ChunkViewer";
 
 interface Props {
     searchResult: SearchResult;
+    setThisSearchResult: () => void;
 }
 
 export const SearchResultViewer = ({
-    searchResult,
+    searchResult, setThisSearchResult
 }: Props) => {
     console.log("SearchResultViewer: ", searchResult)
     const searchTerm = searchResult?.search_term ?? 'No search term.';
@@ -56,8 +57,8 @@ export const SearchResultViewer = ({
                                 iconProps={{ iconName: "Lightbulb" }}
                                 title="Show inner workings"
                                 ariaLabel="Show inner workings"
-                            // onClick={() => onThoughtProcessClicked()}
-                            // disabled={!answer.choices[0].context.thoughts?.length}
+                                onClick={() => {setThisSearchResult()}}
+                                // disabled={!searchResult.inner_working}
                             />
                         </div>
                         {/* Toggle button for showing/hiding chunks */}

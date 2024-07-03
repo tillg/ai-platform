@@ -11,10 +11,12 @@ import { SearchResultIcon } from "./SearchResultIcon";
 
 interface Props {
     searchResults: SearchResult[];
+    selectSearchResult: (index: number) => void;
 }
 
 export const SearchResultList = ({
     searchResults,
+    selectSearchResult
 }: Props) => {
 
     console.log("SearchResults: ", searchResults);
@@ -23,7 +25,7 @@ export const SearchResultList = ({
         <Stack>
             {searchResults.map((searchResult, index) => (
                 <Stack.Item key={index}> 
-                    <SearchResultViewer searchResult={searchResult}/>
+                    <SearchResultViewer searchResult={searchResult} setThisSearchResult={()=>selectSearchResult(index)}/>
                 </Stack.Item>
             ))}
         </Stack>

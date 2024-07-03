@@ -17,20 +17,23 @@ import { SearchResultList } from "../../components/SearchResult"
 
 const Search = () => {
     const [isConfigPanelOpen, setIsConfigPanelOpen] = useState(false);
-    const [promptTemplate, setPromptTemplate] = useState<string>("");
-    const [temperature, setTemperature] = useState<number>(0.3);
+    const [isSearchAnalysisOpen, setIsSearchAnalysisOpen] = useState(false);
     const [retrieveCount, setRetrieveCount] = useState<number>(3);
-    const [useAdvancedFlow, setUseAdvancedFlow] = useState<boolean>(true);
 
     const lastQuestionRef = useRef<string>("");
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<unknown>();
 
-    const [activeCitation, setActiveCitation] = useState<string>();
-    const [activeAnalysisPanelTab, setActiveAnalysisPanelTab] = useState<SearchAnalysisPanelTabs | undefined>(undefined);
 
-    const [selectedAnswer, setSelectedAnswer] = useState<number>(0);
+    const [selectedSearchResult, _setSelectedSearchResult] = useState<number>(0);
+    // Wrapper function
+    const setSelectedSearchResult = (value: number) => {
+        console.log(`setSelectedSearchResult called with value: ${value}`);
+        _setSelectedSearchResult(value);
+        setIsSearchAnalysisOpen(true);
+    };
+
     const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
 
     const makeSearchApiRequest = async (question: string) => {
@@ -38,8 +41,6 @@ const Search = () => {
 
         error && setError(undefined);
         setIsLoading(true);
-        setActiveCitation(undefined);
-        setActiveAnalysisPanelTab(undefined);
 
         try {
 
@@ -63,47 +64,10 @@ const Search = () => {
     };
 
 
-    const onPromptTemplateChange = (_ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
-        setPromptTemplate(newValue || "");
-    };
-
-    const onTemperatureChange = (
-        newValue: number,
-        range?: [number, number],
-        event?: React.MouseEvent | React.TouchEvent | MouseEvent | TouchEvent | React.KeyboardEvent
-    ) => {
-        setTemperature(newValue);
-    };
-
     const onRetrieveCountChange = (_ev?: React.SyntheticEvent<HTMLElement, Event>, newValue?: string) => {
         setRetrieveCount(parseInt(newValue || "3"));
     };
 
-    const onUseAdvancedFlowChange = (_ev?: React.FormEvent<HTMLElement | HTMLInputElement>, checked?: boolean) => {
-        setUseAdvancedFlow(!!checked);
-    }
-
-
-    const onShowCitation = (citation: string, index: number) => {
-        if (activeCitation === citation && activeAnalysisPanelTab === SearchAnalysisPanelTabs.CitationTab && selectedAnswer === index) {
-            setActiveAnalysisPanelTab(undefined);
-        } else {
-            setActiveCitation(citation);
-            setActiveAnalysisPanelTab(SearchAnalysisPanelTabs.CitationTab);
-        }
-
-        setSelectedAnswer(index);
-    };
-
-    const onToggleTab = (tab: SearchAnalysisPanelTabs, index: number) => {
-        if (activeAnalysisPanelTab === tab && selectedAnswer === index) {
-            setActiveAnalysisPanelTab(undefined);
-        } else {
-            setActiveAnalysisPanelTab(tab);
-        }
-
-        setSelectedAnswer(index);
-    };
 
     return (
         <div className={styles.container}>
@@ -119,9 +83,20 @@ const Search = () => {
                             <h2 className={styles.chatEmptyStateSubtitle}>Ask anything and see what I find...</h2>
                         </div>
                     ) : (
-                        <div className={styles.chatMessageStream}>
-                            <SearchResultList searchResults={searchResults} />
-                        </div>
+                            <div style={{ display: 'flex', width: '100%' }}>
+                                <div style={{ flex: isSearchAnalysisOpen ? 1 : 'auto', width: isSearchAnalysisOpen ? undefined : '100%' }}>
+                                    <div className={styles.chatMessageStream}>
+                                        <SearchResultList searchResults={searchResults} selectSearchResult={setSelectedSearchResult} />
+                                    </div>
+                                </div>
+                                {isSearchAnalysisOpen && (
+                                    <div style={{ flex: 1 }} className={styles.chatAnalysisPanel}>
+                                        <SearchAnalysisPanel searchResult={searchResults[selectedSearchResult]} closePanel={function (): void {
+                                            setIsSearchAnalysisOpen(false);
+                                        } } />
+                                    </div>
+                                )}
+                            </div>
                     )}
 
                     <div className={styles.chatInput}>
@@ -135,7 +110,7 @@ const Search = () => {
                 </div>
 
                 <Panel
-                    headerText="Configure answer generation"
+                    headerText="Configure search settings"
                     isOpen={isConfigPanelOpen}
                     isBlocking={false}
                     onDismiss={() => setIsConfigPanelOpen(false)}
@@ -143,16 +118,7 @@ const Search = () => {
                     onRenderFooterContent={() => <DefaultButton onClick={() => setIsConfigPanelOpen(false)}>Close</DefaultButton>}
                     isFooterAtBottom={true}
                 >
-
-                    <Checkbox
-                        className={styles.chatSettingsSeparator}
-                        checked={useAdvancedFlow}
-                        label="Use advanced flow with query rewriting and filter formulation. Not compatible with Ollama models."
-                        onChange={onUseAdvancedFlowChange}
-                    />
-
-                    <h3>Settings for database search:</h3>
-
+                    <h3>Search Server Settings</h3>
                     <SpinButton
                         className={styles.chatSettingsSeparator}
                         label="Retrieve this many matching rows:"
@@ -168,11 +134,10 @@ const Search = () => {
 
                     <TextField
                         className={styles.chatSettingsSeparator}
-                        defaultValue={promptTemplate}
+                        defaultValue="Huhu"
                         label="Override prompt template"
                         multiline
                         autoAdjustHeight
-                        onChange={onPromptTemplateChange}
                     />
 
                     <Slider
@@ -181,8 +146,6 @@ const Search = () => {
                         min={0}
                         max={1}
                         step={0.1}
-                        defaultValue={temperature}
-                        onChange={onTemperatureChange}
                         showValue
                         snapToStep
                     />
