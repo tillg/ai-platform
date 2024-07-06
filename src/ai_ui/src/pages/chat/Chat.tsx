@@ -4,6 +4,7 @@ import {   ChatFilled} from "@fluentui/react-icons";
 import {theme} from "../../constants";
 import { ChatIcon  } from "../../components/Icons/ChatIcon";
 import styles from "./Chat.module.css";
+import  EmptyChat  from "./EmptyChat"
 
 import { chatApi } from "../../api";
 import {
@@ -136,19 +137,13 @@ const Chat = () => {
             <div className={styles.chatRoot}>
                 <div className={styles.chatContainer}>
                     {!lastQuestionRef.current ? (
-                        <div className={styles.chatEmptyState}>
-                            <ChatIcon fontSize={"120px"}/>
-                            <h1 className={styles.chatEmptyStateTitle}>Chat with me</h1>
-                            <h2 className={styles.chatEmptyStateSubtitle}>Ask anything or try an example</h2>
-                            <ExampleList onExampleClicked={onExampleClicked} />
-                        </div>
+                        <EmptyChat onClick={onExampleClicked} />
                     ) : (
                         <div className={styles.chatMessageStream}>
-                           
                             {!isLoading &&
                                 answers.map((answer, index) => (
                                     <div key={index}>
-                                        <UserChatMessage message={answer[0]} />
+                                        <UserChatMessage>{answer[0]}</UserChatMessage> 
                                         <div className={styles.chatMessageGpt}>
                                             <Answer
                                                 isStreaming={false}
@@ -165,7 +160,7 @@ const Chat = () => {
                                 ))}
                             {isLoading && (
                                 <>
-                                    <UserChatMessage message={lastQuestionRef.current} />
+                                        <UserChatMessage>{lastQuestionRef.current}</UserChatMessage> 
                                     <div className={styles.chatMessageGptMinWidth}>
                                         <AnswerLoading />
                                     </div>
@@ -173,7 +168,7 @@ const Chat = () => {
                             )}
                             {error ? (
                                 <>
-                                    <UserChatMessage message={lastQuestionRef.current} />
+                                        <UserChatMessage>{lastQuestionRef.current}</UserChatMessage> 
                                     <div className={styles.chatMessageGptMinWidth}>
                                         <AnswerError error={error.toString()} onRetry={() => makeApiRequest(lastQuestionRef.current)} />
                                     </div>

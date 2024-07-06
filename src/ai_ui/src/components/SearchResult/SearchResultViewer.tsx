@@ -1,19 +1,31 @@
-import { useMemo, useState } from "react";
+import {  useState } from "react";
 import { Stack } from "@fluentui/react";
 import { IconButton } from '@fluentui/react/lib/Button';
+import { UserChatMessage } from "../UserChatMessage";
+import styled from 'styled-components';
 
-import DOMPurify from "dompurify";
-
-import styles from "./Answer.module.css";
 
 import { SearchResult } from "../../api";
-import { SearchResultIcon } from "./SearchResultIcon";
 import { ChunkViewer } from "./ChunkViewer";
 
 interface Props {
     searchResult: SearchResult;
     setThisSearchResult: () => void;
 }
+
+
+const StyledAnswerContainer = styled(Stack)`
+    font-family: system-ui;
+    padding: 20px;
+    background: rgb(249, 249, 249);
+    border-radius: 8px;
+    box-shadow:
+        0px 2px 4px rgba(0, 0, 0, 0.14),
+        0px 0px 2px rgba(0, 0, 0, 0.12);
+    outline: transparent solid 1px;
+}
+`;
+
 
 export const SearchResultViewer = ({
     searchResult, setThisSearchResult
@@ -28,68 +40,37 @@ export const SearchResultViewer = ({
     };
 
     return (
-        <div>
-            <Stack className={styles.answerContainer} verticalAlign="space-between">
-                <div style={{ position: 'relative', marginTop: '20px' }}>
-                    <div style={{
-                        position: 'absolute',
-                        top: '0',
-                        left: '20px',
-                        background: 'rgb(249, 249, 249)',
-                        padding: '0 5px',
-                        fontWeight: 'bold'
-                    }}>
-                        Search Term
-                    </div>
-                    <div style={{
-                        border: '1px solid #ccc',
-                        padding: '20px',
-                        margin: '10px',
-                        borderRadius: '5px',
-                        display: 'flex', // Use flexbox to align items
-                        justifyContent: 'space-between', // This will push your icon to the right
-                        alignItems: 'center' // This will vertically center the items
-                    }}>
-                        {searchTerm}
-                        <div> {/* This div wraps the IconButton and allows for alignment */}
-                            <IconButton
-                                style={{ color: "black" }}
-                                iconProps={{ iconName: "Lightbulb" }}
-                                title="Show inner workings"
-                                ariaLabel="Show inner workings"
-                                onClick={() => {setThisSearchResult()}}
-                                // disabled={!searchResult.inner_working}
-                            />
-                        </div>
-                        {/* Toggle button for showing/hiding chunks */}
-                        <IconButton
-                            style={{
-                                color: "black",
-                                position: 'absolute',
-                                right: '5px',
-                                bottom: '-7px',
-                                border: '1px solid #ccc', // Add a border
-                                borderRadius: '50%', // Optional: to make it circular
-                                padding: '5px', // Optional: to add some space between the icon and the border
-                                background: 'rgb(249, 249, 249)',
-                            }}
-                            iconProps={{ iconName: isChunksVisible ? 'ChevronUp' : 'ChevronDown' }}
-                            title="Open/close list of chunks"
-                            ariaLabel="Open/close list of chunks"
-                            onClick={() => { toggleChunksVisibility() }}
-                        />
+        <StyledAnswerContainer>
+                <UserChatMessage>
+                    {searchTerm}
+                    <IconButton
+                        style={{ color: "black" }}
+                        iconProps={{ iconName: "Lightbulb" }}
+                        title="Show inner workings"
+                        ariaLabel="Show inner workings"
+                        onClick={() => { setThisSearchResult() }}
+                        disabled={!searchResult.inner_working}
+                    />
+                    <IconButton
+                        style={{
+                            color: "black",
+                            border: '1px solid #ccc', // Add a border
+                        }}
+                        iconProps={{ iconName: isChunksVisible ? 'ChevronUp' : 'ChevronDown' }}
+                        title="Open/close list of chunks"
+                        ariaLabel="Open/close list of chunks"
+                        onClick={() => { toggleChunksVisibility() }}
+                    />
 
-                    </div>
-                </div>
+                </UserChatMessage>
 
                 {/* Iterate over the chunks array and display each chunk */}
                 {isChunksVisible && searchResult.result?.chunks?.map((chunk, index) => (
-                    <div key={index} style={{ marginLeft: '20px' }}> {/* Add a left margin */}
+                    <div key={index} > 
                         <ChunkViewer chunk={chunk} />
                     </div>))}
 
                 {/* Existing content */}
-            </Stack>
-        </div>
+        </StyledAnswerContainer>
     )
 }

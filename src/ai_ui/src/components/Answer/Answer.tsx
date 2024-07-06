@@ -7,6 +7,7 @@ import styles from "./Answer.module.css";
 import { ChatResponse } from "../../api/apiModelsChat";
 import { parseAnswerToHtml } from "./AnswerParser";
 import { AnswerIcon } from "./AnswerIcon";
+import styled from "styled-components";
 
 interface Props {
     answer: ChatResponse;
@@ -18,6 +19,8 @@ interface Props {
     onFollowupQuestionClicked?: (question: string) => void;
     showFollowupQuestions?: boolean;
 }
+
+
 
 export const Answer = ({
     answer,

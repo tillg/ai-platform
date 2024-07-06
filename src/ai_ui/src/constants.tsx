@@ -9,6 +9,7 @@ export const theme = {
         prompts: LIGHT_GREEN,
         brain: LIGHT_GREEN,
     },
+    userMessageBackgroundColor: "#e8faeb",
     analysisPanel: {
 
         backgroundColor: "#e9e9e9",
