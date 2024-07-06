@@ -10,9 +10,12 @@ import Layout from "./pages/layout/Layout";
 import Chat from "./pages/chat/Chat";
 import Search from "./pages/search/Search";
 import {StartPage} from "./pages/start/StartPage";
+import Prompts from "./pages/prompts/Prompts";
+
 var layout = <Layout />;
 
 initializeIcons();
+
 
 const router = createHashRouter([
     {
@@ -30,8 +33,11 @@ const router = createHashRouter([
             {
                 path: "/chat",
                 element: <Chat />
+            },
+            {
+                path: "/prompts",
+                element: <Prompts />
             }
-
         ]
     }
 ]);

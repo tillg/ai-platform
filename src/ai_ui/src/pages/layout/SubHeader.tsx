@@ -8,7 +8,7 @@ export const SubHeader = styled.section`
     background-color: #222222;
     color: #f2f2f2;
     align-items: center;
-    padding-left: 12px;
+    padding-left: 52px;
     text-decoration: none;
     justify-content: flex-start; /* Aligns items to the left */
     gap: 50px; /* Sets 15px of space between the items */

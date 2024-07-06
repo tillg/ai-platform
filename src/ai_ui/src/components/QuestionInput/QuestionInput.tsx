@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Stack, TextField } from "@fluentui/react";
 import { Button, Tooltip } from "@fluentui/react-components";
 import { Send28Filled } from "@fluentui/react-icons";
-import { COLORS } from "../../constants";
+import { theme } from "../../constants";
 
 import styles from "./QuestionInput.module.css";
 
@@ -62,7 +62,7 @@ export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, init
             />
             <div className={styles.questionInputButtonsContainer}>
                 <Tooltip content="Ask question button" relationship="label">
-                    <Button size="large" icon={<Send28Filled primaryFill={COLORS.brandColor} />} onClick={sendQuestion} />
+                    <Button size="large" icon={<Send28Filled primaryFill={theme.topic.brain} />} onClick={sendQuestion} />
                 </Tooltip>
             </div>
         </Stack>

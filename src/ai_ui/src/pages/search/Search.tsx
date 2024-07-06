@@ -1,7 +1,8 @@
 import { useRef, useState, useEffect } from "react";
 import { Panel, DefaultButton, TextField, SpinButton, Slider, Checkbox } from "@fluentui/react";
-import { BrainCircuitFilled, SparkleFilled } from "@fluentui/react-icons";
-import { COLORS } from "../../constants";
+import { BrainIcon
+
+ } from "../../components/Icons/BrainIcon";
 import styles from "./Search.module.css";
 
 import {
@@ -77,7 +78,7 @@ const Search = () => {
                 <div className={styles.chatContainer}>
                     {!lastQuestionRef.current ? (
                         <div className={styles.chatEmptyState}>
-                            <BrainCircuitFilled fontSize={"120px"} primaryFill={COLORS.brandColor} aria-hidden="true" aria-label="AI logo" />
+                            <BrainIcon fontSize={"120px"}  />
                             <h1 className={styles.chatEmptyStateTitle}>Search your Brain</h1>
                             <h2 className={styles.chatEmptyStateSubtitle}>Ask anything and see what I find...</h2>
                         </div>

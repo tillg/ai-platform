@@ -1,9 +1,7 @@
 import { Outlet, Link } from "react-router-dom";
 import { SubHeader } from "./SubHeader";
 import styles from "./Layout.module.css";
-import { BrainCircuitFilled, SparkleFilled } from "@fluentui/react-icons";
-import { COLORS } from "../../constants";
-
+import { AiPlatformIcon, BrainIcon, PromptsIcon, ChatIcon } from "../../components/Icons";
 
 const Layout = () => {
     return (
@@ -13,21 +11,23 @@ const Layout = () => {
                     <div className={styles.headerContainer}>
                         <Link to="/" className={styles.headerTitleContainer}>
                             <h3 className={styles.headerTitle}>
-                                <BrainCircuitFilled primaryFill={COLORS.brandColor} aria-hidden="true" aria-label="AI logo" />
+                                <AiPlatformIcon fontSize="20px"/>
                                 AI Platform
                                 </h3>
                         </Link>
-                        <h4 className={styles.headerRightText}>Modular AI</h4>
                     </div>
                 </header>
                 <SubHeader>
                     <Link to="/search" >
+                        <BrainIcon fontSize="20px"/>
                         Search
                     </Link>
                     <Link to="/prompts" >
+                        <PromptsIcon fontSize="20px" />
                         Prompts
                     </Link>
                     <Link to="/chat" >
+                        <ChatIcon fontSize="20px" />
                         Chat
                     </Link>
                 </SubHeader>
