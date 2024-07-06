@@ -102,7 +102,7 @@ const Search = () => {
                     <div className={styles.chatInput}>
                         <QuestionInput
                             clearOnSend
-                            placeholder="Type a question and I will search..."
+                            placeholder="Give me something to search for..."
                             disabled={isLoading}
                             onSend={question => makeSearchApiRequest(question)}
                         />

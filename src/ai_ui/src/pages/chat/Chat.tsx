@@ -16,7 +16,7 @@ import { Answer, AnswerError, AnswerLoading } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
 import { ExampleList } from "../../components/Example";
 import { UserChatMessage } from "../../components/UserChatMessage";
-import { AnalysisPanel, AnalysisPanelTabs } from "../../components/AnalysisPanel";
+import { ChatAnalysisPanel, AnalysisPanelTabs } from "../../components/ChatAnalysisPanel";
 import { SettingsButton } from "../../components/SettingsButton";
 import { ClearChatButton } from "../../components/ClearChatButton";
 import { VectorSettings } from "../../components/VectorSettings";
@@ -228,7 +228,7 @@ const Chat = () => {
                 </div>
 
                 {answers.length > 0 && activeAnalysisPanelTab && (
-                    <AnalysisPanel
+                    <ChatAnalysisPanel
                         className={styles.chatAnalysisPanel}
                         activeCitation={activeCitation}
                         onActiveTabChanged={x => onToggleTab(x, selectedAnswer)}

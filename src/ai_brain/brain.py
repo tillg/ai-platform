@@ -12,6 +12,7 @@ from typing import Any, Dict, List
 from ai_commons.api_models import Document, Chunk, SearchResultChunksAndDocuments, SearchResult
 from pydantic import field_validator, validate_call
 from dotenv import load_dotenv
+import time
 
 load_dotenv()
 logger = logging.getLogger(__name__)
@@ -19,7 +20,6 @@ logger.setLevel(logging.INFO)
 
 DATA_DIRECTORY = os.environ.get('DATA_DIRECTORY', "data")
 COLLECTION_NAME = os.environ.get('COLLECTION_NAME', 'COLLECTION_NAME')
-
 
 class Brain:
 
@@ -219,15 +219,19 @@ class Brain:
         return self.chroma_collection.count()
 
     def search_chunks_by_text(self, query_text: str, n: int = 10) -> SearchResult:
-        search_result = SearchResult()
+        search_result = SearchResult(inner_working={'vectore store': 'ChromaDB'})
         if (query_text is None) or (len(query_text) == 0):
             error_text = "Empty search query."
             logger.warning(error_text)
             search_result.inner_working = {"error": error_text}
             return search_result
         logger.info(f"Searching chunks by text: {query_text}")
+        start_time = time.time()
         chroma_chunks = self.chroma_collection.query(
             query_texts=[query_text], n_results=n)
+        end_time = time.time()
+        duration = int((end_time - start_time)*1000)
+        search_result.inner_working.update({"duration (ms)": duration})
         chunks = Chunk.chroma_chunks2chunk_array(
             chroma_chunks, search_term=query_text)
         search_result.search_term = query_text

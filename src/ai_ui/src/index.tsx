@@ -3,9 +3,9 @@ import ReactDOM from "react-dom/client";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 //import { initializeIcons } from "@fluentui/react";
 import { initializeIcons } from '@fluentui/font-icons-mdl2';
-
+import { ThemeProvider } from "styled-components";
 import "./index.css";
-
+import { theme } from "./constants"
 import Layout from "./pages/layout/Layout";
 import Chat from "./pages/chat/Chat";
 import Search from "./pages/search/Search";
@@ -33,6 +33,8 @@ const router = createHashRouter([
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <ThemeProvider theme={theme}>
+            <RouterProvider router={router} />
+        </ThemeProvider>
     </React.StrictMode>
 );

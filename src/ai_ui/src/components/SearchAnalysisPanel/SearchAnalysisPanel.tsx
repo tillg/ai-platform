@@ -1,13 +1,11 @@
-import { Stack, Pivot, PivotItem } from "@fluentui/react";
 
 import styles from "./AnalysisPanel.module.css";
 
-import { SupportingContent } from "../SupportingContent";
-import { ChatAppResponse, SearchResult } from "../../api";
-import { SearchAnalysisPanelTabs } from "./SearchAnalysisPanelTabs";
-import { SearchThoughtProcess } from "./SearchThoughtProcess";
-import { MarkdownViewer } from "../MarkdownViewer";
-import { useState, useEffect } from "react";
+import { SearchResult } from "../../api";
+
+import { AnalysisPanel } from "../AnalysisPanel/AnalysisPanel";
+import { Pill } from "../AnalysisPanel/Pill";
+import { Stack } from "@fluentui/react";
 
 interface Props {
     searchResult: SearchResult;
@@ -16,12 +14,20 @@ interface Props {
 
 export const SearchAnalysisPanel = ({ searchResult, closePanel }: Props) => {
     return (
-        <div className={styles.thoughtProcess}>
+        <AnalysisPanel>
             <div className={styles.closeButtonContainer}>
                 <button onClick={closePanel} className={styles.closeButton}>X</button>
             </div>
             <p>Search Analysis</p>
             <p>Search Term: {searchResult.search_term}</p>
-        </div>
+            <Stack horizontal tokens={{ childrenGap: 5 }}>
+                {searchResult.inner_working &&
+                    (Object.keys(searchResult.inner_working) || []).map((k: any, ind) => (
+                        <Pill key={ind}>
+                            {k}: {JSON.stringify(searchResult.inner_working?.[k])}
+                        </Pill>
+                    ))}
+            </Stack>
+        </AnalysisPanel>
     );
 };

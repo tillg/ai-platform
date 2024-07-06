@@ -56,7 +56,23 @@ python -m unittest discover ai_commons_tests
 python -m unittest discover . 
 ```
 
+## The UI
+
+The UI is inspired from [RAG on PostgreSQL - Github](https://github.com/Azure-Samples/rag-postgres-openai-python#) as explained in this video: [Building a RAG-powered AI chat app with Python and VS Code](https://www.youtube.com/watch?v=3ctFWU492xk&t=1177s).
+
+An impression of what it looks like:
+
+![UI from rag OpenAI](image.png)
+
 ## The Brains
+
+A brain is a Vectore Database (or a namespace within a vector DB) that contains documents / embeddings about a certain domain. It is typically attached to a loader that configures what data is to be loaded from where.
+
+Loaders (planned and done):
+* **Wikipedia** ✅: Given a start page on Wikipedia and a depth (i.e. how many links should the crawler go down), the wikipedia data is scraped and added to the brain.
+* Confluence
+* Email
+* Discourse
 
 Structure of a brain:
 ```json
@@ -74,7 +90,7 @@ Structure of a brain:
   "NoOfChunks": 9471
 }
 ```
-Notes:
+**Notes**
 * The Loader config is specific to the different loaders we have
 * The `NoOfDocs` and `NoOfChunks` values are updated every time the brain info is questioned.
 
