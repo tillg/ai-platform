@@ -6,7 +6,6 @@ export const COLORS = {
 };
 
 export const theme = {
-    analysisPanelBackground: "grey",
     analysisPanel: {
 
         backgroundColor: "#e9e9e9",
@@ -23,13 +22,25 @@ export const theme = {
         paddingBottom: "12px",
 
     },
-    pill: { 
+    pill: {
         backgroundColor: "#d7d7d7",
         color: "#333232",
         fontSize: "12px",
         padding: "3px 10px",
         borderRadius: "10px",
         marginBottom: "8px",
+    }, 
+    subHeader: {
+        display: "flex",
+        alignItems: "left",
+        flexDdirection: "column",
+        height: "100%",
+        backgroundColor: "#222222",
+        color: "#f2f2f2",
+        justifyContent: "space-around",
+        // marginRight: "0px",
+        // marginLeft: "0px",
+        textAlign: "left",
     },
 
 };

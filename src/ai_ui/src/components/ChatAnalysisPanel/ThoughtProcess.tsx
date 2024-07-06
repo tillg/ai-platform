@@ -1,7 +1,7 @@
 import { Stack } from "@fluentui/react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 
-import styles from "./AnalysisPanel.module.css";
+import styles from "./ChatAnalysisPanel.module.css";
 
 import { Thoughts } from "../../api";
 

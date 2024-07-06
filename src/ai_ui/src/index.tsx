@@ -9,7 +9,7 @@ import { theme } from "./constants"
 import Layout from "./pages/layout/Layout";
 import Chat from "./pages/chat/Chat";
 import Search from "./pages/search/Search";
-
+import {StartPage} from "./pages/start/StartPage";
 var layout = <Layout />;
 
 initializeIcons();
@@ -21,12 +21,17 @@ const router = createHashRouter([
         children: [
             {
                 index: true,
+                element: <StartPage />
+            },
+            {
+                path: "/search",
                 element: <Search />
             },
             {
-                path: "*",
-                lazy: () => import("./pages/NoPage")
+                path: "/chat",
+                element: <Chat />
             }
+
         ]
     }
 ]);

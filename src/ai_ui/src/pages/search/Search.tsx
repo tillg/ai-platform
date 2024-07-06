@@ -9,9 +9,8 @@ import {
     SearchRequest,
     SearchResult
 } from "../../api";
-import { Answer, AnswerError, AnswerLoading } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
-import { SearchAnalysisPanel, SearchAnalysisPanelTabs } from "../../components/SearchAnalysisPanel";
+import { SearchAnalysisPanel } from "../../components/SearchAnalysisPanel";
 import { SettingsButton } from "../../components/SettingsButton";
 import { SearchResultList } from "../../components/SearchResult"
 
