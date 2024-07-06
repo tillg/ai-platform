@@ -1,3 +1,3 @@
 export * from "./chatApi";
 export * from "./searchApi";
-export * from "./models";
+export * from "./apiModelsSearch";

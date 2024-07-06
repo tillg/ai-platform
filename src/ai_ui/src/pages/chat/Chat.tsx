@@ -5,14 +5,12 @@ import {theme} from "../../constants";
 import { ChatIcon  } from "../../components/Icons/ChatIcon";
 import styles from "./Chat.module.css";
 
+import { chatApi } from "../../api";
 import {
-    chatApi,
-    RetrievalMode,
-    ChatAppResponse,
     ChatAppResponseOrError,
-    ChatAppRequest,
-    ResponseMessage
-} from "../../api";
+    ChatRequest,
+    ChatResponse,
+} from "../../api/apiModelsChat";
 import { Answer, AnswerError, AnswerLoading } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
 import { ExampleList } from "../../components/Example";
@@ -21,28 +19,25 @@ import { ChatAnalysisPanel, AnalysisPanelTabs } from "../../components/ChatAnaly
 import { SettingsButton } from "../../components/SettingsButton";
 import { ClearChatButton } from "../../components/ClearChatButton";
 import { VectorSettings } from "../../components/VectorSettings";
+import { Message } from "../../api/apiModelsChat";
 
 const Chat = () => {
     const [isConfigPanelOpen, setIsConfigPanelOpen] = useState(false);
     const [promptTemplate, setPromptTemplate] = useState<string>("");
     const [temperature, setTemperature] = useState<number>(0.3);
     const [retrieveCount, setRetrieveCount] = useState<number>(3);
-    const [retrievalMode, setRetrievalMode] = useState<RetrievalMode>(RetrievalMode.Hybrid);
     const [useAdvancedFlow, setUseAdvancedFlow] = useState<boolean>(true);
 
     const lastQuestionRef = useRef<string>("");
-    const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [isStreaming, setIsStreaming] = useState<boolean>(false);
     const [error, setError] = useState<unknown>();
 
     const [activeCitation, setActiveCitation] = useState<string>();
     const [activeAnalysisPanelTab, setActiveAnalysisPanelTab] = useState<AnalysisPanelTabs | undefined>(undefined);
 
     const [selectedAnswer, setSelectedAnswer] = useState<number>(0);
-    const [answers, setAnswers] = useState<[user: string, response: ChatAppResponse][]>([]);
-    const [streamedAnswers, setStreamedAnswers] = useState<[user: string, response: ChatAppResponse][]>([]);
+    const [answers, setAnswers] = useState<[user: string, response: ChatResponse][]>([]);
 
     const makeApiRequest = async (question: string) => {
         lastQuestionRef.current = question;
@@ -53,32 +48,23 @@ const Chat = () => {
         setActiveAnalysisPanelTab(undefined);
 
         try {
-            const messages: ResponseMessage[] = answers.flatMap(a => [
+            const messages: Message[] = answers.flatMap(a => [
                 { content: a[0], role: "user" },
-                { content: a[1].choices[0].message.content, role: "assistant" }
+                { content: a[1].content, role: "assistant" }
             ]);
 
-            const request: ChatAppRequest = {
+            const request: ChatRequest = {
                 messages: [...messages, { content: question, role: "user" }],
-                context: {
-                    overrides: {
-                        use_advanced_flow: useAdvancedFlow,
-                        top: retrieveCount,
-                        retrieval_mode: retrievalMode,
-                        prompt_template: promptTemplate.length === 0 ? undefined : promptTemplate,
-                        temperature: temperature
-                    }
-                },
             };
             const response = await chatApi(request);
             if (!response.body) {
                 throw Error("No response body");
             }
-            const parsedResponse: ChatAppResponseOrError = await response.json();
+            const newAnswer: ChatResponse = await response.json();
             if (response.status > 299 || !response.ok) {
-                throw Error(parsedResponse.error || "Unknown error");
+                throw Error( "Unknown error");
             }
-            setAnswers([...answers, [question, parsedResponse as ChatAppResponse]]);
+            setAnswers([...answers, [question, newAnswer ]]);
         } catch (e) {
             setError(e);
         } finally {
@@ -92,13 +78,9 @@ const Chat = () => {
         setActiveCitation(undefined);
         setActiveAnalysisPanelTab(undefined);
         setAnswers([]);
-        setStreamedAnswers([]);
         setIsLoading(false);
-        setIsStreaming(false);
     };
 
-    useEffect(() => chatMessageStreamEnd.current?.scrollIntoView({ behavior: "smooth" }), [isLoading]);
-    useEffect(() => chatMessageStreamEnd.current?.scrollIntoView({ behavior: "auto" }), [streamedAnswers]);
 
     const onPromptTemplateChange = (_ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setPromptTemplate(newValue || "");
@@ -162,25 +144,8 @@ const Chat = () => {
                         </div>
                     ) : (
                         <div className={styles.chatMessageStream}>
-                            {isStreaming &&
-                                streamedAnswers.map((streamedAnswer, index) => (
-                                    <div key={index}>
-                                        <UserChatMessage message={streamedAnswer[0]} />
-                                        <div className={styles.chatMessageGpt}>
-                                            <Answer
-                                                isStreaming={true}
-                                                key={index}
-                                                answer={streamedAnswer[1]}
-                                                isSelected={false}
-                                                onCitationClicked={c => onShowCitation(c, index)}
-                                                onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab, index)}
-                                                onSupportingContentClicked={() => onToggleTab(AnalysisPanelTabs.SupportingContentTab, index)}
-                                                onFollowupQuestionClicked={q => makeApiRequest(q)}
-                                            />
-                                        </div>
-                                    </div>
-                                ))}
-                            {!isStreaming &&
+                           
+                            {!isLoading &&
                                 answers.map((answer, index) => (
                                     <div key={index}>
                                         <UserChatMessage message={answer[0]} />
@@ -214,7 +179,6 @@ const Chat = () => {
                                     </div>
                                 </>
                             ) : null}
-                            <div ref={chatMessageStreamEnd} />
                         </div>
                     )}
 
@@ -265,10 +229,6 @@ const Chat = () => {
                         max={50}
                         defaultValue={retrieveCount.toString()}
                         onChange={onRetrieveCountChange}
-                    />
-
-                    <VectorSettings
-                        updateRetrievalMode={(retrievalMode: RetrievalMode) => setRetrievalMode(retrievalMode)}
                     />
 
 

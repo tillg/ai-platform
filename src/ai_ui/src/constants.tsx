@@ -1,11 +1,13 @@
 
-
+const LIGHT_GREEN = "#90ee90"
+const BLUEISH = "#7376E1"
+const PINKISH = "#e364dd"
 
 export const theme = {
     topic: {
-        chat: "#7376E1",
-        prompts: "#e364dd",
-        brain: "#90ee90",
+        chat: LIGHT_GREEN,
+        prompts: LIGHT_GREEN,
+        brain: LIGHT_GREEN,
     },
     analysisPanel: {
 

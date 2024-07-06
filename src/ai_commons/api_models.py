@@ -5,12 +5,6 @@ from langchain.docstore.document import Document as lc_Document
 import os
 from utils.dict2file import write_dict_to_file, read_dict_from_file
 
-
-class Message(BaseModel):
-    content: str
-    role: str = "user"
-
-
 class SearchRequest(BaseModel):
     search_term: str
 
@@ -117,18 +111,3 @@ class SearchResult(BaseModel):
     search_term: Optional[str] = None
     result: Optional[SearchResultChunksAndDocuments] = None
     inner_working: Optional[Dict[str, Any]] = None
-
-
-class ChatRequest(BaseModel):
-    messages: list[Message]
-    context: dict = {}
-
-
-class ChatResponse(BaseModel):
-    message: str
-
-
-class ThoughtStep(BaseModel):
-    title: str
-    description: Any
-    props: dict = {}
