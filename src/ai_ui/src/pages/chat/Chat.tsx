@@ -1,8 +1,5 @@
 import { useRef, useState, useEffect } from "react";
 import { Panel, DefaultButton, TextField, SpinButton, Slider, Checkbox } from "@fluentui/react";
-import {   ChatFilled} from "@fluentui/react-icons";
-import {theme} from "../../constants";
-import { ChatIcon  } from "../../components/Icons/ChatIcon";
 import styles from "./Chat.module.css";
 import  EmptyChat  from "./EmptyChat"
 

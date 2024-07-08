@@ -46,7 +46,7 @@
     }
 
     .chatEmptyStateTitle {
-        /* font-size: 3rem; */
+        font-size: 3rem;
         margin-bottom: 0px;
     }
 }
@@ -102,9 +102,6 @@
     margin-top: 15px;
 }
 
-.loadingLogo {
-    font-size: 28px;
-}
 
 .commandsContainer {
     display: flex;

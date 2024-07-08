@@ -1,4 +1,3 @@
-import { Stack, IconButton } from "@fluentui/react";
 
 
 import { SearchResult } from "../../api";
@@ -17,12 +16,12 @@ export const SearchResultList = ({
     console.log("SearchResults: ", searchResults);
 
     return (
-        <Stack>
+        <div>
             {searchResults.map((searchResult, index) => (
-                <Stack.Item key={index}> 
+                <div key={index}> 
                     <SearchResultViewer searchResult={searchResult} setThisSearchResult={()=>selectSearchResult(index)}/>
-                </Stack.Item>
+                </div>
             ))}
-        </Stack>
+        </div>
     );
 };

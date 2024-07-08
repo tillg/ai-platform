@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { Stack, TextField } from "@fluentui/react";
 import { Button, Tooltip } from "@fluentui/react-components";
 import { Send28Filled } from "@fluentui/react-icons";
 import { theme } from "../../constants";
-
-import styles from "./QuestionInput.module.css";
+import styled from "styled-components";
 
 interface Props {
     onSend: (question: string) => void;
@@ -13,6 +11,31 @@ interface Props {
     placeholder?: string;
     clearOnSend?: boolean;
 }
+const StyledQuestionInputContainer = styled.div`
+       position: relative; 
+
+`;
+
+const StyledQuestionInputTextArea = styled.textarea`
+    border-radius: 8px;
+    width: 100%;
+    box-shadow:
+        0px 8px 16px rgba(0, 0, 0, 0.14),
+        0px 0px 2px rgba(0, 0, 0, 0.12);
+    line-height: 40px;
+    resize: none; /* Prevent resizing */
+    border: none; /* Make textarea borderless */
+    outline: none; /* Remove focus outline */
+    padding: 15px;
+    background: white;
+    // font-size: 16px
+    // border: 1px solid blue;
+`
+const StyledSendButton = styled.div`
+    position: absolute;
+    right: 10px; // Adjust as needed
+    bottom: 10px; // Adjust as needed
+`;
 
 export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, initQuestion }: Props) => {
     const [question, setQuestion] = useState<string>("");
@@ -40,7 +63,8 @@ export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, init
         }
     };
 
-    const onQuestionChange = (_ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
+    const onQuestionChange = (ev: React.FormEvent<HTMLTextAreaElement>) => {
+        const newValue = ev.currentTarget.value;
         if (!newValue) {
             setQuestion("");
         } else if (newValue.length <= 1000) {
@@ -49,22 +73,22 @@ export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, init
     };
 
     return (
-        <Stack horizontal className={styles.questionInputContainer}>
-            <TextField
-                className={styles.questionInputTextArea}
+        <StyledQuestionInputContainer>
+            <StyledQuestionInputTextArea
                 placeholder={placeholder}
-                multiline
-                resizable={false}
-                borderless
                 value={question}
                 onChange={onQuestionChange}
                 onKeyDown={onEnterPress}
             />
-            <div className={styles.questionInputButtonsContainer}>
-                <Tooltip content="Ask question button" relationship="label">
-                    <Button size="large" icon={<Send28Filled primaryFill={theme.topic.brain} />} onClick={sendQuestion} />
-                </Tooltip>
-            </div>
-        </Stack>
+            <StyledSendButton>
+
+                <div >
+                    <Tooltip content="Ask question button" relationship="label">
+                        <Button size="large" icon={<Send28Filled primaryFill={theme.topic.brain} />} onClick={sendQuestion} />
+                    </Tooltip>
+                </div>
+            </StyledSendButton>
+
+        </StyledQuestionInputContainer>
     );
 };

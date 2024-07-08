@@ -8,6 +8,7 @@ import { ChatResponse } from "../../api/apiModelsChat";
 import { parseAnswerToHtml } from "./AnswerParser";
 import { AnswerIcon } from "./AnswerIcon";
 import styled from "styled-components";
+import { HorizontalStack, VerticalStack } from "../Stack";
 
 interface Props {
     answer: ChatResponse;
@@ -41,7 +42,7 @@ export const Answer = ({
     return (
         <Stack className={`${styles.answerContainer} ${isSelected && styles.selected}`} verticalAlign="space-between">
             <Stack.Item>
-                <Stack horizontal horizontalAlign="space-between">
+                <HorizontalStack >
                     <AnswerIcon />
                     <div>
                         <IconButton
@@ -61,7 +62,7 @@ export const Answer = ({
                             disabled={true}
                         />
                     </div>
-                </Stack>
+                </HorizontalStack>
             </Stack.Item>
 
             <Stack.Item grow>

@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import { Stack, IconButton } from "@fluentui/react";
 import styled from 'styled-components';
 import React, { useState } from 'react';
 
 import { SearchResult, Chunk } from "../../api";
+import { HorizontalStack } from "../Stack";
 
 interface Props {
     chunk: Chunk;
@@ -12,15 +12,11 @@ const StyledChunkContainer = styled.div`
     border-top: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
-    font-size: 16px;
-    font-family: system-ui;
 `;
 
 const StyledChunkDetails = styled.div`
-    font-size: 14px;
     line-height: 0.4
 `
-
 
 export const ChunkViewer = ({ chunk }: Props) => {
     const [isContentVisible, setContentVisible] = useState(false);
@@ -42,7 +38,7 @@ export const ChunkViewer = ({ chunk }: Props) => {
 
     return (
         <StyledChunkContainer>
-            <Stack horizontal tokens={{ childrenGap: 10 }}>
+            <HorizontalStack >
                 <a href={chunk.uri} target="_blank" rel="noopener noreferrer">
                     {faviconUrl && <img src={faviconUrl} alt="Favicon" style={{ width: '16px', height: '16px', marginRight: '8px' }} />}
                     <strong>{chunk.title}</strong>
@@ -54,7 +50,7 @@ export const ChunkViewer = ({ chunk }: Props) => {
                 <button onClick={toggleContentVisibility}>
                     {isContentVisible ? 'Hide Content' : 'Show Content'}
                 </button>
-            </Stack>
+            </HorizontalStack>
             {isDetailsVisible && (
                 <StyledChunkDetails >
                     <p>ID: {chunk.id}</p>

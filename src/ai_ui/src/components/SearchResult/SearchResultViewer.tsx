@@ -1,5 +1,4 @@
 import {  useState } from "react";
-import { Stack } from "@fluentui/react";
 import { IconButton } from '@fluentui/react/lib/Button';
 import { UserChatMessage } from "../UserChatMessage";
 import styled from 'styled-components';
@@ -14,8 +13,7 @@ interface Props {
 }
 
 
-const StyledAnswerContainer = styled(Stack)`
-    font-family: system-ui;
+const StyledAnswerContainer = styled.div`
     padding: 20px;
     background: rgb(249, 249, 249);
     border-radius: 8px;

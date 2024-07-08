@@ -1,13 +1,14 @@
 
-import { styled } from "styled-components";
+import  styled  from "styled-components";
 
 
 export const Pill = styled.section`
-    background-color: ${props => props.theme.pill.backgroundColor};
-    color:  ${props => props.theme.pill.color};
-    font-size: ${props => props.theme.pill.fontSize};
-    padding: ${props => props.theme.pill.padding};
-    border-radius: ${props => props.theme.pill.borderRadius};
-    margin-bottom: ${props => props.theme.pill.marginBottom};
-        // border: 1px solid #000; /* Default border style */
+    display: inline-flex; // Added to make the pill only as wide as its content
+    background-color: #d7d7d7;
+    color:  #333232;
+    padding:        3px 10px;
+    border-radius: 10px;
+    white-space: nowrap; 
+    margin: 2px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); // Adds a subtle shadow
 `;

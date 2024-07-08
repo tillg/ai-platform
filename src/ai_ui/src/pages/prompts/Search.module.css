@@ -102,10 +102,6 @@
     margin-top: 15px;
 }
 
-.loadingLogo {
-    font-size: 28px;
-}
-
 .commandsContainer {
     display: flex;
     align-self: flex-end;

@@ -25,14 +25,6 @@ export const theme = {
         paddingTop: "12px",
         paddingBottom: "12px",
 
-    },
-    pill: {
-        backgroundColor: "#d7d7d7",
-        color: "#333232",
-        fontSize: "12px",
-        padding: "3px 10px",
-        borderRadius: "10px",
-        marginBottom: "8px",
     }
 
 };

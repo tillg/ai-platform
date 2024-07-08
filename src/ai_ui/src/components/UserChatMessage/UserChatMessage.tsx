@@ -14,8 +14,6 @@ const StyledUserChatMessageContainer = styled.div`
 `
 
 const Message = styled.div`
-    font-size: 16px;
-    font-family: system-ui;
     padding: 20px;
     background:  ${props => props.theme.userMessageBackgroundColor};;
     border-radius: 8px;

@@ -1,4 +1,3 @@
-import { Stack } from "@fluentui/react";
 import styles from "./Start.module.css";
 import { BrainCircuitFilled, SparkleFilled } from "@fluentui/react-icons";
 import { theme } from "../../constants";

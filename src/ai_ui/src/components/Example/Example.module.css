@@ -35,7 +35,6 @@
 
 @media only screen and (max-height: 780px) {
     .exampleText {
-        font-size: 20px;
         height: 80px;
     }
 }
