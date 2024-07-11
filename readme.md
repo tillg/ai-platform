@@ -1,6 +1,6 @@
 # ai-platform 🧠
 
-An AI Platform that consist of basic, functional modules.
+An AI Platform that consist of basic, functional modules and that is prepared to tinker with it.
 
 ![Overview](ai_platform_overview.svg)
 
@@ -94,6 +94,13 @@ Structure of a brain:
 * The Loader config is specific to the different loaders we have
 * The `NoOfDocs` and `NoOfChunks` values are updated every time the brain info is questioned.
 
+## Use cases
+
+Use cases one could think of:
+
+* Manual of software package or library: Add all the manual documents to a brain and question it.
+* IT Assiatnt: Load all the confluence space of an IT organisation and assist based on that knowledge.
+* Better writing assistant: Maybe even integrated into a Confluence plugin.
 
 ## Todo
 

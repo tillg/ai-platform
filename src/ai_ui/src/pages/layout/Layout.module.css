@@ -12,14 +12,14 @@
 .headerContainer {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: flex-start;
     margin-right: 12px;
     margin-left: 12px;
 }
 
 .headerTitleContainer {
     display: flex;
-    align-items: center;
+    align-items: left;
     margin-right: 40px;
     color: #f2f2f2;
     text-decoration: none;

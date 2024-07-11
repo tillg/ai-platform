@@ -11,7 +11,7 @@ const Layout = () => {
                     <div className={styles.headerContainer}>
                         <Link to="/" className={styles.headerTitleContainer}>
                             <h3 className={styles.headerTitle}>
-                                <AiPlatformIcon fontSize="20px"/>
+                                {/* <AiPlatformIcon fontSize="20px"/> */}
                                 AI Platform
                                 </h3>
                         </Link>

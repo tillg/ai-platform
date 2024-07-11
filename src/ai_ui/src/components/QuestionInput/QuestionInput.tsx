@@ -28,7 +28,7 @@ const StyledQuestionInputTextArea = styled.textarea`
     outline: none; /* Remove focus outline */
     padding: 15px;
     background: white;
-    // font-size: 16px
+    font-size: 16px
     // border: 1px solid blue;
 `
 const StyledSendButton = styled.div`

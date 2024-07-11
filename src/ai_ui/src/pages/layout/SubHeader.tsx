@@ -8,11 +8,10 @@ export const SubHeader = styled.section`
     background-color: #222222;
     color: #f2f2f2;
     align-items: center;
-    padding-left: 52px;
+    padding-left: 24px;
     text-decoration: none;
-    justify-content: flex-start; /* Aligns items to the left */
-    gap: 50px; /* Sets 15px of space between the items */
-
+    justify-content: flex-start; 
+    gap: 50px; 
     a {
         color: inherit; /* Makes the link color the same as the parent's color */
         text-decoration: none; /* Removes underline from links */

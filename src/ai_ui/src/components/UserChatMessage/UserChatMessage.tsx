@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { theme } from "../../constants"
 // Extending div props to accept any standard div attributes
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
     children?: React.ReactNode; // Optional children prop to accept any child elements
@@ -15,7 +14,7 @@ const StyledUserChatMessageContainer = styled.div`
 
 const Message = styled.div`
     padding: 20px;
-    background:  ${props => props.theme.userMessageBackgroundColor};;
+    background:  ${props => props.theme.userMessageBackgroundColor};
     border-radius: 8px;
     box-shadow:
         0px 2px 4px rgba(0, 0, 0, 0.14),
