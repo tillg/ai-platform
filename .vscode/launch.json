@@ -72,6 +72,15 @@
             "module": "ai_brain.main",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}/src" // Set the current working directory
+        },
+        {
+            "name": "Python Debugger: LLM Wrapper/Main",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "llm_wrapper.main",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/src",
+            "justMyCode": false
         }
     ]
 }
