@@ -1,23 +1,20 @@
 import { useRef, useState, useEffect } from "react";
 import { Panel, DefaultButton, TextField, SpinButton, Slider, Checkbox } from "@fluentui/react";
 import styles from "./Chat.module.css";
-import  EmptyChat  from "./EmptyChat"
+import EmptyChat from "./EmptyChat"
 
 import { chatApi } from "../../api";
 import {
-    ChatAppResponseOrError,
     ChatRequest,
     ChatResponse,
+    Message, messageOrChatResponseToMessage, MessageOrChatResponse, isChatResponse
 } from "../../api/apiModelsChat";
-import { Answer, AnswerError, AnswerLoading } from "../../components/Answer";
+import { ChatResponseViewer, ChatResponseError, ChatResponseLoading } from "../../components/ChatResponseViewer";
 import { QuestionInput } from "../../components/QuestionInput";
-import { ExampleList } from "../../components/Example";
 import { UserChatMessage } from "../../components/UserChatMessage";
 import { ChatAnalysisPanel, AnalysisPanelTabs } from "../../components/ChatAnalysisPanel";
 import { SettingsButton } from "../../components/SettingsButton";
 import { ClearChatButton } from "../../components/ClearChatButton";
-import { VectorSettings } from "../../components/VectorSettings";
-import { Message } from "../../api/apiModelsChat";
 
 const Chat = () => {
     const [isConfigPanelOpen, setIsConfigPanelOpen] = useState(false);
@@ -31,11 +28,15 @@ const Chat = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<unknown>();
 
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
     const [activeCitation, setActiveCitation] = useState<string>();
     const [activeAnalysisPanelTab, setActiveAnalysisPanelTab] = useState<AnalysisPanelTabs | undefined>(undefined);
 
     const [selectedAnswer, setSelectedAnswer] = useState<number>(0);
-    const [answers, setAnswers] = useState<[user: string, response: ChatResponse][]>([]);
+
+    // Keep track of our dialogue
+    const [messageOrChatResponses, setMessageOrChatResponses] = useState<MessageOrChatResponse[]>([]);
 
     const makeApiRequest = async (question: string) => {
         lastQuestionRef.current = question;
@@ -45,24 +46,26 @@ const Chat = () => {
         setActiveCitation(undefined);
         setActiveAnalysisPanelTab(undefined);
 
-        try {
-            const messages: Message[] = answers.flatMap(a => [
-                { content: a[0], role: "user" },
-                { content: a[1].content, role: "assistant" }
-            ]);
+        // Add the new question to our chat history
+        const newMessageOrChatResponses = [...messageOrChatResponses, { content: question, role: 'user' } as Message];
+        setMessageOrChatResponses(newMessageOrChatResponses);
+        console.log("Chat history after adding", newMessageOrChatResponses);
 
+        const messages: Message[] = newMessageOrChatResponses.map(item => {
+            return messageOrChatResponseToMessage(item);
+        });
+
+
+        try {
             const request: ChatRequest = {
-                messages: [...messages, { content: question, role: "user" }],
+                messages: messages
             };
             const response = await chatApi(request);
-            if (!response.body) {
-                throw Error("No response body");
-            }
-            const newAnswer: ChatResponse = await response.json();
-            if (response.status > 299 || !response.ok) {
-                throw Error( "Unknown error");
-            }
-            setAnswers([...answers, [question, newAnswer ]]);
+            setMessageOrChatResponses(prevMessages => [
+                ...prevMessages,
+                response as ChatResponse
+            ]);
+
         } catch (e) {
             setError(e);
         } finally {
@@ -75,7 +78,7 @@ const Chat = () => {
         error && setError(undefined);
         setActiveCitation(undefined);
         setActiveAnalysisPanelTab(undefined);
-        setAnswers([]);
+        setMessageOrChatResponses([]);
         setIsLoading(false);
     };
 
@@ -92,28 +95,11 @@ const Chat = () => {
         setTemperature(newValue);
     };
 
-    const onRetrieveCountChange = (_ev?: React.SyntheticEvent<HTMLElement, Event>, newValue?: string) => {
-        setRetrieveCount(parseInt(newValue || "3"));
-    };
-
-    const onUseAdvancedFlowChange = (_ev?: React.FormEvent<HTMLElement | HTMLInputElement>, checked?: boolean) => {
-        setUseAdvancedFlow(!!checked);
-    }
 
     const onExampleClicked = (example: string) => {
         makeApiRequest(example);
     };
 
-    const onShowCitation = (citation: string, index: number) => {
-        if (activeCitation === citation && activeAnalysisPanelTab === AnalysisPanelTabs.CitationTab && selectedAnswer === index) {
-            setActiveAnalysisPanelTab(undefined);
-        } else {
-            setActiveCitation(citation);
-            setActiveAnalysisPanelTab(AnalysisPanelTabs.CitationTab);
-        }
-
-        setSelectedAnswer(index);
-    };
 
     const onToggleTab = (tab: AnalysisPanelTabs, index: number) => {
         if (activeAnalysisPanelTab === tab && selectedAnswer === index) {
@@ -124,6 +110,11 @@ const Chat = () => {
 
         setSelectedAnswer(index);
     };
+
+    // Scroll to the bottom of the list whenever the messages update
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messageOrChatResponses]);
 
     return (
         <div className={styles.container}>
@@ -137,60 +128,59 @@ const Chat = () => {
                         <EmptyChat onClick={onExampleClicked} />
                     ) : (
                         <div className={styles.chatMessageStream}>
-                            {!isLoading &&
-                                answers.map((answer, index) => (
-                                    <div key={index}>
-                                        <UserChatMessage>{answer[0]}</UserChatMessage> 
+                            {messageOrChatResponses.map((messageOrChatResponse, index) => (
+                                <div key={index}>
+                                    {!isChatResponse(messageOrChatResponse) ? (
+                                        <UserChatMessage>{messageOrChatResponse.content}</UserChatMessage>
+                                    ) : (
                                         <div className={styles.chatMessageGpt}>
-                                            <Answer
+                                            <ChatResponseViewer
                                                 isStreaming={false}
                                                 key={index}
-                                                answer={answer[1]}
+                                                answer={messageOrChatResponse.content}
                                                 isSelected={selectedAnswer === index && activeAnalysisPanelTab !== undefined}
-                                                onCitationClicked={c => onShowCitation(c, index)}
                                                 onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab, index)}
                                                 onSupportingContentClicked={() => onToggleTab(AnalysisPanelTabs.SupportingContentTab, index)}
                                                 onFollowupQuestionClicked={q => makeApiRequest(q)}
                                             />
                                         </div>
-                                    </div>
-                                ))}
+                                    )}
+                                </div>
+                            ))}
                             {isLoading && (
                                 <>
-                                        <UserChatMessage>{lastQuestionRef.current}</UserChatMessage> 
                                     <div className={styles.chatMessageGptMinWidth}>
-                                        <AnswerLoading />
+                                        <ChatResponseLoading />
                                     </div>
                                 </>
                             )}
                             {error ? (
-                                <>
-                                        <UserChatMessage>{lastQuestionRef.current}</UserChatMessage> 
-                                    <div className={styles.chatMessageGptMinWidth}>
-                                        <AnswerError error={error.toString()} onRetry={() => makeApiRequest(lastQuestionRef.current)} />
-                                    </div>
-                                </>
+                                <div className={styles.chatMessageGptMinWidth}>
+                                    <ChatResponseError error={error.toString()} onRetry={() => makeApiRequest(lastQuestionRef.current)} />
+                                </div>
                             ) : null}
+                            <div ref={messagesEndRef} />
                         </div>
+
                     )}
 
                     <div className={styles.chatInput}>
                         <QuestionInput
                             clearOnSend
-                            placeholder="Type a new question (e.g. does my plan cover annual eye exams?)"
+                            placeholder="Type a new question"
                             disabled={isLoading}
                             onSend={question => makeApiRequest(question)}
                         />
                     </div>
                 </div>
 
-                {answers.length > 0 && activeAnalysisPanelTab && (
+                {messageOrChatResponses.length > 0 && activeAnalysisPanelTab && (
                     <ChatAnalysisPanel
                         className={styles.chatAnalysisPanel}
                         activeCitation={activeCitation}
                         onActiveTabChanged={x => onToggleTab(x, selectedAnswer)}
                         citationHeight="810px"
-                        answer={answers[selectedAnswer][1]}
+                        answer={messageOrChatResponses[selectedAnswer]}
                         activeTab={activeAnalysisPanelTab}
                     />
                 )}
@@ -209,7 +199,6 @@ const Chat = () => {
                         className={styles.chatSettingsSeparator}
                         checked={useAdvancedFlow}
                         label="Use advanced flow with query rewriting and filter formulation. Not compatible with Ollama models."
-                        onChange={onUseAdvancedFlowChange}
                     />
 
                     <h3>Settings for database search:</h3>
@@ -220,7 +209,6 @@ const Chat = () => {
                         min={1}
                         max={50}
                         defaultValue={retrieveCount.toString()}
-                        onChange={onRetrieveCountChange}
                     />
 
 

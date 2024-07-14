@@ -2,9 +2,9 @@ import { Stack } from "@fluentui/react";
 import { animated, useSpring } from "@react-spring/web";
 
 import styles from "./Answer.module.css";
-import { AnswerIcon } from "./AnswerIcon";
+import { ChatResponseIcon } from "./ChatResponseIcon";
 
-export const AnswerLoading = () => {
+export const ChatResponseLoading = () => {
     const animatedStyles = useSpring({
         from: { opacity: 0 },
         to: { opacity: 1 }
@@ -13,10 +13,10 @@ export const AnswerLoading = () => {
     return (
         <animated.div style={{ ...animatedStyles }}>
             <Stack className={styles.answerContainer} verticalAlign="space-between">
-                <AnswerIcon />
+                <ChatResponseIcon />
                 <Stack.Item grow>
                     <p className={styles.answerText}>
-                        Generating answer
+                        Thinking
                         <span className={styles.loadingdots} />
                     </p>
                 </Stack.Item>

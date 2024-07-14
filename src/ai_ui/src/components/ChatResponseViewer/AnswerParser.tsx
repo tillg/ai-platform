@@ -5,7 +5,7 @@ type HtmlParsedAnswer = {
     citations: string[];
 };
 
-export function parseAnswerToHtml(answer: string, isStreaming: boolean, onCitationClicked: (citationFilePath: string) => void): HtmlParsedAnswer {
+export function parseAnswerToHtml(answer: string, isStreaming: boolean): HtmlParsedAnswer {
     const citations: string[] = [];
 
     // trim any whitespace from the end of the answer after removing follow-up questions

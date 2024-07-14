@@ -6,15 +6,14 @@ import styles from "./Answer.module.css";
 
 import { ChatResponse } from "../../api/apiModelsChat";
 import { parseAnswerToHtml } from "./AnswerParser";
-import { AnswerIcon } from "./AnswerIcon";
+import { ChatResponseIcon } from "./ChatResponseIcon";
 import styled from "styled-components";
 import { HorizontalStack, VerticalStack } from "../Stack";
 
 interface Props {
-    answer: ChatResponse;
+    answer: string;
     isSelected?: boolean;
     isStreaming: boolean;
-    onCitationClicked: (filePath: string) => void;
     onThoughtProcessClicked: () => void;
     onSupportingContentClicked: () => void;
     onFollowupQuestionClicked?: (question: string) => void;
@@ -23,19 +22,17 @@ interface Props {
 
 
 
-export const Answer = ({
+export const ChatResponseViewer = ({
     answer,
     isSelected,
     isStreaming,
-    onCitationClicked,
     onThoughtProcessClicked,
     onSupportingContentClicked,
     onFollowupQuestionClicked,
     showFollowupQuestions
 }: Props) => {
-    // const followupQuestions = answer.choices[0].context.followup_questions;
-    const messageContent = answer.content;
-    const parsedAnswer = useMemo(() => parseAnswerToHtml(messageContent, isStreaming, onCitationClicked), [answer]);
+    const messageContent = answer;
+    const parsedAnswer = useMemo(() => parseAnswerToHtml(messageContent, isStreaming), [answer]);
 
     const sanitizedAnswerHtml = DOMPurify.sanitize(parsedAnswer.answerHtml);
 
@@ -43,7 +40,7 @@ export const Answer = ({
         <Stack className={`${styles.answerContainer} ${isSelected && styles.selected}`} verticalAlign="space-between">
             <Stack.Item>
                 <HorizontalStack >
-                    <AnswerIcon />
+                    <ChatResponseIcon />
                     <div>
                         <IconButton
                             style={{ color: "black" }}

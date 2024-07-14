@@ -46,7 +46,8 @@ Run tests:
 
 ### Running the tests
 
-```
+For the backend tests:
+```bash
 cd src
 
 # Run the tests of one compnenent, for example ai_commons
@@ -54,6 +55,12 @@ python -m unittest discover ai_commons_tests
 
 # Run all the unit tests
 python -m unittest discover . 
+```
+
+For the UI tests:
+```bash
+cd src/ui
+npm test
 ```
 
 ## The UI

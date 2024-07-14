@@ -13,13 +13,14 @@ from ai_commons.api_models import Document, Chunk, SearchResultChunksAndDocument
 from pydantic import field_validator, validate_call
 from dotenv import load_dotenv
 import time
+import ai_commons.constants as constants
 
 load_dotenv()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-DATA_DIRECTORY = os.environ.get('DATA_DIRECTORY', "data")
-COLLECTION_NAME = os.environ.get('COLLECTION_NAME', 'COLLECTION_NAME')
+DATA_DIRECTORY = constants.DATA_DIRECTORY
+AI_BRAIN_COLLECTION_NAME = constants.AI_BRAIN_COLLECTION_NAME
 
 class Brain:
 
@@ -37,7 +38,7 @@ class Brain:
         self.chroma_directory = os.path.join(self.data_directory, "chroma")
         self.document_directory = os.path.join(
             self.data_directory, "documents")
-        self.collection_name = COLLECTION_NAME
+        self.collection_name = AI_BRAIN_COLLECTION_NAME
         self.chroma_client = chromadb.PersistentClient(
             path=self.chroma_directory, settings=Settings(anonymized_telemetry=False))
         self.chroma_collection = self.chroma_client.get_or_create_collection(

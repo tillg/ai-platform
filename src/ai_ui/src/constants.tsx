@@ -1,3 +1,6 @@
+export const AI_BRAIN_URL = "http://localhost:8000"
+export const LLM_WRAPPER_URL = "http://localhost:8002"
+
 
 const LIGHT_GREEN = "#90ee90"
 const BLUEISH = "#7376E1"
@@ -28,15 +31,3 @@ export const theme = {
     }
 
 };
-
-/* 
-This is the CSS for the Pill component:
-.tProp {
-    background - color: #d7d7d7;
-    color: #333232;
-    font - size: 12px;
-    padding: 3px 10px;
-    border - radius: 10px;
-    margin - bottom: 8px;
-}
- */

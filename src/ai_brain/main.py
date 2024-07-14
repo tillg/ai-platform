@@ -1,6 +1,5 @@
 from fastapi import Depends, FastAPI, Query
 import uvicorn
-
 import ai_brain.api_routes
 import logging
 import ai_commons.constants as constants
@@ -13,8 +12,8 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-AI_BRAIN_PORT = os.environ.get('AI_BRAIN_PORT', 8000)
-AI_BRAINS_DIRECTORY = os.environ.get('AI_BRAINS_DIRECTORY', 'data/brains')
+AI_BRAIN_PORT = constants.AI_BRAIN_PORT
+AI_BRAINS_DIRECTORY = constants.AI_BRAINS_DIRECTORY
 
 logger.info(f"Brains directory: {AI_BRAINS_DIRECTORY}")
 
