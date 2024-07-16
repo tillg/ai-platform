@@ -1,4 +1,4 @@
-export const AI_BRAIN_URL = "http://localhost:8000"
+export const AI_BRAIN_URL = "http://localhost:8001"
 export const LLM_WRAPPER_URL = "http://localhost:8002"
 
 

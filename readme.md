@@ -26,11 +26,16 @@ Run the backend components:
 ```
 # Orchestration
 cd src
-#python -m uvicorn ai_orchestration.main:app --reload
 python -m ai_orchestration.main  
 
 # AI Workspace
 python -m ai_workspace.main
+```
+
+To start all the backend components at one there is a script:
+```bash
+cd src
+./start_backend.sh
 ```
 
 Run the AI-UI: 

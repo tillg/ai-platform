@@ -2,7 +2,7 @@ from fastapi import Depends, FastAPI
 import uvicorn
 import random
 
-import ai_brain.api_routes
+import ai_brain.brain_api_routes
 import logging
 import ai_commons.constants as constants
 from dotenv import load_dotenv

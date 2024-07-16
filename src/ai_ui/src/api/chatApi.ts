@@ -1,5 +1,3 @@
-// const VITE_CHAT_BACKEND_URL = import.meta.env.VITE_CHAT_BACKEND_URL;
-
 import { ChatRequest, ChatResponse } from "./apiModelsChat";
 import { LLM_WRAPPER_URL } from "../constants";
 
@@ -12,7 +10,6 @@ async function chatApiHttp(request: ChatRequest): Promise<Response> {
         },
         body: JSON.stringify(request)
     });
-    
 }
 
 export async function chatApi(request: ChatRequest): Promise<ChatResponse> {

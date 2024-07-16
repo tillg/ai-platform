@@ -12,7 +12,7 @@ from pydantic import validate_call
 load_dotenv()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-
+ 
 CHUNKER_SEPARATOR = os.environ.get('CHUNKER_SEPARATOR', '\n')
 if CHUNKER_SEPARATOR == '\\n':
     CHUNKER_SEPARATOR = '\n'

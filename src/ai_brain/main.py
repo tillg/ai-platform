@@ -1,6 +1,6 @@
 from fastapi import Depends, FastAPI, Query
 import uvicorn
-import ai_brain.api_routes
+import ai_brain.brain_api_routes
 import logging
 import ai_commons.constants as constants
 from dotenv import load_dotenv
@@ -13,9 +13,6 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 AI_BRAIN_PORT = constants.AI_BRAIN_PORT
-AI_BRAINS_DIRECTORY = constants.AI_BRAINS_DIRECTORY
-
-logger.info(f"Brains directory: {AI_BRAINS_DIRECTORY}")
 
 app = FastAPI()
 allowed_origins = ["*"]
@@ -28,10 +25,11 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-app.include_router(ai_brain.api_routes.router)
+app.include_router(ai_brain.brain_api_routes.router)
 
-brain: Brain = Brain()
-
+def start_ai_brain(reload = False):
+   uvicorn.run("ai_brain.main:app",
+               host="0.0.0.0", port=AI_BRAIN_PORT, reload=reload)
+   
 if __name__ == "__main__":
-    uvicorn.run("ai_brain.main:app",
-                host="0.0.0.0", port=AI_BRAIN_PORT, reload=True)
+   start_ai_brain(reload=True) 
