@@ -285,8 +285,7 @@ class Brain:
         return self.chroma_collection.count()
 
     def search_chunks_by_text(self, query_text: str, n: int = 10) -> SearchResult:
-        search_result = SearchResult(inner_working={'vectore store': 'ChromaDB', 'no of docs': len(
-            self), 'no of chunks': self.number_of_chunks()})
+        search_result = SearchResult(inner_working={'vectore store': 'ChromaDB', **self.get_stats()})
         if (query_text is None) or (len(query_text) == 0):
             error_text = "Empty search query."
             logger.warning(error_text)

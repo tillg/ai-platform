@@ -15,5 +15,4 @@ DATA_DIRECTORY = os.path.join(PROJECT_ROOT, "data")
 AI_BRAINS_DIRECTORY = os.path.join(DATA_DIRECTORY, "brains")  
 AI_BRAIN_COLLECTION_NAME = 'COLLECTION_NAME'
 
-
-
+LLM_WRAPPER_DEFAULT_MODEL = "mixtral:8x7b-instruct-v0.1-q8_0"

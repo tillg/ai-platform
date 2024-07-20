@@ -15,7 +15,7 @@ const StyledChunkContainer = styled.div`
 `;
 
 const StyledChunkDetails = styled.div`
-    line-height: 0.4
+    line-height: 1
 `
 
 export const ChunkViewer = ({ chunk }: Props) => {

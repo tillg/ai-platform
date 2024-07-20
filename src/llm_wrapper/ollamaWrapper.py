@@ -1,7 +1,7 @@
 
 from typing import Dict, Union
 from ollama import Client
-from ai_commons.constants import OLLAMA_BASE_URL
+from ai_commons.constants import OLLAMA_BASE_URL, LLM_WRAPPER_DEFAULT_MODEL
 import logging
 from ai_commons.apiModelsChat import ChatRequest, ChatResponse
 from copy import deepcopy
@@ -29,6 +29,8 @@ def get_models():
     return model_names
 
 def get_default_model():
+    if LLM_WRAPPER_DEFAULT_MODEL in get_models():
+        return LLM_WRAPPER_DEFAULT_MODEL
     return get_models()[0]
 
 def chat(chat_request: ChatRequest) -> ChatResponse:
@@ -55,7 +57,7 @@ def check_and_fix_model_in_request(chat_request: ChatRequest) -> ChatRequest:
   
     default_model = get_default_model()
 
-    if chat_request.model is None:
+    if (chat_request.model is None) or (not check_model_exists(chat_request.model)):
         logger.info(f"Model not specified, using default model: {
                     default_model}")
         # Create a deep copy of the original request to preserve all other fields

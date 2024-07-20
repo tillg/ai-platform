@@ -1,9 +1,9 @@
 import { useRef, useState, useEffect } from "react";
-import { Panel, DefaultButton, TextField, SpinButton, Slider, Checkbox } from "@fluentui/react";
+import { Panel, DefaultButton, TextField, SpinButton, Slider, Checkbox, Dropdown } from "@fluentui/react";
 import styles from "./Chat.module.css";
 import EmptyChat from "./EmptyChat"
 
-import { chatApi } from "../../api";
+import { chatApi, getModels } from "../../api";
 import {
     ChatRequest,
     ChatResponse,
@@ -35,6 +35,25 @@ const Chat = () => {
 
     const [selectedAnswer, setSelectedAnswer] = useState<number>(0);
 
+    const [selectedModel, setSelectedModel] = useState<string>("");
+    const [availableModels, setAvailableModels] = useState<string[]>([]);
+    const fetchModelNames = async () => {
+        try {
+            const models = await getModels();
+            // Assuming the response is an array of strings
+            setAvailableModels(models);
+        } catch (error) {
+            console.error("Failed to fetch model names:", error);
+            setError(error);
+        }
+    };
+
+    // Use useEffect to call the async function after component mounts
+    useEffect(() => {
+        fetchModelNames();
+    }, []); // Empty dependency array means this effect runs once after the initial render
+
+
     // Keep track of our dialogue
     const [messageOrChatResponses, setMessageOrChatResponses] = useState<MessageOrChatResponse[]>([]);
 
@@ -58,7 +77,8 @@ const Chat = () => {
 
         try {
             const request: ChatRequest = {
-                messages: messages
+                messages: messages,
+                model: selectedModel,
             };
             const response = await chatApi(request);
             setMessageOrChatResponses(prevMessages => [
@@ -85,6 +105,12 @@ const Chat = () => {
 
     const onPromptTemplateChange = (_ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setPromptTemplate(newValue || "");
+    };
+
+    const onSelectedModelChange = (_ev?: React.FormEvent<HTMLInputElement>, newValue?: any) => {
+        console.log("Selected model", newValue);
+        console.log("Type of newValue:", typeof newValue);
+        setSelectedModel(newValue.key || "");
     };
 
     const onTemperatureChange = (
@@ -194,6 +220,13 @@ const Chat = () => {
                     onRenderFooterContent={() => <DefaultButton onClick={() => setIsConfigPanelOpen(false)}>Close</DefaultButton>}
                     isFooterAtBottom={true}
                 >
+                    <Dropdown
+                        label="Select a model"
+                        placeholder="Choose a model"
+                        options={availableModels.map(model => ({ key: model, text: model }))}
+                        onChange={onSelectedModelChange}
+
+                    />
 
                     <Checkbox
                         className={styles.chatSettingsSeparator}

@@ -30,3 +30,12 @@ export async function chatApi(request: ChatRequest): Promise<ChatResponse> {
     }
     throw new Error(`Failed to fetch chatApi: ${httpResponse.status} ${httpResponse.statusText}`);
 }
+
+export async function getModels(): Promise<string[]> {
+    const httpResponse = await fetch(`${LLM_WRAPPER_URL}/models`);
+    if (httpResponse.ok) {
+        const jsonResponse = await httpResponse.json();
+        return jsonResponse;
+    }
+    throw new Error(`Failed to fetch getModels: ${httpResponse.status} ${httpResponse.statusText}`);
+}
