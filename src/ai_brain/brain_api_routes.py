@@ -4,7 +4,7 @@ from fastapi import Depends, FastAPI, Query, Request, Body, HTTPException
 import logging
 from ai_commons.api_models import Chunk, SearchRequest, SearchResultChunksAndDocuments, SearchResult
 from ai_brain.brain import Brain
-from ai_brain_loaders.ai_brain_loader_wikipedia import load_page_tree_to_brain
+from ai_brain_importer.ai_brain_importer_wikipedia import load_wikipedia_page_tree
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -20,19 +20,19 @@ async def root():
 
 @router.get("/info")
 async def info() -> Dict[str, Any]:
-    return brain.get_brain_info()
+    return brain.get_params()
 
 
 @router.get("/load")
 def load():
-    load_page_tree_to_brain(brain)
-    return (brain.get_brain_info())
+    load_wikipedia_page_tree(brain)
+    return (brain.get_params())
 
 
 @router.get("/delete_all")
 def delete_all():
     brain.delete_all()
-    return brain.get_brain_info()
+    return brain.get_params()
 
 
 @router.post("/search")

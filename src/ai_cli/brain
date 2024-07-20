@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+
+import argparse
+import sys
+import logging
+import json
+
+
+sys.path.append('..')
+from ai_brain.brain import Brain
+from ai_brain_importer.brain_importer_factory import BrainImporterFactory
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+console_handler = logging.StreamHandler()  # Create console handler
+console_handler.setLevel(logging.INFO)  # Set log level for the handler
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')  # Create a formatter
+console_handler.setFormatter(formatter)  # Set formatter for the handler
+logger.addHandler(console_handler)  # Add handler to the logger
+
+if __name__ == "__main__":
+
+    # Define the parser
+    parser = argparse.ArgumentParser(
+                        prog='brain',
+                        description='Interacting with the Brain Module of the ai_platform.',
+                        epilog='** Brain over and out 😉 **')
+
+    subparsers = parser.add_subparsers(
+                title='Commands',
+                dest='command',
+                required=True)
+
+    # create the parser for the "list" command
+    parser_list = subparsers.add_parser('list', help='Get the list of available brains')
+
+    # create the parser for the "env" command
+    parser_env = subparsers.add_parser('env', help='Get the details of the environment')
+
+    # create the parser for the "details" command
+    parser_details = subparsers.add_parser('details', help='Get the details of a brain')
+    parser_details.add_argument('brain', type=str, help='The name of the brain')
+
+    # create the parser for the "ingest" command
+    parser_import = subparsers.add_parser(
+        'import', help='Import a brain - that basically means adding all the documents w/o indexing them.')
+    parser_import.add_argument(
+        'brain', type=str, help='The name of the brain')
+
+    # create the parser for the "reindex" command
+    parser_reindex = subparsers.add_parser('reindex', help='Reindex a brainb. This assumes the documents have been loaded.')
+    parser_reindex.add_argument('brain', type=str, help='The name of the brain')
+
+    args = parser.parse_args()
+
+    if args.command == 'list':
+        print('Available Brains:')
+        brains = Brain.get_brain_list()
+        for brain in brains:
+            print(brain)
+
+    elif args.command == 'env':
+        print('Environment Details:')
+        env_desc = Brain.get_env()
+        formatted_env_desc = json.dumps(env_desc, indent=4)
+        print(formatted_env_desc)
+
+    elif args.command == 'details':
+        print('Brain Details:')
+        brain = Brain.get_brain_by_name(args.brain)
+        brain_desc = {**brain.get_params(), **brain.get_stats()}
+        formatted_brain_desc = json.dumps(brain_desc, indent=4, sort_keys=True)
+        print(formatted_brain_desc)
+
+    elif args.command == 'import':
+        print('Importing Brain:')
+        brain = Brain.get_brain_by_name(args.brain)
+        brain_params = brain.get_params()
+        importer_params = brain_params.get('importer', {})
+        importer = BrainImporterFactory().create_brain_importer(brain, importer_params)
+        importer_complete_params = importer.get_params()
+        print(f"Ready to import:")
+        print(json.dumps(importer_complete_params, indent=4))
+        print(f"Brain: {json.dumps(brain.get_stats(), indent=4)}")
+        confirmation = input(
+            "Do you really want to run an import with the above parameters? (yes/no): ")
+        if confirmation.lower() == 'yes':
+            importer.do_import()
+            print('Import completed.')
+            print(f"Brain: {json.dumps(brain.get_stats(), indent=4)}")
+            print('Please remember to reindex the brain to make the documents searchable.')
+        else:
+            print("Import cancelled.")
+        
+
+    elif args.command == 'reindex':
+        print('Reindexing Brain:')
+        brain = Brain.get_brain_by_name(args.brain)
+        brain.reindex()
+        print('Reindexing completed.')
+
+    else:
+        print(f"Unknown command: {args.command}")

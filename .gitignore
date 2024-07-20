@@ -7,11 +7,18 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Apple stuffing
+# Apple stuff
 .DS_Store
+
+# I want to have my brains.json file in the repo but not the brains themselves
+# Ignore everything under data/brains
+data/brains/*
+# But re-include files directly under data/brains (not in subdirectories)
+!data/brains/*.*
 
 # TMP data
 tmp 
+data/bak
 data/berlin
 
 # C extensions

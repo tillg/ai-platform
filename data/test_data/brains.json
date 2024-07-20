@@ -1,0 +1,12 @@
+{
+    "Berlin": {
+        "description": "The Wikipedia page of Berlin and 2 hops away",
+        "path": "berlin",
+        "importer": {
+            "importer_type": "wikipedia",
+            "start_page_title": "Berlin",
+            "language": "en",
+            "depth": 2
+        }
+    }
+}

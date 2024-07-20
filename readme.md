@@ -80,28 +80,30 @@ An impression of what it looks like:
 
 A brain is a Vectore Database (or a namespace within a vector DB) that contains documents / embeddings about a certain domain. It is typically attached to a loader that configures what data is to be loaded from where.
 
+Technically the Brain contains 2 data storages and one index file:
+
+* `documents`: This is a directory with json files, one for each document.
+* `chroma`: This is a directory that contains the ChromaDB with the indexes of the chunks.
+* `_index.json` contains a list of all the files in `documents` with some meta data - most notably the URI pointing to the initial location of that document.
+
+Filling a brain with consists of the following steps:
+
+* `acquisition` imports the documents. THis is typically done by a scraping process. We provide different `data_acquirer`
+* Indexing, that comprises
+  * `chunk` cuts the documents in chunks
+  * `index` imports the chunks with their embedding as index
+
+These indexing steps  are performed by the `brain` itself.
+
+A brain is typically attached to a loader - the software that ingests the data into the brain.
+
 Loaders (planned and done):
 * **Wikipedia** ✅: Given a start page on Wikipedia and a depth (i.e. how many links should the crawler go down), the wikipedia data is scraped and added to the brain.
 * Confluence
 * Email
 * Discourse
 
-Structure of a brain:
-```json
-{
-  "Name": "Berlin Info",
-  "DataPath": "/data/path/berlin",
-  "EmbeddingModel": "all-MiniLM-L6-v2",
-  "Loader":{                      
-    "LoaderType": "wikipediaLoader",
-    "StartingPage": "Berlin",
-    "Depth": 3,
-    "LastLoaded": "2024-06-27"
-  },
-  "NoOfDocs": 659,
-  "NoOfChunks": 9471
-}
-```
+
 **Notes**
 * The Loader config is specific to the different loaders we have
 * The `NoOfDocs` and `NoOfChunks` values are updated every time the brain info is questioned.
@@ -116,6 +118,8 @@ Use cases one could think of:
 
 ## Todo
 
+* The brain should keep track in the `_index.json` if a document was indexed, as well as using which embedding model
+* Add a function `brain.import_or_update()` 
 * Data Loader for confluence pages and Emails
 * API rukle: Every call should return a `ìnner_working` dictionary, For the ai_brain this could contain: Brain name, no of docs/chunks, search time, result size...
 * Calling `python -m ai_brain` or similar should start the fastAPI server
@@ -130,3 +134,8 @@ Use cases one could think of:
 * [Using FastAPI to Build Python Web APIs - Real Python](https://realpython.com/fastapi-python-web-apis/)
 * [Embeddings and Vector Databases With ChromaDB - Real Python](https://realpython.com/chromadb-vector-database/)
 * Original inspiration taken from [RAG on PostgreSQL - Github](https://github.com/Azure-Samples/rag-postgres-openai-python#) as explained in this video: [Building a RAG-powered AI chat app with Python and VS Code](https://www.youtube.com/watch?v=3ctFWU492xk&t=1177s)
+
+
+### Things to look at 
+
+* https://medium.com/coding-beauty/vscode-upgrade-tips-246481c27e8e

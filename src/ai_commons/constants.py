@@ -1,3 +1,4 @@
+import os
 
 AI_ORCHESTRATION_PORT = 8003
 AI_LLM_WRAPPER_PORT = 8002
@@ -7,9 +8,10 @@ OLLAMA_BASE_URL = "http://localhost:11434"
 
 CHAT_BACKEND_URL = "http://localhost"
 
-AI_BRAINS_DIRECTORY = 'data/brains'
+DATA_DIRECTORY = os.path.abspath('../../data')
+
+AI_BRAINS_DIRECTORY = os.path.join(DATA_DIRECTORY, "brains")  
 AI_BRAIN_COLLECTION_NAME = 'COLLECTION_NAME'
 
-DATA_DIRECTORY = '../data/berlin'
 
 
