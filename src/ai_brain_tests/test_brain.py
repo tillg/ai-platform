@@ -122,5 +122,20 @@ class TestBrain(unittest.TestCase):
         formatted_params = json.dumps(params, indent=4)
         logger.info(f"Params: {formatted_params}")
 
+    def test_get_brain_list(self):
+        brains_list = Brain.get_brain_list(brains_directory=TEST_DATA_DIR)
+        logging.info(brains_list)
+        self.assertTrue(len(brains_list) > 0)
+
+    def test_get_default_brain_name(self):
+        brain = Brain.get_default_brain(brains_directory=TEST_DATA_DIR)
+        brain_path = brain.get_params()["path"]
+        self.assertEqual(brain_path, "mathematics")
+
+    def test_get_default_brain_name_without_default(self):
+        brain = Brain.get_default_brain(brains_directory=TEST_DATA_DIR, brain_index_filename="brains_with_no_default.json")
+        brain_path = brain.get_params()["path"]
+        self.assertEqual(brain_path, "berlin")
+
 if __name__ == '__main__':
     unittest.main()

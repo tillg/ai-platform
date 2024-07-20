@@ -133,3 +133,20 @@ def simplify_text(some_text: str) -> str:
     simplified_text = re.sub("[^A-Za-z-_]+", "_", simplified_text)
     simplified_text = re.sub('_+', '_', simplified_text)
     return simplified_text
+
+
+def find_project_root(current_directory):
+    """
+    Recursively searches for a directory containing a .git folder,
+    starting from the current directory and moving upwards in the directory tree.
+    Returns the path to the directory containing the .git folder.
+    """
+    if os.path.exists(os.path.join(current_directory, '.git')):
+        return current_directory
+    else:
+        parent_directory = os.path.dirname(current_directory)
+        if parent_directory == current_directory:
+            # This means we have reached the root of the filesystem without finding a .git directory
+            raise FileNotFoundError(
+                "Could not find project root containing a .git directory.")
+        return find_project_root(parent_directory)

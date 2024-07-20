@@ -39,17 +39,17 @@ if __name__ == "__main__":
 
     # create the parser for the "details" command
     parser_details = subparsers.add_parser('details', help='Get the details of a brain')
-    parser_details.add_argument('brain', type=str, help='The name of the brain')
+    parser_details.add_argument('brain', type=str, help='The id of the brain')
 
     # create the parser for the "ingest" command
     parser_import = subparsers.add_parser(
         'import', help='Import a brain - that basically means adding all the documents w/o indexing them.')
     parser_import.add_argument(
-        'brain', type=str, help='The name of the brain')
+        'brain', type=str, help='The id of the brain')
 
     # create the parser for the "reindex" command
-    parser_reindex = subparsers.add_parser('reindex', help='Reindex a brainb. This assumes the documents have been loaded.')
-    parser_reindex.add_argument('brain', type=str, help='The name of the brain')
+    parser_reindex = subparsers.add_parser('reindex', help='Reindex a brain. This assumes the documents have been loaded.')
+    parser_reindex.add_argument('brain', type=str, help='The id of the brain')
 
     args = parser.parse_args()
 
@@ -67,14 +67,14 @@ if __name__ == "__main__":
 
     elif args.command == 'details':
         print('Brain Details:')
-        brain = Brain.get_brain_by_name(args.brain)
+        brain = Brain.get_brain_by_id(args.brain)
         brain_desc = {**brain.get_params(), **brain.get_stats()}
         formatted_brain_desc = json.dumps(brain_desc, indent=4, sort_keys=True)
         print(formatted_brain_desc)
 
     elif args.command == 'import':
         print('Importing Brain:')
-        brain = Brain.get_brain_by_name(args.brain)
+        brain = Brain.get_brain_by_id(args.brain)
         brain_params = brain.get_params()
         importer_params = brain_params.get('importer', {})
         importer = BrainImporterFactory().create_brain_importer(brain, importer_params)
@@ -95,9 +95,18 @@ if __name__ == "__main__":
 
     elif args.command == 'reindex':
         print('Reindexing Brain:')
-        brain = Brain.get_brain_by_name(args.brain)
-        brain.reindex()
-        print('Reindexing completed.')
+        brain = Brain.get_brain_by_id(args.brain)
+        print(f"Ready to re-index:")
+        print(f"Brain: {json.dumps(brain.get_stats(), indent=4)}")
+        confirmation = input(
+            "Do you really want to reindex with the above parameters? (yes/no): ")
+        if confirmation.lower() == 'yes':
+            brain.reindex()
+            print('Reindex completed.')
+            print(f"Brain: {json.dumps(brain.get_stats(), indent=4)}")
+        else:
+            print("Reindex cancelled.")
+
 
     else:
         print(f"Unknown command: {args.command}")

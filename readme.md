@@ -121,7 +121,7 @@ Use cases one could think of:
 * The brain should keep track in the `_index.json` if a document was indexed, as well as using which embedding model
 * Add a function `brain.import_or_update()` 
 * Data Loader for confluence pages and Emails
-* API rukle: Every call should return a `ìnner_working` dictionary, For the ai_brain this could contain: Brain name, no of docs/chunks, search time, result size...
+* API rule: Every call should return a `ìnner_working` dictionary, For the ai_brain this could contain: Brain name, no of docs/chunks, search time, result size...
 * Calling `python -m ai_brain` or similar should start the fastAPI server
 * Make ability to load a brain with data, have it's configuration in a YAML file
 

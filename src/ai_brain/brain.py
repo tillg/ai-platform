@@ -36,16 +36,29 @@ class Brain:
         return brain_list
 
     @classmethod
-    def get_brain_by_name(cls, brain_name: str, brains_directory: str = AI_BRAINS_DIRECTORY, brain_index_filename: str = "brains.json"):
+    def get_default_brain(cls, brains_directory: str = AI_BRAINS_DIRECTORY, brain_index_filename: str = "brains.json"):
         brain_list = read_dict_from_file(full_filename=os.path.join(
             brains_directory, brain_index_filename))
-        if brain_name in brain_list:
-            brain_params = brain_list[brain_name]
+        # This gets the first brain's name
+        default_brain_id = next(iter(brain_list))
+        for brain_id in brain_list:
+            if brain_list[brain_id].get("default", False):
+                default_brain_id = brain_id
+                break
+        return cls.get_brain_by_id(default_brain_id, brains_directory, brain_index_filename)
+    
+    @classmethod
+    def get_brain_by_id(cls, brain_id: str, brains_directory: str = AI_BRAINS_DIRECTORY, brain_index_filename: str = "brains.json"):
+        brain_list = read_dict_from_file(full_filename=os.path.join(
+            brains_directory, brain_index_filename))
+        if brain_id in brain_list:
+            brain_params = brain_list[brain_id]
             brain_params["data_directory"] = brains_directory
             logger.info(f"Brain found: {brain_params}")
             return Brain(brain_params)
-        return None
-
+        logger.error(f"Brain not found: {brain_id}")
+        raise ValueError(f"Brain not found: {brain_id}")
+    
     @classmethod
     def get_env(cls) -> Dict[str, Any]:
         return {

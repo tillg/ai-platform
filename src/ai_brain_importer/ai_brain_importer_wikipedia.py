@@ -75,7 +75,7 @@ class AiBrainImporterWikipedia(AiBrainImporter):
                         )
                 except Exception as e:
                     logger.error(f"Error loading page tree for {page}: {str(e)}")
-                    return
+        return
 
 
     def _get_page_as_document_and_links(self, page_title: str, language: str):
