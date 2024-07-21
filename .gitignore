@@ -8,7 +8,7 @@ __pycache__/
 *$py.class
 
 # Apple stuff
-.DS_Store
+**/.DS_Store
 
 # I want to have my brains.json file in the repo but not the brains themselves
 # Ignore everything under data/brains
