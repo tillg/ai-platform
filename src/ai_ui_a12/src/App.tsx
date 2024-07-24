@@ -13,25 +13,27 @@ import { MenuItem } from "@com.mgmtp.a12.widgets/widgets-core/lib/menu";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 // import { Content } from "./Content";
-import { StartPage } from "./pages/StartPage";
+import { AboutPage } from "./pages/AboutPage";
+import { SearchPage } from "./pages/SearchPage";
+import { ChatLlmPage } from "./pages/ChatLlmPage";
 
 const theme = createTheme({
   baseTheme: "flat-compact"
 });
 
-const menuItems = [{ label: "About" }, { label: "Quote" }];
+const menuItems = [{ label: "About", content: <AboutPage /> }, { label: "Search", content: <SearchPage /> }, { label: "Chat LLM", content: <ChatLlmPage/> }];
 
 const sidebarItems = [
   {
-    name: "Quote 1",
+    name: "Introduction",
     quote: "Life is short, smile while you still have teeth."
   },
   {
-    name: "Quote 2",
+    name: "Technical",
     quote: "If two wrongs don't make a right, try three."
   },
   {
-    name: "Quote 3",
+    name: "System state",
     quote: "I am not lazy, I am on energy saving mode."
   }
 ];
@@ -64,9 +66,10 @@ export default function App() {
       <GlobalStyles />
       <ApplicationFrame
         main={<Header items={getMenuItems()} />}
-        sub={menuIndex === 1 ? <Sidebar items={getSidebarItems()} /> : undefined}
+        sub={menuIndex === 0 ? <Sidebar items={getSidebarItems()} /> : undefined}
         // content={<Content title={menuIndex === 0 ? selectedSidebarItem.name : "About"} text={content} />}
-        content={<StartPage/>}
+        // content={<StartPage/>}
+        content={menuItems[menuIndex].content}
         subExpanded={true}
       />
     </ThemeProvider>

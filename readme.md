@@ -44,6 +44,11 @@ cd src/ai_ui
 npm run dev
 ```
 
+Run the A12 based UI:
+```bash
+cd src/ai_ui_a12
+npm start
+```
 Run tests:
 * Make sure you are in the `src` directory
 * `python -m pytest backend_tests --capture=no --log-cli-level=INFO`
@@ -127,6 +132,7 @@ Use cases one could think of:
 
 ## Resources
 
+* [A12 Widgets showcase](https://www.mgm-tp.com/a12.htmlshowcase/#/widgets/layout/application-frame)
 * A very nice overview on how to move on: [17 (Advanced) RAG Techniques to Turn Your LLM App Prototype into a Production-Ready Solution - Medium](https://towardsdatascience.com/17-advanced-rag-techniques-to-turn-your-rag-app-prototype-into-a-production-ready-solution-5a048e36cdc8)
 * [Retrieval-Augmented Generation (RAG) from basics to advanced - Medium](https://medium.com/@tejpal.abhyuday/retrieval-augmented-generation-rag-from-basics-to-advanced-a2b068fd576c)
 * [Advanced RAG 01: Small-to-Big Retrieval - Medium](https://towardsdatascience.com/advanced-rag-01-small-to-big-retrieval-172181b396d4)
