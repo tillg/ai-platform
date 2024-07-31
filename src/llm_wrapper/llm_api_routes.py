@@ -3,6 +3,7 @@ import fastapi
 from fastapi import Depends, FastAPI, Query, Request, Body, HTTPException
 import logging
 from ai_commons.apiModelsChat import ChatRequest, ChatResponse
+from ai_commons.apiModelsLlm import Model
 from llm_wrapper import ollamaWrapper
 
 logger = logging.getLogger(__name__)
@@ -17,7 +18,7 @@ async def root():
 
 
 @router.get("/models")
-async def info() -> List[str]:
+async def info() -> List[Model]:
     return ollamaWrapper.get_models()
 
 

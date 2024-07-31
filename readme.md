@@ -123,6 +123,7 @@ Use cases one could think of:
 
 ## Todo
 
+* Add pre-commit hooks
 * The brain should keep track in the `_index.json` if a document was indexed, as well as using which embedding model
 * Add a function `brain.import_or_update()` 
 * Data Loader for confluence pages and Emails
@@ -132,6 +133,7 @@ Use cases one could think of:
 
 ## Resources
 
+* Pre-commit hooks: the [original documentation](https://pre-commit.com) 
 * [A12 Widgets showcase](https://www.mgm-tp.com/a12.htmlshowcase/#/widgets/layout/application-frame)
 * A very nice overview on how to move on: [17 (Advanced) RAG Techniques to Turn Your LLM App Prototype into a Production-Ready Solution - Medium](https://towardsdatascience.com/17-advanced-rag-techniques-to-turn-your-rag-app-prototype-into-a-production-ready-solution-5a048e36cdc8)
 * [Retrieval-Augmented Generation (RAG) from basics to advanced - Medium](https://medium.com/@tejpal.abhyuday/retrieval-augmented-generation-rag-from-basics-to-advanced-a2b068fd576c)

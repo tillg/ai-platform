@@ -32,30 +32,9 @@ export function isChatResponse(item: MessageOrChatResponse): item is ChatRespons
     return (item as ChatResponse).inner_working !== undefined;
 }
 
-
-export type Thoughts = {
-    title: string;
-    description: any; // It can be any output from the api
-    props?: { [key: string]: string };
+export type Model = {
+    name: string;  // Also used as ID
+    description?: string;
+    details?: { [key: string]: string };
+    state?: string;
 };
-
-export type ResponseContext = {
-    data_points: string[];
-    followup_questions: string[] | null;
-    thoughts: Thoughts[];
-};
-
-export type ResponseChoice = {
-    index: number;
-    message: Message;
-    context: ResponseContext;
-    session_state: any;
-};
-
-export type ChatAppResponseOrError = {
-    choices?: ResponseChoice[];
-    error?: string;
-};
-
-
-

@@ -1,8 +1,4 @@
-export const enum RetrievalMode {
-    Hybrid = "hybrid",
-    Vectors = "vectors",
-    Text = "text"
-}
+
 
 export type SearchRequest = {
     search_term: String
