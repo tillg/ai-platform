@@ -6,10 +6,6 @@ import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button";
 import { Slider } from "@com.mgmtp.a12.widgets/widgets-core/lib/experimental/input/slider/main/slider.view";
 import { Model } from "../api/apiModelsChat";
 
-// function tempNumberToStr(tempNumber:number):string  {
-//     mod = tempNumber  0.5
-// }
-
 const LlmConfigurationPane = ({
     llmModels,
     llmConfiguration,

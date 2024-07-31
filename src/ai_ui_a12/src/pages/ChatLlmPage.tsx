@@ -10,6 +10,10 @@ import { ModalOverlay } from "@com.mgmtp.a12.widgets/widgets-core/lib/modal-over
 import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button";
 import { generateUid } from "@com.mgmtp.a12.widgets/widgets-core/lib/common";
 import { Model } from "../api/apiModelsChat";
+import { Tag, TagGroup } from "@com.mgmtp.a12.widgets/widgets-core/lib/tag";
+import { UserInput } from "../components/UserInput";
+import { MessageOrChatResponse } from "../api/apiModelsChat";
+import { ChatHistory } from "../components/ChatHistory";
 
 export const ChatLlmPage = () => {
     const [error, setError] = useState<unknown>();
@@ -54,25 +58,52 @@ export const ChatLlmPage = () => {
         closeConfiguration();
     };
 
+    // Chat history
+    const [chatHistory, setChatHistory] = useState<MessageOrChatResponse[]>([]);
+
+    // User Questions
+    const sendQuestion=(question: string) => {
+        console.log("Sending question: ", question)
+        const newMessage = { content: question, role: "user" };
+        setChatHistory([...chatHistory, newMessage]);
+        // chatApi({ messages: chatHistory.concat([newMessage]), model: selectedModelName })
+        //     .then((response) => {
+        //         console.log("Got response: ", response)
+        //         const newResponse = { content: response.content, role: "assistant" };
+        //         setChatHistory([...chatHistory, newResponse]);
+        //     })
+        //     .catch((error) => {
+        //         console.error("Failed to send question:", error);
+        //         setError(error); // Assuming there's a setError function to handle errors
+        //     });
+    }
+
 
     return (
-        <div>
-            <Button label="Settings" id={generateUid()} onClick={showConfiguration} icon={<Icon>settings</Icon>} />
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Button label="Settings" id={generateUid()} onClick={showConfiguration} icon={<Icon>settings</Icon>} />
+                <Tag icon={<Icon>psychology</Icon>}> LLM: {selectedModelName}</Tag>
+                <Tag icon={<Icon>thermostat</Icon>}> Temperature: {selectedTemp}</Tag>
+            </div>
             {isConfigurationOpen && (
-                < ModalOverlay closeOnOutsideClick={false} onClose={closeConfiguration}>
+                <ModalOverlay closeOnOutsideClick={false} onClose={closeConfiguration}>
                     <ActionContentbox
                         headingElements={<ContentBoxElements.Title ariaLevel={1} text="Settings" />}
                         headingButtons={<ContentBoxElements.CloseButton onClick={closeConfiguration} />}
                     >
-                        <LlmConfigurationPane llmModels={availableModels} llmConfiguration={{ model: selectedModelName, temperature: selectedTemp }} setConfiguration={handleSetConfiguration}/>                    
+                        <LlmConfigurationPane llmModels={availableModels} llmConfiguration={{ model: selectedModelName, temperature: selectedTemp }} setConfiguration={handleSetConfiguration} />
                     </ActionContentbox>
-                </ModalOverlay >
-            )
-            }
-
-            <p>Here goes the chat</p>
-
-        </div>)
+                </ModalOverlay>
+            )}
+            <div style={{ flex: 1, overflowY: 'auto' }}>
+                <ChatHistory />
+            </div>
+            <div style={{ flexShrink: 0, marginTop: '10px', marginBottom: '10px' }}>
+                <UserInput onSend={sendQuestion} disabled={false} clearOnSend={true} />
+            </div>
+        </div>
+    );
 }
 
 
