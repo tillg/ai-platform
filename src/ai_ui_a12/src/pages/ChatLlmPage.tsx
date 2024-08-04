@@ -116,7 +116,8 @@ export const ChatLlmPage = () => {
         const newMessage: Message = { content: question, role: "user" };
         const newChatHistory = [...chatHistory, newMessage]
         setChatHistory(newChatHistory);
-        const chatRequest:ChatRequest = { messages: newChatHistory, model: selectedModelName };
+        const chatRequestOptions = { temperature: selectedTemp };
+        const chatRequest:ChatRequest = { messages: newChatHistory, model: selectedModelName, options: chatRequestOptions };
         chatApi(chatRequest)
             .then((response) => {
                 console.log("Got response: ", response)

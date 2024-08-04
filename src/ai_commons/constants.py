@@ -6,6 +6,8 @@ AI_LLM_WRAPPER_PORT = 8002
 AI_BRAIN_PORT = 8001
 
 OLLAMA_BASE_URL = "http://localhost:11434"
+OLLAMA_KEEP_ALIVE = "8h"
+OLLAMA_DEFAULT_TEMPERATURE=0.8 # 0.8 is the default
 
 CHAT_BACKEND_URL = "http://localhost"
 

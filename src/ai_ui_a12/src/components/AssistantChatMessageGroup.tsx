@@ -6,8 +6,9 @@ import { useState, useCallback, useEffect } from "react";
 import { InnerWorkingPane } from "./InnerWorkingPane";
 import { SplitView } from "@com.mgmtp.a12.widgets/widgets-core/lib/layout/split-view";
 import Slider from '@mui/material/Slider';
-import styled, { css } from 'styled-components';
+import styled, { css, useTheme, ThemeContext } from 'styled-components';
 import { generateUid } from "@com.mgmtp.a12.widgets/widgets-core/lib/common";
+import { Tooltip } from "@com.mgmtp.a12.widgets/widgets-core/lib/tooltip";
 
 const IconContainer = styled.div<{ open: boolean }>`
     position: absolute;
@@ -29,6 +30,24 @@ const StyledChatMessage = styled(Chat.Message)`
 const StyledSlider = styled(Slider)`
     position: relative;
     top: -15px; 
+    & .MuiSlider-thumb {
+        color: ${({ theme }) => theme.colors.divider.colorDark}; 
+  }
+  & .MuiSlider-track {
+        color: ${({ theme }) => theme.colors.divider.colorDark}; 
+    }; 
+  }
+  & .MuiSlider-rail {
+    color: ${({ theme }) => {
+        const color = theme.colors.divider.colorDark;
+        const r = parseInt(color.slice(1, 3), 16);
+        const g = parseInt(color.slice(3, 5), 16);
+        const b = parseInt(color.slice(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, 0.5)`;
+    }};
+  }
+
+  }
 `;
 
 interface AssistantChatMessageGroupProps {
@@ -38,12 +57,10 @@ export const AssistantChatMessageGroup: React.FC<AssistantChatMessageGroupProps>
     const [open, setOpen] = useState(false);
     const toggleInnerWorkingPanel = useCallback(() => setOpen(!open), [open]);
     const [leftPanePercentage, setLeftPanePercentage] = useState<number>(50);
-   
+
     function handleLeftPanePercentageChange(event: any, newValue: number | number[]) {
-        console.log("ChatHistory: handleLeftPanePercentageChange: newValue: ", newValue);
         setLeftPanePercentage(newValue as number);
     }
-    console.log("AssistantChatMessageGroup: open: ", open);
 
     return (
         <Chat.MessageGroup
@@ -52,13 +69,17 @@ export const AssistantChatMessageGroup: React.FC<AssistantChatMessageGroupProps>
             <Chat.UserInfo userName={'Assistant'} />
             <StyledChatMessage>
                 {message.inner_working && !open && (
-                    <IconContainer open={open} onClick={toggleInnerWorkingPanel}>
-                        <Icon style={{ color: '#D0D021' }}>tips_and_updates</Icon>
-                    </IconContainer>)}
+                    <Tooltip text="Expand Inner Working">
+                        <IconContainer open={open} onClick={toggleInnerWorkingPanel}>
+                            <Icon style={{ color: '#D0D021' }}>tips_and_updates</Icon>
+                        </IconContainer>
+                    </Tooltip>)}
                 {message.inner_working && open && (
-                    <IconContainer open={open} onClick={toggleInnerWorkingPanel}>
-                        <Icon style={{ color: 'black' }}>lightbulb</Icon>
-                    </IconContainer>)}
+                    <Tooltip text="Close Inner Working">
+                        <IconContainer open={open} onClick={toggleInnerWorkingPanel}>
+                            <Icon style={{ color: 'black' }}>lightbulb</Icon>
+                        </IconContainer>
+                    </Tooltip>)}
                 {open && (
                     <StyledSlider value={leftPanePercentage} onChange={handleLeftPanePercentageChange} />
                 )}

@@ -14,10 +14,11 @@ class ChatRequest(BaseModel):
     messages: list[Message]
     context: Optional[dict] = None
     model: Optional[str] = None
+    options: Optional[dict] = None
 
     def to_dict(self):
         dict = {}
-        if self.model is not None:  # Only include model if it's not None
+        if self.model is not None:  
             dict['model'] = self.model
         dict['messages'] = [message.model_dump() for message in self.messages]
         return dict

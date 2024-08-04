@@ -13,6 +13,7 @@ async function chatApiHttp(request: ChatRequest): Promise<Response> {
 }
 
 export async function chatApi(request: ChatRequest): Promise<Message> {
+    console.log("chatApi request", request);
     const httpResponse = await chatApiHttp(request);
     if (httpResponse.ok) {
         const jsonResponse = await httpResponse.json();
@@ -37,7 +38,6 @@ export async function getModels(): Promise<Model[]> {
         throw new Error(`Failed to fetch getModels: ${httpResponse.status} ${httpResponse.statusText}`);
     }
     const jsonResponse = await httpResponse.json();
-    console.log("getModels jsonResponse", jsonResponse);
     const models: Model[] = jsonResponse.map((item: any) => {
         return {
             name: item.name,
@@ -51,6 +51,5 @@ export async function getModels(): Promise<Model[]> {
 }
 export async function getDefaultModel(): Promise<Model | undefined> {
     const models = await getModels();
-    console.log("getDefaultModel models", models);
     return models.find(model => model.default);
 }

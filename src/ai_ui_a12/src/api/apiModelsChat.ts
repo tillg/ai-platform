@@ -10,6 +10,7 @@ export type ChatRequest = {
     messages: Message[];
     context?: { [key: string]: string };
     model?: string;
+    options?: { [key: string]: any };
 };
 
 

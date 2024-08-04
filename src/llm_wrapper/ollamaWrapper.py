@@ -1,7 +1,7 @@
 
 from typing import Dict, List, Union
 from ollama import Client
-from ai_commons.constants import OLLAMA_BASE_URL, LLM_WRAPPER_DEFAULT_MODEL
+from ai_commons.constants import OLLAMA_BASE_URL, LLM_WRAPPER_DEFAULT_MODEL, OLLAMA_KEEP_ALIVE, OLLAMA_DEFAULT_TEMPERATURE
 import logging
 from ai_commons.apiModelsChat import ChatRequest, Message
 from ai_commons.apiModelsLlm import Model
@@ -62,6 +62,15 @@ def get_default_model_name() -> str:
         return LLM_WRAPPER_DEFAULT_MODEL
     return get_models()[0].name
 
+def extract_inner_working(ollama_response: Dict[str, Union[str, int]]) -> Dict[str, Union[str, int]]:
+    ollama_fields_to_report = ["model", "total_duration",
+                               "prompt_eval_count", "eval_count", "load_duration", "prompt_eval_duration", "eval_duration"]
+    inner_working = {}
+    for field in ollama_fields_to_report:
+        if field in ollama_response:
+            inner_working[field] = ollama_response.get(field, None)
+    return inner_working
+
 def chat(chat_request: ChatRequest) -> Message:
     client = Client(host=OLLAMA_BASE_URL)
     logger.info(f"Chat req: {chat_request}")
@@ -69,20 +78,22 @@ def chat(chat_request: ChatRequest) -> Message:
     logger.info(f"Chat req after check: {chat_request}")
     ollama_response = None
     ollama_messages = chat_request.to_dict()['messages']
+    if chat_request.options is None:
+        temp = OLLAMA_DEFAULT_TEMPERATURE
+    else:
+        temp = chat_request.options.get('temperature', OLLAMA_DEFAULT_TEMPERATURE)
+    ollama_options={'temperature': temp}
     try:
         ollama_response = client.chat(
-            messages=ollama_messages, model=chat_request.model)
+            messages=ollama_messages, model=chat_request.model, options=ollama_options, keep_alive=OLLAMA_KEEP_ALIVE)
     except Exception as e:
         logger.error(f"Error: {e}")
         return Message(content="Error: Could not chat")
     logger.info(f"OLLAMA response: {ollama_response}")
-    inner_working = {
-        "model": ollama_response["model"],
-        "total_duration": ollama_response["total_duration"],
-        "prompt_eval_count": ollama_response["prompt_eval_count"],
-        "eval_count": ollama_response["eval_count"],
-    }
+    inner_working = extract_inner_working(ollama_response)
+    inner_working["temperature"] = temp
     return Message(content=ollama_response['message']['content'], role="assistant", inner_working=inner_working)
+
 
 def check_model_exists(model_name: str) -> bool:
     return model_name in get_model_names()
