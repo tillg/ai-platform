@@ -3,19 +3,57 @@ import * as React from "react";
 
 import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon";
 import { useRef, useState, useEffect } from "react";
-import { chatApi, getModels } from "../api";
+import { chatApi, getModels, getDefaultModel } from "../api";
 import { ActionContentbox, ContentBoxElements } from "@com.mgmtp.a12.widgets/widgets-core/lib/contentbox";
 import LlmConfigurationPane from "../components/LlmConfigurationPane";
 import { ModalOverlay } from "@com.mgmtp.a12.widgets/widgets-core/lib/modal-overlay";
 import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button";
 import { generateUid } from "@com.mgmtp.a12.widgets/widgets-core/lib/common";
-import { Model } from "../api/apiModelsChat";
+import { Model, Message, ChatRequest } from "../api/apiModelsChat";
 import { Tag, TagGroup } from "@com.mgmtp.a12.widgets/widgets-core/lib/tag";
 import { UserInput } from "../components/UserInput";
-import { MessageOrChatResponse } from "../api/apiModelsChat";
 import { ChatHistory } from "../components/ChatHistory";
+import styled from "styled-components";
+
+// Styled components
+const PageContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+`;
+
+const Header = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    background-color: #e2e6e9;
+    z-index: 1;
+    padding: 5px;
+`;
+
+const Content = styled.div`
+    flex: 1;
+    overflow-y: auto;
+`;
+
+const StickyInput = styled.div`
+    position: sticky;
+    bottom: 0;
+    background-color: white;
+    padding: 10px;
+    z-index: 1;
+`;
 
 export const ChatLlmPage = () => {
+    const userInputRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        if (userInputRef.current) {
+            userInputRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, []);
+
     const [error, setError] = useState<unknown>();
 
     //Models
@@ -33,6 +71,20 @@ export const ChatLlmPage = () => {
     useEffect(() => {
         fetchModels();
     }, []); // Empty dependency array means this effect runs once after the initial render
+    const initiateSelectedModel = async () => {
+        if (selectedModelName === undefined) {
+            const defaultModel = await getDefaultModel();
+            console.log("Default model: ", defaultModel)
+            if (defaultModel) {
+                setSelectedModelName(defaultModel.name);
+            } else {
+                console.error("Failed to fetch default model.");
+            }
+        }
+    }
+    useEffect(() => {
+        initiateSelectedModel();
+    }, []);
 
     // Temperature
     const [selectedTemp, setSelectedTemp] = useState<number>(0);
@@ -43,9 +95,7 @@ export const ChatLlmPage = () => {
     const closeConfiguration = (): void => setConfigurationOpen(false);
 
     const setConfiguration = (config: Record<string, any>) => {
-        console.log("Setting configuration to ", config)
         if (config.model && config.model !== undefined) {
-            console.log("Setting model to ", config.model)
             setSelectedModelName(config.model);
         }
         if (config.temperature && config.temperature !== undefined) {
@@ -59,33 +109,32 @@ export const ChatLlmPage = () => {
     };
 
     // Chat history
-    const [chatHistory, setChatHistory] = useState<MessageOrChatResponse[]>([]);
+    const [chatHistory, setChatHistory] = useState<Message[]>([]);
 
     // User Questions
-    const sendQuestion=(question: string) => {
-        console.log("Sending question: ", question)
-        const newMessage = { content: question, role: "user" };
-        setChatHistory([...chatHistory, newMessage]);
-        // chatApi({ messages: chatHistory.concat([newMessage]), model: selectedModelName })
-        //     .then((response) => {
-        //         console.log("Got response: ", response)
-        //         const newResponse = { content: response.content, role: "assistant" };
-        //         setChatHistory([...chatHistory, newResponse]);
-        //     })
-        //     .catch((error) => {
-        //         console.error("Failed to send question:", error);
-        //         setError(error); // Assuming there's a setError function to handle errors
-        //     });
+    const sendQuestion = (question: string) => {
+        const newMessage: Message = { content: question, role: "user" };
+        const newChatHistory = [...chatHistory, newMessage]
+        setChatHistory(newChatHistory);
+        const chatRequest:ChatRequest = { messages: newChatHistory, model: selectedModelName };
+        chatApi(chatRequest)
+            .then((response) => {
+                console.log("Got response: ", response)
+                setChatHistory([...newChatHistory, response]);
+            })
+            .catch((error) => {
+                console.error("Failed to send question:", error);
+                setError(error); // Assuming there's a setError function to handle errors
+            });
     }
 
-
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <PageContainer>
+            <Header>
                 <Button label="Settings" id={generateUid()} onClick={showConfiguration} icon={<Icon>settings</Icon>} />
                 <Tag icon={<Icon>psychology</Icon>}> LLM: {selectedModelName}</Tag>
                 <Tag icon={<Icon>thermostat</Icon>}> Temperature: {selectedTemp}</Tag>
-            </div>
+            </Header>
             {isConfigurationOpen && (
                 <ModalOverlay closeOnOutsideClick={false} onClose={closeConfiguration}>
                     <ActionContentbox
@@ -96,13 +145,13 @@ export const ChatLlmPage = () => {
                     </ActionContentbox>
                 </ModalOverlay>
             )}
-            <div style={{ flex: 1, overflowY: 'auto' }}>
-                <ChatHistory />
-            </div>
-            <div style={{ flexShrink: 0, marginTop: '10px', marginBottom: '10px' }}>
+            <Content>
+                <ChatHistory chatHistory={chatHistory} />
+            </Content>
+            <StickyInput ref={userInputRef}>
                 <UserInput onSend={sendQuestion} disabled={false} clearOnSend={true} />
-            </div>
-        </div>
+            </StickyInput>
+        </PageContainer>
     );
 }
 

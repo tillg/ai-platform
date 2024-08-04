@@ -11,3 +11,4 @@ class Model(BaseModel):
     description: Optional[str] = None
     details: Optional[Dict[str, str]] = None
     state: Optional[str]
+    default: Optional[bool] = False

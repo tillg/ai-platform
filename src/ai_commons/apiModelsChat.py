@@ -7,7 +7,8 @@ from utils.dict2file import write_dict_to_file, read_dict_from_file
 
 class Message(BaseModel):
     content: str
-    role: str = "user"
+    role: str 
+    inner_working: Optional[Dict[str, Any]] = None
 
 class ChatRequest(BaseModel):
     messages: list[Message]
@@ -20,10 +21,5 @@ class ChatRequest(BaseModel):
             dict['model'] = self.model
         dict['messages'] = [message.model_dump() for message in self.messages]
         return dict
-
-class ChatResponse(BaseModel):
-    content: str
-    inner_working: Optional[Dict[str, Any]] = None
-
 
 

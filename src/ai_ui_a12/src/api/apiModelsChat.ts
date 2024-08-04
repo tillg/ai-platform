@@ -3,14 +3,8 @@
 export type Message = {
     content: string;
     role: string;
-};
-
-export type ChatResponse = {
-    content: string;
     inner_working?: { [key: string]: any };
 };
-
-export type MessageOrChatResponse = Message | ChatResponse;
 
 export type ChatRequest = {
     messages: Message[];
@@ -18,18 +12,9 @@ export type ChatRequest = {
     model?: string;
 };
 
-export function messageOrChatResponseToMessage(messageOrChatResponse: MessageOrChatResponse): Message {
-    if (!isChatResponse(messageOrChatResponse)) {
-        return messageOrChatResponse;
-    }
-    return {
-        content: messageOrChatResponse.content,
-        role: "assistant"
-    };
-}
 
-export function isChatResponse(item: MessageOrChatResponse): item is ChatResponse {
-    return (item as ChatResponse).inner_working !== undefined;
+export function hasInnerWorking(message: Message): boolean {
+    return message.inner_working !== null && message.inner_working !== undefined;
 }
 
 export type Model = {
@@ -37,4 +22,5 @@ export type Model = {
     description?: string;
     details?: { [key: string]: string };
     state?: string;
+    default?: boolean
 };
