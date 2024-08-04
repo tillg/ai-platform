@@ -21,22 +21,8 @@ const theme = createTheme({
   baseTheme: "flat-compact"
 });
 
-const menuItems = [{ label: "About", content: <AboutPage /> }, { label: "Search", content: <SearchPage /> }, { label: "Chat LLM", content: <ChatLlmPage/> }];
+const menuItems = [{ label: "About", content: <AboutPage /> }, { label: "Search Brains", content: <SearchPage /> }, { label: "Chat LLM", content: <ChatLlmPage/> }];
 
-const sidebarItems = [
-  {
-    name: "Introduction",
-    quote: "Life is short, smile while you still have teeth."
-  },
-  {
-    name: "Technical",
-    quote: "If two wrongs don't make a right, try three."
-  },
-  {
-    name: "System state",
-    quote: "I am not lazy, I am on energy saving mode."
-  }
-];
 
 export default function App() {
   const [menuIndex, setMenuIndex] = React.useState(0);
@@ -50,25 +36,12 @@ export default function App() {
     }));
   }, [menuIndex])
 
-  const getSidebarItems = React.useCallback((): MenuItem[] => {
-    return sidebarItems.map((item, index) => ({
-      label: item.name,
-      selected: sidebarIndex === index,
-      onClick: () => setSidebarIndex(index)
-    }));
-  }, [sidebarIndex])
-
-  // const selectedSidebarItem = sidebarItems[sidebarIndex];
-  // const content = menuIndex === 0 ? selectedSidebarItem.quote : "About page without sidebar";
 
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <ApplicationFrame
         main={<Header items={getMenuItems()} />}
-        sub={menuIndex === 0 ? <Sidebar items={getSidebarItems()} /> : undefined}
-        // content={<Content title={menuIndex === 0 ? selectedSidebarItem.name : "About"} text={content} />}
-        // content={<StartPage/>}
         content={menuItems[menuIndex].content}
         subExpanded={true}
       />

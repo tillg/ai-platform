@@ -150,7 +150,7 @@ export const ChatLlmPage = () => {
                 <ChatHistory chatHistory={chatHistory} />
             </Content>
             <StickyInput ref={userInputRef}>
-                <UserInput onSend={sendQuestion} disabled={false} clearOnSend={true} />
+                <UserInput onSend={sendQuestion} disabled={false} clearOnSend={true} placeholder="Who was Einstein?"/>
             </StickyInput>
         </PageContainer>
     );

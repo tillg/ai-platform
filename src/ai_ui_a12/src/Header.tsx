@@ -9,7 +9,12 @@ export interface HeaderProps {
 export function Header(props: HeaderProps): React.ReactElement<HeaderProps> {
     return (
         <div>
-            <ApplicationHeader leftSlots="AI Platform" />
+            <ApplicationHeader leftSlots={
+                <div>
+                    <img src='../logo.jpg' alt="Logo" style={{ marginLeft: '10px', marginRight: '10px', height: '24px' }} />
+                    <span>AI Platform</span>
+                </div>
+            } />
             <FlyoutMenu type="horizontal" items={props.items} />
         </div>
     );
