@@ -21,7 +21,6 @@ const PageContainer = styled.div`
     flex-direction: column;
     height: 100vh;
 `;
-
 const Header = styled.div`
     display: flex;
     align-items: center;

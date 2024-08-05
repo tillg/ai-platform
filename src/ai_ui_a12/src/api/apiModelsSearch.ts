@@ -1,7 +1,11 @@
 
 
-export type SearchRequest = {
-    search_term: String
+export class SearchRequest  {
+    search_term: String;
+
+    constructor(search_term: String) {
+        this.search_term = search_term;
+    }
 }
 
 type Document = {
@@ -15,10 +19,9 @@ type Document = {
 // Extending Document type to create Chunk type
 export type Chunk = Document & {
     original_document_id: string;
-    search_info?: SearchInfo | null;
 };
 
-class SearchResultChunksAndDocuments {
+export class SearchResultChunksAndDocuments {
     chunks?: Chunk[] = [];
     documents?: Document[] = [];
 
@@ -33,7 +36,6 @@ export type SearchInfo = {
     distance: number;
 }
 
-
 export class SearchResult {
     search_term?: string;
     result?: SearchResultChunksAndDocuments;
@@ -44,3 +46,5 @@ export class SearchResult {
         this.inner_working = inner_working;
     }
 }
+
+export type SearchHistoryItem = SearchRequest | SearchResult;
