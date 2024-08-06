@@ -3,18 +3,15 @@
 import { SearchRequest, SearchResult, BrainModel } from "./apiModelsSearch";
 import { AI_BRAIN_URL } from "../constants";
 
-async function searchApiHttp(request: SearchRequest): Promise<Response> {
-    return await fetch(`${AI_BRAIN_URL}/search`, {
+export async function searchApi(searchRequest: SearchRequest): Promise<SearchResult> {
+    console.log("searchApi searchRequest: ", searchRequest)
+    const httpResponse = await fetch(`${AI_BRAIN_URL}/search`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(request)
+        body: JSON.stringify(searchRequest)
     });
-}
-
-export async function searchApi(request: SearchRequest): Promise<SearchResult> {
-    const httpResponse = await searchApiHttp(request);
     if (httpResponse.ok) {
         const jsonResponse = await httpResponse.json();
         if (jsonResponse.result) {
@@ -31,8 +28,9 @@ export async function getBrainList(): Promise<BrainModel[]> {
     const httpResponse = await fetch(`${AI_BRAIN_URL}/list`);
     if (httpResponse.ok) {
         const jsonResponse = await httpResponse.json();
-        if (jsonResponse.result) {
-            return jsonResponse.result.map((brain: any) => new BrainModel(brain.id, brain.name, brain.description, brain.path, brain.importer));
+        if (jsonResponse) {
+            const brainList = jsonResponse.map((brain: any) => new BrainModel(brain.id, brain.name, brain.description, brain.path, brain.importer));
+            return brainList
         }
     }
     throw new Error(`Failed to fetch getBrainList: ${httpResponse.status} ${httpResponse.statusText}`);

@@ -1,15 +1,12 @@
-import { Chat, ChatProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Chat } from "@com.mgmtp.a12.widgets/widgets-core";
 import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon";
-import { Message, hasInnerWorking } from "../api/apiModelsChat";
-import { CollapsiblePanel } from "@com.mgmtp.a12.widgets/widgets-core/lib/collapsible-panel";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { InnerWorkingPane } from "./InnerWorkingPane";
 import { SplitView } from "@com.mgmtp.a12.widgets/widgets-core/lib/layout/split-view";
 import Slider from '@mui/material/Slider';
-import styled, { css, useTheme, ThemeContext } from 'styled-components';
-import { generateUid } from "@com.mgmtp.a12.widgets/widgets-core/lib/common";
+import styled, { css } from 'styled-components';
 import { Tooltip } from "@com.mgmtp.a12.widgets/widgets-core/lib/tooltip";
-import { Chunk, SearchResult, SearchResultChunksAndDocuments } from "../api/apiModelsSearch";
+import { Chunk, SearchResult } from "../api/apiModelsSearch";
 import { List } from "@com.mgmtp.a12.widgets/widgets-core/lib/list";
 import { ChunkPane } from "./ChunkPane";
 
@@ -63,7 +60,7 @@ function chunksPane(chunks: Chunk[]) {
         <List border divider>
 
             {chunks.map((chunk, index) => (
-                <List.Item key={index} text={<ChunkPane chunk={chunk}/>} />
+                <List.Item key={index} text={<ChunkPane chunk={chunk} />} />
             ))}
         </List>
     )

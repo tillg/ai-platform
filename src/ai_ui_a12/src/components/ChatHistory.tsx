@@ -1,12 +1,5 @@
-import { Chat, ChatProps } from "@com.mgmtp.a12.widgets/widgets-core";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon";
-import { Message, hasInnerWorking } from "../api/apiModelsChat";
-import { CollapsiblePanel } from "@com.mgmtp.a12.widgets/widgets-core/lib/collapsible-panel";
-import { useState, useCallback } from "react";
-import { InnerWorkingPane } from "./InnerWorkingPane";
-import { SplitView } from "@com.mgmtp.a12.widgets/widgets-core/lib/layout/split-view";
-import Slider from '@mui/material/Slider';
-import styled from 'styled-components';
+import { Chat } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Message } from "../api";
 import { AssistantChatMessageGroup } from "./AssistantChatMessageGroup";
 
 interface Props {

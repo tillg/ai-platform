@@ -3,8 +3,8 @@ export const LLM_WRAPPER_URL = "http://localhost:8002"
 
 
 const LIGHT_GREEN = "#90ee90"
-const BLUEISH = "#7376E1"
-const PINKISH = "#e364dd"
+// const BLUEISH = "#7376E1"
+// const PINKISH = "#e364dd"
 
 export const theme = {
     topic: {

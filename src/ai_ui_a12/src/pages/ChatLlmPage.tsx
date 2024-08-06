@@ -10,7 +10,7 @@ import { ModalOverlay } from "@com.mgmtp.a12.widgets/widgets-core/lib/modal-over
 import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button";
 import { generateUid } from "@com.mgmtp.a12.widgets/widgets-core/lib/common";
 import { Model, Message, ChatRequest } from "../api/apiModelsChat";
-import { Tag, TagGroup } from "@com.mgmtp.a12.widgets/widgets-core/lib/tag";
+import { Tag } from "@com.mgmtp.a12.widgets/widgets-core/lib/tag";
 import { UserInput } from "../components/UserInput";
 import { ChatHistory } from "../components/ChatHistory";
 import styled from "styled-components";
@@ -53,7 +53,6 @@ export const ChatLlmPage = () => {
         }
     }, []);
 
-    const [error, setError] = useState<unknown>();
 
     //Models
     const [availableModels, setAvailableModels] = useState<Model[]>([]);
@@ -64,7 +63,6 @@ export const ChatLlmPage = () => {
             setAvailableModels(models);
         } catch (error) {
             console.error("Failed to fetch model names:", error);
-            setError(error); // Assuming there's a setError function to handle errors
         }
     };
     useEffect(() => {
@@ -116,7 +114,7 @@ export const ChatLlmPage = () => {
         const newChatHistory = [...chatHistory, newMessage]
         setChatHistory(newChatHistory);
         const chatRequestOptions = { temperature: selectedTemp };
-        const chatRequest:ChatRequest = { messages: newChatHistory, model: selectedModelName, options: chatRequestOptions };
+        const chatRequest: ChatRequest = { messages: newChatHistory, model: selectedModelName, options: chatRequestOptions };
         chatApi(chatRequest)
             .then((response) => {
                 console.log("Got response: ", response)
@@ -124,7 +122,6 @@ export const ChatLlmPage = () => {
             })
             .catch((error) => {
                 console.error("Failed to send question:", error);
-                setError(error); // Assuming there's a setError function to handle errors
             });
     }
 
@@ -149,7 +146,7 @@ export const ChatLlmPage = () => {
                 <ChatHistory chatHistory={chatHistory} />
             </Content>
             <StickyInput ref={userInputRef}>
-                <UserInput onSend={sendQuestion} disabled={false} clearOnSend={true} placeholder="Who was Einstein?"/>
+                <UserInput onSend={sendQuestion} disabled={false} clearOnSend={true} placeholder="Who was Einstein?" />
             </StickyInput>
         </PageContainer>
     );

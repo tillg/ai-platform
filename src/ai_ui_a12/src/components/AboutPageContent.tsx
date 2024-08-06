@@ -1,6 +1,6 @@
 import Markdown from 'react-markdown'
 import aboutPageMd from '../content/aboutPage/aboutPage.md'
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import rehypeRaw from "rehype-raw";
 
 export const AboutPageContent = () => {

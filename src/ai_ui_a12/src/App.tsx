@@ -11,8 +11,6 @@ import { MenuItem } from "@com.mgmtp.a12.widgets/widgets-core/lib/menu";
 
 // import your components
 import { Header } from "./Header";
-import { Sidebar } from "./Sidebar";
-// import { Content } from "./Content";
 import { AboutPage } from "./pages/AboutPage";
 import { SearchPage } from "./pages/SearchPage";
 import { ChatLlmPage } from "./pages/ChatLlmPage";
@@ -26,7 +24,6 @@ const menuItems = [{ label: "About", content: <AboutPage /> }, { label: "Search 
 
 export default function App() {
   const [menuIndex, setMenuIndex] = React.useState(0);
-  const [sidebarIndex, setSidebarIndex] = React.useState(0);
 
   const getMenuItems = React.useCallback((): MenuItem[] => {
     return menuItems.map((item, index) => ({

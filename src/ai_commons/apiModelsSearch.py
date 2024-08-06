@@ -8,12 +8,11 @@ from utils.dict2file import write_dict_to_file, read_dict_from_file
 
 class SearchRequest(BaseModel):
     search_term: str
-
+    brain_id: Optional[str] = None
 
 class SearchInfo(BaseModel):
     search_term: str
     distance: float
-
 
 class Document(BaseModel):
     title: str

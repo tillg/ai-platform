@@ -4,12 +4,12 @@ import { ActionContentbox, ContentBoxElements } from "@com.mgmtp.a12.widgets/wid
 import styled from "styled-components";
 import { useRef, useState, useEffect } from "react";
 import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button";
-import { Tag, TagGroup } from "@com.mgmtp.a12.widgets/widgets-core/lib/tag";
+import { Tag } from "@com.mgmtp.a12.widgets/widgets-core/lib/tag";
 import { generateUid } from "@com.mgmtp.a12.widgets/widgets-core/lib/common";
 import { ModalOverlay } from "@com.mgmtp.a12.widgets/widgets-core/lib/modal-overlay";
 import BrainConfigurationPane from "../components/BrainConfigurationPane";
-import { SearchRequest, SearchResult, SearchHistoryItem } from "../api";
-import { searchApi } from "../api/searchApi";
+import { SearchRequest, SearchHistoryItem, BrainModel } from "../api";
+import { getBrainList, searchApi } from "../api/searchApi";
 import { UserInput } from "../components/UserInput";
 import { SearchHistory } from "../components/SearchHistory";
 
@@ -45,32 +45,25 @@ export const SearchPage = () => {
         }
     }, []);
 
-    const [error, setError] = useState<unknown>();
-
     //Brains
-    const [availableBrains, setAvailableBrains] = useState<string[]>([]);
-    const [selectedBrainName, setSelectedBrainName] = useState<string>();
+    const [availableBrainModels, setAvailableBrainModels] = useState<BrainModel[]>([]);
+    const [selectedBrainId, setSelectedBrainId] = useState<string>();
     const fetchBrains = async () => {
-        return ["Berlin"]
+        try {
+            const brains = await getBrainList();
+            setAvailableBrainModels(brains);
+            if (selectedBrainId === undefined) {
+                console.log("Default Brain: ", brains[0].id)
+                setSelectedBrainId(brains[0].id);
+            }
+        }
+        catch (error) {
+            console.error('SearchPage.fetchBrains: Failed to fetch brain list:', error);
+        }
     };
     useEffect(() => {
         fetchBrains();
     }, []);
-    const initiateSelectedBrain = async () => {
-        if (selectedBrainName === undefined) {
-            const defaultBrain = "Berlin"
-            console.log("Default Brain: ", defaultBrain)
-            if (defaultBrain) {
-                setSelectedBrainName(defaultBrain);
-            } else {
-                console.error("Failed to fetch default Brain.");
-            }
-        }
-    }
-    useEffect(() => {
-        initiateSelectedBrain();
-    }, []);
-
 
     // Config Pane
     const [isConfigurationOpen, setConfigurationOpen] = React.useState<boolean>(false);
@@ -78,8 +71,8 @@ export const SearchPage = () => {
     const closeConfiguration = (): void => setConfigurationOpen(false);
 
     const setConfiguration = (config: Record<string, any>) => {
-        if (config.brain && config.brain !== undefined) {
-            setSelectedBrainName(config.brain);
+        if (config.brainId && config.brainId !== undefined) {
+            setSelectedBrainId(config.brainId);
         }
     };
     const handleSetConfiguration = (config: Record<string, any>) => {
@@ -92,12 +85,10 @@ export const SearchPage = () => {
 
     // User Questions
     async function sendQuestion(question: string) {
-        const searchRequest = new SearchRequest(question);
+        const searchRequest = new SearchRequest(question, selectedBrainId);
         const newSearchHistory = [...searchHistory, searchRequest]
-        console.log("newSearchHistory: ", newSearchHistory)
         setSearchHistory(newSearchHistory);
         const searchResult = await searchApi(searchRequest)
-        console.log("Got searchResult: ", searchResult)
         setSearchHistory([...newSearchHistory, searchResult]);
     }
 
@@ -105,7 +96,7 @@ export const SearchPage = () => {
         <PageContainer>
             <Header>
                 <Button label="Settings" id={generateUid()} onClick={showConfiguration} icon={<Icon>settings</Icon>} />
-                <Tag icon={<Icon>psychology</Icon>}> Brain: {selectedBrainName}</Tag>
+                <Tag icon={<Icon>psychology</Icon>}> Brain: {selectedBrainId}</Tag>
             </Header>
             {isConfigurationOpen && (
                 <ModalOverlay closeOnOutsideClick={false} onClose={closeConfiguration}>
@@ -113,7 +104,7 @@ export const SearchPage = () => {
                         headingElements={<ContentBoxElements.Title ariaLevel={1} text="Settings" />}
                         headingButtons={<ContentBoxElements.CloseButton onClick={closeConfiguration} />}
                     >
-                        <BrainConfigurationPane brains={availableBrains} brainConfiguration={{ brain: selectedBrainName }} setConfiguration={handleSetConfiguration} />
+                        <BrainConfigurationPane brains={availableBrainModels} brainConfiguration={{ brain: selectedBrainId }} setConfiguration={handleSetConfiguration} />
                     </ActionContentbox>
                 </ModalOverlay>
             )}

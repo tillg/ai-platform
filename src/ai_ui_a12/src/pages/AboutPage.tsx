@@ -1,5 +1,4 @@
 import { AboutPageContent } from '../components/AboutPageContent';
-import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -16,9 +15,9 @@ const StyledAboutPageContent = styled(AboutPageContent)`
 `;
 
 export const AboutPage = () => {
-    return (
-        <Container>
-            <StyledAboutPageContent />
-        </Container>
-    );
+  return (
+    <Container>
+      <StyledAboutPageContent />
+    </Container>
+  );
 };

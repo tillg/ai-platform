@@ -2,9 +2,11 @@
 
 export class SearchRequest  {
     search_term: String;
+    brain_id?: String | null;
 
-    constructor(search_term: String) {
+    constructor(search_term: String, brain_id?: String | null) {
         this.search_term = search_term;
+        this.brain_id = brain_id;
     }
 }
 

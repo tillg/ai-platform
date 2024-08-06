@@ -39,6 +39,14 @@ class Brain:
         return brain_models
 
     @classmethod
+    def is_valid_brain_id(cls, brain_id: str) -> bool:
+        brain_list = cls.get_brain_list()
+        for brain in brain_list:
+            if brain.id == brain_id:
+                return True
+        return False
+
+    @classmethod
     def get_default_brain(cls, brains_directory: str = AI_BRAINS_DIRECTORY, brain_index_filename: str = "brains.json"):
         brain_list = read_dict_from_file(full_filename=os.path.join(
             brains_directory, brain_index_filename))
@@ -56,6 +64,7 @@ class Brain:
             brains_directory, brain_index_filename))
         if brain_id in brain_list:
             brain_params = brain_list[brain_id]
+            brain_params["brain_id"] = brain_id
             brain_params["data_directory"] = brains_directory
             logger.info(f"Brain found: {brain_params}")
             return Brain(brain_params)

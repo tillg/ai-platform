@@ -1,13 +1,11 @@
-import { Chat, ChatProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Chat } from "@com.mgmtp.a12.widgets/widgets-core";
 import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon";
-import { Message, hasInnerWorking } from "../api/apiModelsChat";
-import { CollapsiblePanel } from "@com.mgmtp.a12.widgets/widgets-core/lib/collapsible-panel";
-import { useState, useCallback, useEffect } from "react";
+import { Message } from "../api/apiModelsChat";
+import { useState, useCallback } from "react";
 import { InnerWorkingPane } from "./InnerWorkingPane";
 import { SplitView } from "@com.mgmtp.a12.widgets/widgets-core/lib/layout/split-view";
 import Slider from '@mui/material/Slider';
-import styled, { css, useTheme, ThemeContext } from 'styled-components';
-import { generateUid } from "@com.mgmtp.a12.widgets/widgets-core/lib/common";
+import styled, { css } from 'styled-components';
 import { Tooltip } from "@com.mgmtp.a12.widgets/widgets-core/lib/tooltip";
 
 const IconContainer = styled.div<{ open: boolean }>`
