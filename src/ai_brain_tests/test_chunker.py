@@ -1,7 +1,7 @@
 import unittest
 import json
 from ai_brain.chunker_char_text_splitter import ChunkerCharacterTextSplitter
-from ai_commons.api_models import Document, Chunk
+from ai_commons.apiModelsSearch import Document, Chunk
 import logging
 from dotenv import load_dotenv
 import os

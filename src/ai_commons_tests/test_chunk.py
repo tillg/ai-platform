@@ -1,6 +1,6 @@
 import unittest
 import uuid
-from ai_commons.api_models import Chunk
+from ai_commons.apiModelsSearch import Chunk
 
 
 class TestChunk(unittest.TestCase):

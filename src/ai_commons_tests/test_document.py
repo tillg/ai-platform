@@ -1,6 +1,6 @@
 import unittest
 import uuid
-from ai_commons.api_models import Document
+from ai_commons.apiModelsSearch import Document
 import os
 
 # in relation to this file my test data resides in ../../data/test_data

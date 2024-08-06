@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 import wikipediaapi
 from ai_brain.brain import Brain
-from ai_commons.api_models import Document
+from ai_commons.apiModelsSearch import Document
 from types import SimpleNamespace
 from ai_brain_importer.ai_brain_importer import AiBrainImporter
 

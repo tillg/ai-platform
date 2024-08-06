@@ -1,7 +1,7 @@
 import unittest
 import uuid
 from ai_brain.brain import Brain
-from ai_commons.api_models import Document, Chunk
+from ai_commons.apiModelsSearch import Document, Chunk
 from utils.utils import get_now_as_string
 import logging
 from dotenv import load_dotenv

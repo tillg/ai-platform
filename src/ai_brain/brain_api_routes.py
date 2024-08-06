@@ -2,7 +2,7 @@ from typing import Any, Dict, Optional
 import fastapi
 from fastapi import Depends, FastAPI, Query, Request, Body, HTTPException
 import logging
-from ai_commons.api_models import Chunk, SearchRequest, SearchResultChunksAndDocuments, SearchResult
+from ai_commons.apiModelsSearch import Chunk, SearchRequest, SearchResultChunksAndDocuments, SearchResult
 from ai_brain.brain import Brain
 
 logger = logging.getLogger(__name__)
@@ -20,6 +20,10 @@ async def root():
 @router.get("/info")
 async def info() -> Dict[str, Any]:
     return brain.get_params_and_stats()
+
+@router.get("/list")
+async def list():
+    return Brain.get_brain_list()
 
 @router.post("/search")
 async def search(request: Request, q: Optional[str] = None, body: Optional[SearchRequest] = Body(default=None)) -> SearchResult:

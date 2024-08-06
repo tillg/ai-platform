@@ -10,7 +10,7 @@ from utils.utils import simplify_text
 from utils.dict2file import write_dict_to_file, read_dict_from_file
 import logging
 from typing import Any, Dict, List, Union
-from ai_commons.api_models import Document, Chunk, SearchResultChunksAndDocuments, SearchResult
+from ai_commons.apiModelsSearch import Document, Chunk, SearchResultChunksAndDocuments, SearchResult, BrainModel
 from pydantic import field_validator, validate_call
 from dotenv import load_dotenv
 import time
@@ -18,7 +18,7 @@ from ai_commons.constants import AI_BRAINS_DIRECTORY, AI_BRAIN_COLLECTION_NAME
 
 load_dotenv()
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.WARN)
+logger.setLevel(logging.INFO)
 
 class Brain:
 
@@ -31,9 +31,12 @@ class Brain:
 
     @classmethod
     def get_brain_list(cls, brains_directory: str = AI_BRAINS_DIRECTORY, brain_index_filename: str = "brains.json"):
-        brain_list = read_dict_from_file(full_filename=os.path.join(
+        brain_dict = read_dict_from_file(full_filename=os.path.join(
             brains_directory, brain_index_filename))
-        return brain_list
+        logger.info(f"Brain dict: {brain_dict}")
+        brain_list = [value for key, value in brain_dict.items()]
+        brain_models = [BrainModel(id=brain_id, **brain) for brain_id, brain in brain_dict.items()] 
+        return brain_models
 
     @classmethod
     def get_default_brain(cls, brains_directory: str = AI_BRAINS_DIRECTORY, brain_index_filename: str = "brains.json"):

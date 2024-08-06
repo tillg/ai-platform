@@ -5,6 +5,7 @@ from langchain.docstore.document import Document as lc_Document
 import os
 from utils.dict2file import write_dict_to_file, read_dict_from_file
 
+
 class SearchRequest(BaseModel):
     search_term: str
 
@@ -79,7 +80,6 @@ class Document(BaseModel):
 
 class Chunk(Document):
     original_document_id: str
-    search_info: Optional[SearchInfo] = None
 
     @classmethod
     def chroma_chunks2chunk_array(cls, chroma_chunks, search_term: str = None) -> list['Chunk']:
@@ -111,3 +111,10 @@ class SearchResult(BaseModel):
     search_term: Optional[str] = None
     result: Optional[SearchResultChunksAndDocuments] = None
     inner_working: Optional[Dict[str, Any]] = None
+
+class BrainModel(BaseModel):
+    id: str
+    name: str
+    description: str
+    path: str
+    importer: Optional[Dict[str, Any]] = None

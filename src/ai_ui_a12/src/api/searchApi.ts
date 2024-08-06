@@ -1,6 +1,6 @@
 
 
-import { SearchRequest, SearchResult } from "./apiModelsSearch";
+import { SearchRequest, SearchResult, BrainModel } from "./apiModelsSearch";
 import { AI_BRAIN_URL } from "../constants";
 
 async function searchApiHttp(request: SearchRequest): Promise<Response> {
@@ -25,4 +25,15 @@ export async function searchApi(request: SearchRequest): Promise<SearchResult> {
         }
     }
     throw new Error(`Failed to fetch searchApi: ${httpResponse.status} ${httpResponse.statusText}`);
+}
+
+export async function getBrainList(): Promise<BrainModel[]> {
+    const httpResponse = await fetch(`${AI_BRAIN_URL}/list`);
+    if (httpResponse.ok) {
+        const jsonResponse = await httpResponse.json();
+        if (jsonResponse.result) {
+            return jsonResponse.result.map((brain: any) => new BrainModel(brain.id, brain.name, brain.description, brain.path, brain.importer));
+        }
+    }
+    throw new Error(`Failed to fetch getBrainList: ${httpResponse.status} ${httpResponse.statusText}`);
 }

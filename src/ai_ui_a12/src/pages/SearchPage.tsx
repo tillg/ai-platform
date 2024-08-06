@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon";
-import { SplitView } from "@com.mgmtp.a12.widgets/widgets-core/lib/layout/split-view";
 import { ActionContentbox, ContentBoxElements } from "@com.mgmtp.a12.widgets/widgets-core/lib/contentbox";
 import styled from "styled-components";
 import { useRef, useState, useEffect } from "react";

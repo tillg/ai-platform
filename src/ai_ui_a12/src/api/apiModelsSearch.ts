@@ -48,3 +48,19 @@ export class SearchResult {
 }
 
 export type SearchHistoryItem = SearchRequest | SearchResult;
+
+export class BrainModel {
+    id: string
+    name: string;
+    description: string;
+    path: string;
+    importer?: { [key: string]: any };
+
+    constructor(id: string, name: string, description: string, path: string, importer?: { [key: string]: any }) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.path = path;
+        this.importer = importer;
+    }
+}

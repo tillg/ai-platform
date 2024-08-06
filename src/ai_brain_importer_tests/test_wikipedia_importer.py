@@ -2,7 +2,7 @@ import json
 import unittest
 import uuid
 from ai_brain.brain import Brain
-from ai_commons.api_models import Document, Chunk
+from ai_commons.apiModelsSearch import Document, Chunk
 import logging
 from dotenv import load_dotenv
 import os
