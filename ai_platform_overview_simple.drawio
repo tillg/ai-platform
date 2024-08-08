@@ -1,0 +1,76 @@
+<mxfile host="65bd71144e">
+    <diagram id="zpGzf-oRHcjbW15I6Q2K" name="Page-1">
+        <mxGraphModel dx="1695" dy="1593" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" parent="1" source="CE9EN9VTLjrJtfSJjfUC-5" target="CE9EN9VTLjrJtfSJjfUC-22" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="-240" y="-410"/>
+                            <mxPoint y="-410"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="CE9EN9VTLjrJtfSJjfUC-5" value="&lt;div&gt;&lt;b&gt;AI Brains&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;A system that contains data and provides search capabilities.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top;fontColor=#333333;" parent="1" vertex="1">
+                    <mxGeometry x="-320" y="-340" width="160" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="CE9EN9VTLjrJtfSJjfUC-9" value="&lt;div&gt;&lt;b&gt;LLM Wrapper&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;A wrapper around a model that handles context length, prompt format etc.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top;fontColor=#333333;" parent="1" vertex="1">
+                    <mxGeometry x="-120" y="-340" width="160" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="CE9EN9VTLjrJtfSJjfUC-17" value="&lt;div&gt;&lt;b&gt;AI Orchestration&lt;/b&gt;&lt;/div&gt;&lt;div&gt;A (sub-)system that executes different chains, using sub-services.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top;fontColor=#333333;" parent="1" vertex="1">
+                    <mxGeometry x="-480" y="-470" width="160" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="CE9EN9VTLjrJtfSJjfUC-22" value="&lt;div&gt;&lt;b&gt;AI UI&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;As the name indicates: Provides a nice User Interface to the different components.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top;fontColor=#333333;" parent="1" vertex="1">
+                    <mxGeometry x="-80" y="-640" width="160" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="00By0G_2dAAMdcYObaQ6-3" value="&lt;div&gt;&lt;b&gt;Prompt Lib&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;A library of prompts. Prompts have names &amp;amp; descriptions and can be referenced by Chains.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top;fontColor=#333333;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="-340" width="160" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="ZuFVSwHULJ2QRQUlA8EJ-2" value="&lt;div&gt;&lt;b&gt;Agents&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top;fontColor=#333333;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="-340" width="160" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;startArrow=classic;startFill=1;" parent="1" source="CE9EN9VTLjrJtfSJjfUC-17" target="CE9EN9VTLjrJtfSJjfUC-22" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-229.92307692307713" y="-290" as="sourcePoint"/>
+                        <mxPoint x="10" y="-480" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="-400" y="-490"/>
+                            <mxPoint y="-490"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" parent="1" source="CE9EN9VTLjrJtfSJjfUC-9" target="CE9EN9VTLjrJtfSJjfUC-22" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-390" y="-430" as="sourcePoint"/>
+                        <mxPoint x="30" y="-470" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="-40" y="-410"/>
+                            <mxPoint y="-410"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="5" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" parent="1" source="00By0G_2dAAMdcYObaQ6-3" target="CE9EN9VTLjrJtfSJjfUC-22" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-30" y="-290" as="sourcePoint"/>
+                        <mxPoint x="10" y="-480" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="160" y="-410"/>
+                            <mxPoint y="-410"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="6" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" parent="1" source="ZuFVSwHULJ2QRQUlA8EJ-2" target="CE9EN9VTLjrJtfSJjfUC-22" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-30" y="-290" as="sourcePoint"/>
+                        <mxPoint x="10" y="-480" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="360" y="-410"/>
+                            <mxPoint y="-410"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

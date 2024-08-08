@@ -133,6 +133,7 @@ Use cases one could think of:
 
 ## Resources
 
+* Pamela Fox Pathon AI Scripts, including streaming: [python-openai-demos](https://github.com/pamelafox/python-openai-demos)
 * Pre-commit hooks: the [original documentation](https://pre-commit.com) 
 * [A12 Widgets showcase](https://www.mgm-tp.com/a12.htmlshowcase/#/widgets/layout/application-frame)
 * A very nice overview on how to move on: [17 (Advanced) RAG Techniques to Turn Your LLM App Prototype into a Production-Ready Solution - Medium](https://towardsdatascience.com/17-advanced-rag-techniques-to-turn-your-rag-app-prototype-into-a-production-ready-solution-5a048e36cdc8)

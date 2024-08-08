@@ -1,6 +1,6 @@
 export const AI_BRAIN_URL = "http://localhost:8001"
 export const LLM_WRAPPER_URL = "http://localhost:8002"
-
+export const AI_ORCHESTRATION_URL = "http://localhost:8003"
 
 const LIGHT_GREEN = "#90ee90"
 // const BLUEISH = "#7376E1"

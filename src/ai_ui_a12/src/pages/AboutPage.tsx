@@ -1,5 +1,7 @@
-import { AboutPageContent } from '../components/AboutPageContent';
 import styled from 'styled-components';
+import MarkdownRenderer from '../components/MarkdownRenderer';
+import aboutPageMd from '../content/aboutPage/aboutPage.md';
+import { AI_BRAIN_URL, LLM_WRAPPER_URL, AI_ORCHESTRATION_URL } from '../constants';
 
 const Container = styled.div`
   display: flex;
@@ -9,15 +11,20 @@ const Container = styled.div`
   padding: 20px;
 `;
 
-const StyledAboutPageContent = styled(AboutPageContent)`
+const StyledMarkdownRenderer = styled(MarkdownRenderer)`
   max-width: 700px;
   width: 100%;
 `;
 
+const replacements = [
+  { tag: '{{AI_BRAIN_URL}}', value: AI_BRAIN_URL },
+  { tag: '{{LLM_WRAPPER_URL}}', value: LLM_WRAPPER_URL },
+  { tag: '{{AI_ORCHESTRATION_URL}}', value: AI_ORCHESTRATION_URL },
+];
 export const AboutPage = () => {
   return (
     <Container>
-      <StyledAboutPageContent />
+      <StyledMarkdownRenderer markdownFile={aboutPageMd} replacements={replacements} />
     </Container>
   );
 };

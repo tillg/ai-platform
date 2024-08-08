@@ -1,6 +1,5 @@
 from typing import Any, Dict, Optional, List
 import fastapi
-from fastapi import Depends, FastAPI, Query, Request, Body, HTTPException
 import logging
 from ai_commons.apiModelsChat import ChatRequest, Message
 from ai_commons.apiModelsLlm import Model

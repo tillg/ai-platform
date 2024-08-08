@@ -1,6 +1,6 @@
 import fastapi
 from ai_orchestration.rag_chain import RagChain
-from ai_commons.apiModelsChat import ChatRequest, ChatResponse
+from ai_commons.apiModelsChat import ChatRequest, Message#
 import logging
 
 from ai_orchestration.simple_chat import SimpleChat
@@ -16,7 +16,7 @@ async def root():
     return {"message": "This is the AI Orchestration Service! 💬"}
 
 @router.post("/chat")
-async def chat_handler(chat_request: ChatRequest) -> ChatResponse:
+async def chat_handler(chat_request: ChatRequest) -> Message:
     # messages = [message.model_dump() for message in chat_request.messages]
     # overrides = chat_request.context.get("overrides", {})
     logger.info(f"Running Chat with {chat_request}")

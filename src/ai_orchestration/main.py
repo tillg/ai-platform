@@ -1,25 +1,21 @@
-import os
-from dotenv import load_dotenv
+
 from fastapi import Depends, FastAPI
 import uvicorn
-
+from ai_commons.constants import AI_ORCHESTRATION_HOST, AI_ORCHESTRATION_PORT
 import ai_orchestration.api_routes
 import logging
 import ai_commons.constants as constants
 from fastapi.middleware.cors import CORSMiddleware
 
-logging.basicConfig(level=logging.INFO)
-
-load_dotenv()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-AI_CHAT_PORT = os.environ.get('AI_CHAT_PORT', 8001)
+logger.info(f"Orchestration port: {AI_ORCHESTRATION_PORT}")
 
-logger.info(f"Chat port: {AI_CHAT_PORT}")
-
-
-app = FastAPI()
+app = FastAPI(
+    title="AI Orchestration",
+    description="Interact with AI chains that combine vector databases and LLMs.",
+)
 allowed_origins = ["*"]
 # Add CORSMiddleware to the application
 app.add_middleware(
@@ -32,8 +28,9 @@ app.add_middleware(
 
 app.include_router(ai_orchestration.api_routes.router)
 
-
+def start_ai_orchestration(reload=False):
+    uvicorn.run("ai_orchestration.main:app",
+                host=AI_ORCHESTRATION_HOST, port=AI_ORCHESTRATION_PORT, reload=reload)
 
 if __name__ == "__main__":
-    uvicorn.run("ai_orchestration.main:app",
-                host="0.0.0.0", port=AI_CHAT_PORT, reload=True)
+        start_ai_orchestration(reload=True)

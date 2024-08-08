@@ -1,12 +1,12 @@
-from ai_commons.apiModelsChat import ChatRequest, ChatResponse
+from ai_commons.apiModelsChat import ChatRequest, Message
 import logging
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 class SimpleChat:
-    def run(self, chat_request: ChatRequest, options: dict = {}) -> ChatResponse:
+    def run(self, chat_request: ChatRequest, options: dict = {}) -> Message:
         logger.info(f"Running SimpleChat with {chat_request}")
-        chat_response = ChatResponse(content="Hello World")
+        chat_response = Message(content="Hello World")
         return chat_response
 

@@ -1,8 +1,13 @@
 import os
 from utils.utils import find_project_root
 
+AI_ORCHESTRATION_HOST = "localhost"
 AI_ORCHESTRATION_PORT = 8003
+
+AI_LLM_WRAPPER_HOST = "localhost"
 AI_LLM_WRAPPER_PORT = 8002
+
+AI_BRAIN_HOST="localhost"
 AI_BRAIN_PORT = 8001
 
 OLLAMA_BASE_URL = "http://localhost:11434"
