@@ -15,6 +15,7 @@ class ChatRequest(BaseModel):
     context: Optional[dict] = None
     model: Optional[str] = None
     options: Optional[dict] = None
+    chain: Optional[str] = None
 
     def to_dict(self):
         dict = {}

@@ -24,7 +24,6 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ markdownFile, repla
                     const regex = new RegExp(tag, 'g');
                     updatedText = updatedText.replace(regex, value);
                 });
-                console.log(updatedText);
                 setMarkdown(updatedText);
             });
     }, [markdownFile, replacements]);

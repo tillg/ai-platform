@@ -1,25 +1,31 @@
+from typing import List
 import fastapi
-from ai_orchestration.rag_chain import RagChain
 from ai_commons.apiModelsChat import ChatRequest, Message#
 import logging
-
-from ai_orchestration.simple_chat import SimpleChat
+from ai_orchestration.ai_orchestrator import get_chains, run_chain, get_chain
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 router = fastapi.APIRouter()
-chat = SimpleChat()
 
 @router.get("/")
 async def root():
-    return {"message": "This is the AI Orchestration Service! 💬"}
+    return {"message": "This is the AI Orchestration Service!"}
 
-@router.post("/chat")
-async def chat_handler(chat_request: ChatRequest) -> Message:
-    # messages = [message.model_dump() for message in chat_request.messages]
-    # overrides = chat_request.context.get("overrides", {})
-    logger.info(f"Running Chat with {chat_request}")
 
-    response =  chat.run(chat_request)
+@router.get("/list", 
+            response_model=List[str],
+            summary="get the list of available chains",
+            )
+async def list_chains():
+    chains = get_chains()
+    return chains
+
+@router.post("/run_chain")
+async def chain(chat_request: ChatRequest) -> Message:
+    logger.info(f"Running Chain with {chat_request}")
+    chain = get_chain(chat_request.chain, chat_request.options)
+    response = chain.run(chat_request, chain)
+    response.inner_working["chain"] = chain.get_name()
     return response
