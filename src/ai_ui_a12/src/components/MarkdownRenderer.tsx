@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Markdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
+import remarkGfm from "remark-gfm";
 
 interface Replacement {
     tag: string;
@@ -30,7 +31,10 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ markdownFile, repla
 
     return (
         <div>
-            <Markdown rehypePlugins={[rehypeRaw]}>
+            <Markdown 
+                rehypePlugins={[rehypeRaw]}
+                remarkPlugins={[remarkGfm]}
+            >
                 {markdown}
             </Markdown>
         </div>

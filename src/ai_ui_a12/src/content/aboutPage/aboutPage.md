@@ -13,14 +13,11 @@ This is how the different bits are interacting:
   <img src="/content/ai_platform_overview_simple.png" alt="Overview" width="90%"/>
 </div>
 
-
-## APIs
-
-As the AI_Platform is meant to be used and reused in different way, it uses the API first approach. Here's a list open the APIs of the available components:
-
-* <a href="{{AI_BRAIN_URL}}/docs" target="_blank">OpenAPI Docs for Brains & Search</a>
-* <a href="{{LLM_WRAPPER_URL}}/docs" target="_blank">OpenAPI Docs LLM Wrapper Docs</a>
-* <a href="{{AI_ORCHESTRATION_URL}}/docs" target="_blank">OpenAPI Docs for AI Orchestration & Chains</a>
+| Component        | State   | API                                                                                                    | Missing / coming soon                                              |
+|------------------|---------|--------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
+| AI Orchestration | Running | <a href="{{AI_ORCHESTRATION_URL}}/docs" target="_blank">OpenAPI Docs for AI Orchestration & Chains</a> | Currently only 2 chains: *Default* (a mock chain) and  *Naked LLN* |
+| AI Brains        | Running | <a href="{{AI_BRAIN_URL}}/docs" target="_blank">OpenAPI Docs for Brains & Search</a>                   |                                                                    |
+| LLM Wrapper      | Running | <a href="{{LLM_WRAPPER_URL}}/docs" target="_blank">OpenAPI Docs LLM Wrapper Docs</a>                   |                                                                    |
 
 For the entire code base go see the [Github repo](https://github.com/tillg/ai-platform).
 
@@ -42,3 +39,4 @@ This is how you can create your own chains:
     def run(self, request: ChatRequest) -> Message:
       pass  # Here would be the code of your new chain.
 ```
+
