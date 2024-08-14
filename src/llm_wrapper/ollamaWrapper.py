@@ -1,6 +1,6 @@
 
 from typing import Dict, List, Union
-from ollama import Client
+from ollama import Client as OllamaClient
 from ai_commons.constants import OLLAMA_BASE_URL, LLM_WRAPPER_DEFAULT_MODEL, OLLAMA_KEEP_ALIVE, OLLAMA_DEFAULT_TEMPERATURE
 import logging
 from ai_commons.apiModelsChat import ChatRequest, Message
@@ -33,7 +33,7 @@ def get_running_models_as_json(client):
 
 def get_models() -> List[Model]:
     logger = logging.getLogger(__name__)
-    client = Client(host=OLLAMA_BASE_URL)
+    client = OllamaClient(host=OLLAMA_BASE_URL)
     models_as_json = get_models_as_json_array(client)
     if models_as_json is None:
         logger.error("Error: Could not get models")
@@ -72,7 +72,7 @@ def extract_inner_working(ollama_response: Dict[str, Union[str, int]]) -> Dict[s
     return inner_working
 
 def chat(chat_request: ChatRequest) -> Message:
-    client = Client(host=OLLAMA_BASE_URL)
+    client = OllamaClient(host=OLLAMA_BASE_URL)
     logger.info(f"Chat req: {chat_request}")
     chat_request = check_and_fix_model_in_request(chat_request)
     logger.info(f"Chat req after check: {chat_request}")

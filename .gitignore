@@ -1,3 +1,6 @@
+# In between generated code used for "inspiration"
+llm_wrapper_client_generated
+
 # Azure az webapp deployment details
 .azure
 *_env

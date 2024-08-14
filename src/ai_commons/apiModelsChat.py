@@ -10,6 +10,16 @@ class Message(BaseModel):
     role: str 
     inner_working: Optional[Dict[str, Any]] = None
 
+    @classmethod
+    def from_dict(cls, src_dict: Dict[str, Any]):
+        try:
+            content = src_dict.get("content")
+            role = src_dict.get("role")
+            inner_working = src_dict.get("inner_working")
+            return cls(content=content, role=role, inner_working=inner_working)
+        except Exception as e:
+            raise ValueError(f"Error creating Message from dict: {e}")
+
 class ChatRequest(BaseModel):
     messages: list[Message]
     context: Optional[dict] = None

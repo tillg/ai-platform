@@ -123,6 +123,7 @@ Use cases one could think of:
 
 ## Todo
 
+* Visualize the chunks in their original document. Use this? [How to highlight any web page on Google Chrome (or Chromium-based Edge)](https://medium.com/@Bartleby/how-to-highlight-any-web-page-on-google-chrome-or-chromium-based-edge-83035c41eeec)
 * Add pre-commit hooks
 * The brain should keep track in the `_index.json` if a document was indexed, as well as using which embedding model
 * Add a function `brain.import_or_update()` 
