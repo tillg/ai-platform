@@ -10,7 +10,7 @@ logger.setLevel(logging.INFO)
 class Chain(Chain):
     
     def run(self, chat_request: ChatRequest, options: Dict[str, Any]) -> Message:
-        logger.info(f"Running Default chain with {chat_request} and options {options}")
+        logger.info(f"Running Naked LLM chain with {chat_request} and options {options}")
         client = Client()
         message = client.chat(chat_request)
         return message

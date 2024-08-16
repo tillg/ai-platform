@@ -25,7 +25,7 @@ async def list():
     return Brain.get_brain_list()
 
 @router.post("/search")
-async def search(request: Request, q: Optional[str] = None, body: Optional[SearchRequest] = Body(default=None)) -> SearchResult:
+async def search(q: Optional[str] = None, body: Optional[SearchRequest] = Body(default=None)) -> SearchResult:
     global brain
     logger.info(f"Search query: q={q}, body={body}")
 

@@ -30,7 +30,7 @@ class Brain:
         return {}
 
     @classmethod
-    def get_brain_list(cls, brains_directory: str = AI_BRAINS_DIRECTORY, brain_index_filename: str = "brains.json"):
+    def get_brain_list(cls, brains_directory: str = AI_BRAINS_DIRECTORY, brain_index_filename: str = "brains.json") -> List[BrainModel]:
         brain_dict = read_dict_from_file(full_filename=os.path.join(
             brains_directory, brain_index_filename))
         logger.info(f"Brain dict: {brain_dict}")

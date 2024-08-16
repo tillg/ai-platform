@@ -1,5 +1,5 @@
 {
-  "extends": "./../node_modules/@com.mgmtp.a12.devtools/devtools/configs/tsconfig.json",
+  "extends": "./node_modules/@com.mgmtp.a12.devtools/devtools/configs/tsconfig.json",
   "compilerOptions": {
     "target": "es5",
     "lib": [
