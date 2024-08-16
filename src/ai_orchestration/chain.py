@@ -4,8 +4,7 @@ from ai_commons.apiModelsChat import ChatRequest, Message
 
 class Chain(ABC):
     def __init__(self, options: Dict[str, Any]):
-        for key, value in options.items():
-            setattr(self, key, value)
+        self.options = options
         
     @abstractmethod
     def run(self, chat_request: ChatRequest, options: dict = {}) -> Message:

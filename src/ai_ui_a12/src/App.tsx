@@ -14,12 +14,18 @@ import { Header } from "./Header";
 import { AboutPage } from "./pages/AboutPage";
 import { SearchPage } from "./pages/SearchPage";
 import { ChatLlmPage } from "./pages/ChatLlmPage";
+import { ChatChainPage } from "./pages/ChatChainPage";
 
 const theme = createTheme({
   baseTheme: "flat-compact"
 });
 
-const menuItems = [{ label: "About", content: <AboutPage /> }, { label: "Search Brains", content: <SearchPage /> }, { label: "Chat LLM", content: <ChatLlmPage/> }];
+const menuItems = [
+  { label: "About", content: <AboutPage /> }, 
+  { label: "Search Brains", content: <SearchPage /> }, 
+  { label: "Chat LLM", content: <ChatLlmPage /> },
+  { label: "Chat Chain", content: <ChatChainPage /> }
+];
 
 
 export default function App() {

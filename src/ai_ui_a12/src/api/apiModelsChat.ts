@@ -11,6 +11,7 @@ export type ChatRequest = {
     context?: { [key: string]: string };
     model?: string;
     options?: { [key: string]: any };
+    chain?: string;
 };
 
 

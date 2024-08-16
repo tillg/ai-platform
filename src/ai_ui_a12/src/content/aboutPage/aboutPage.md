@@ -13,12 +13,15 @@ This is how the different bits are interacting:
   <img src="/content/ai_platform_overview_simple.png" alt="Overview" width="90%"/>
 </div>
 
+</br>
+
 | Component        | State   | API                                                                                                    | Comments soon                                              |
 |------------------|---------|--------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
 | AI Orchestration | ✅ | <a href="{{AI_ORCHESTRATION_URL}}/docs" target="_blank">OpenAPI Docs for AI Orchestration & Chains</a> | Currently only 2 chains: *Default* (a mock chain) and  *Naked LLM* |
 | AI Brains        | ✅ | <a href="{{AI_BRAIN_URL}}/docs" target="_blank">OpenAPI Docs for Brains & Search</a>                   |                                                                    |
 | LLM Wrapper      | ✅ | <a href="{{LLM_WRAPPER_URL}}/docs" target="_blank">OpenAPI Docs LLM Wrapper Docs</a>                   |                                                                    |
 
+</br>
 For the entire code base go see the [Github repo](https://github.com/tillg/ai-platform).
 
 ## Chains

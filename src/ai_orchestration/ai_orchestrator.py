@@ -1,4 +1,4 @@
-from typing import List
+from typing import Any, Dict, List, Optional
 from utils.sub_modules import list_submodules
 import ai_orchestration.chains
 from ai_commons.apiModelsChat import ChatRequest, Message
@@ -14,7 +14,7 @@ def run_chain(chat_request: ChatRequest, chain_name: str) -> Message:
     return chain_result
 
 
-def get_chain_by_name(chain_name: str, options ):
+def get_chain_by_name(chain_name: str, options: Optional[Dict[str, Any]] = None):    
     if chain_name == "simple_rag_chain":
         from ai_orchestration.chains.simple_rag.chain import Chain
         return Chain(options=options)
