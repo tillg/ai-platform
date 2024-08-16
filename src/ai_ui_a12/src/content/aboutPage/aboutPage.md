@@ -13,11 +13,11 @@ This is how the different bits are interacting:
   <img src="/content/ai_platform_overview_simple.png" alt="Overview" width="90%"/>
 </div>
 
-| Component        | State   | API                                                                                                    | Missing / coming soon                                              |
+| Component        | State   | API                                                                                                    | Comments soon                                              |
 |------------------|---------|--------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
-| AI Orchestration | Running | <a href="{{AI_ORCHESTRATION_URL}}/docs" target="_blank">OpenAPI Docs for AI Orchestration & Chains</a> | Currently only 2 chains: *Default* (a mock chain) and  *Naked LLN* |
-| AI Brains        | Running | <a href="{{AI_BRAIN_URL}}/docs" target="_blank">OpenAPI Docs for Brains & Search</a>                   |                                                                    |
-| LLM Wrapper      | Running | <a href="{{LLM_WRAPPER_URL}}/docs" target="_blank">OpenAPI Docs LLM Wrapper Docs</a>                   |                                                                    |
+| AI Orchestration | ✅ | <a href="{{AI_ORCHESTRATION_URL}}/docs" target="_blank">OpenAPI Docs for AI Orchestration & Chains</a> | Currently only 2 chains: *Default* (a mock chain) and  *Naked LLM* |
+| AI Brains        | ✅ | <a href="{{AI_BRAIN_URL}}/docs" target="_blank">OpenAPI Docs for Brains & Search</a>                   |                                                                    |
+| LLM Wrapper      | ✅ | <a href="{{LLM_WRAPPER_URL}}/docs" target="_blank">OpenAPI Docs LLM Wrapper Docs</a>                   |                                                                    |
 
 For the entire code base go see the [Github repo](https://github.com/tillg/ai-platform).
 
@@ -29,14 +29,4 @@ Chain are functions that get a `ChatRequest` and produce a `Message`. A typical 
 3. Send this prompt to an LLM (using the `LlmWrapper`)
 4. Return the answer to the user.
 
-This is how you can create your own chains:
-* Chains are implemented in the backend, thus in Python. 
-* They are located in their own directory `src/ai_orchestration/chains/name_of_chain`.
-* This directory must be a Python module (i.e. have a `__init.py`) and a `chain.py` that contains a `chain`object that inherits from `ai_orchestration.chain`.
-* The only function that must be provided by the `chain` object is `run`:
-
-```python
-    def run(self, request: ChatRequest) -> Message:
-      pass  # Here would be the code of your new chain.
-```
 

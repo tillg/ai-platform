@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Markdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from "remark-gfm";
+import styled from 'styled-components';
 
 interface Replacement {
     tag: string;
@@ -30,14 +31,35 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ markdownFile, repla
     }, [markdownFile, replacements]);
 
     return (
-        <div>
-            <Markdown 
-                rehypePlugins={[rehypeRaw]}
-                remarkPlugins={[remarkGfm]}
-            >
-                {markdown}
-            </Markdown>
-        </div>
+        <>
+            <style>{`
+            table{
+            border:1px solid black;
+            border-collapse: collapse;
+            }
+            th, td{
+            border:1px solid black;
+            text-align:left;
+            padding: 5px;
+            }
+            code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+            font-weight: bold;
+            color: black;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        `}</style>
+            <div>
+                <Markdown
+                    rehypePlugins={[rehypeRaw]}
+                    remarkPlugins={[remarkGfm]}
+                >
+                    {markdown}
+                </Markdown>
+            </div>
+        </>
     );
 };
 
