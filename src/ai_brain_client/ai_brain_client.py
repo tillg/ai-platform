@@ -51,3 +51,5 @@ class Client:
         logger.info(f"POST /search: {response}")
         response.raise_for_status()
         return SearchResult(**response.json())
+    
+    

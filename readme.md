@@ -113,6 +113,44 @@ Loaders (planned and done):
 * The Loader config is specific to the different loaders we have
 * The `NoOfDocs` and `NoOfChunks` values are updated every time the brain info is questioned.
 
+## The Prompts
+
+Prompt templates are strings with placeholders for variables. As a starting point I use a list of constants and the [Standard Python Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax).
+
+Example: 
+```python
+prompt_template = """
+DOCUMENT:
+{documents}
+
+QUESTION:
+{question}
+
+INSTRUCTIONS:
+Answer the users QUESTION using the DOCUMENT text above.
+Keep your answer ground in the facts of the DOCUMENT.
+If the DOCUMENT doesn’t contain the facts to answer the QUESTION return NONE.
+"""
+```
+Prompt templates are identidied by an `ID`. The prompts library offers 2 key functions:
+
+```python
+def get_prompt_template(prompt_id: str) -> str:
+
+def get_prompt(prompt_template_id:str, **kwargs) -> str:
+```
+
+The 2nd argument to the `get_prompt` function are the replacements for the placeholders in the prompt. 
+
+```python
+prompt_fields = {
+  "documents": """
+Marie Curie (1867–1934) was a Polish and naturalised-French physicist and chemist who conducted pioneering research on radioactivity. Born in Warsaw, she studied in Poland until she was 24, when she moved to Paris to earn her higher degrees.
+  """,
+  "question": "Was Marie-Curie french?"
+}
+```
+
 ## Use cases
 
 Use cases one could think of:
@@ -134,6 +172,7 @@ Use cases one could think of:
 
 ## Resources
 
+* Intersting Prompts: [Apple Just Quietly Exposed The *AI Prompts* Powering Apple Intelligence](https://medium.com/macoclock/apple-just-quietly-exposed-the-ai-prompts-powering-apple-intelligence-b4ac3314eb14)
 * Pamela Fox Pathon AI Scripts, including streaming: [python-openai-demos](https://github.com/pamelafox/python-openai-demos)
 * Pre-commit hooks: the [original documentation](https://pre-commit.com) 
 * [A12 Widgets showcase](https://www.mgm-tp.com/a12.htmlshowcase/#/widgets/layout/application-frame)
@@ -148,4 +187,5 @@ Use cases one could think of:
 
 ### Things to look at 
 
+apple-just-quietly-exposed-the-ai-prompts-powering-apple-intelligence-b4ac3314eb14)
 * https://medium.com/coding-beauty/vscode-upgrade-tips-246481c27e8e
