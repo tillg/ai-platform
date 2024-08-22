@@ -10,9 +10,11 @@ class SearchRequest(BaseModel):
     search_term: str
     brain_id: Optional[str] = None
 
+
 class SearchInfo(BaseModel):
     search_term: str
     distance: float
+
 
 class Document(BaseModel):
     title: str
@@ -105,11 +107,17 @@ class SearchResultChunksAndDocuments(BaseModel):
     chunks: Optional[List[Chunk]] = None
     documents: Optional[List[Document]] = None
 
+    def chunks_as_str(self, separator: str = "\n") -> str:
+        if not self.chunks:
+            return ""
+        return separator.join(chunk.content for chunk in self.chunks)
+
 
 class SearchResult(BaseModel):
     search_term: Optional[str] = None
     result: Optional[SearchResultChunksAndDocuments] = None
     inner_working: Optional[Dict[str, Any]] = None
+
 
 class BrainModel(BaseModel):
     id: str

@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Optional, Union
 
 import httpx
 from attrs import define, evolve, field
+from pydantic import validate_call
 from ai_commons.apiModelsChat import ChatRequest, Message
 from ai_commons.apiModelsLlm import Model
 import logging
@@ -45,7 +46,8 @@ class Client:
         logger.info(f"GET /list: {response}")
         response.raise_for_status()
         return [BrainModel(**x) for x in response.json()]
-    
+
+    @validate_call
     def search_chunks_by_text(self,  search_request: SearchRequest) -> SearchResult:
         response = self.get_httpx_client().post("/search", json=search_request.model_dump())
         logger.info(f"POST /search: {response}")

@@ -33,5 +33,16 @@ class ChatRequest(BaseModel):
             dict['model'] = self.model
         dict['messages'] = [message.model_dump() for message in self.messages]
         return dict
+    
+    def get_last_question(self) -> str:
+        for message in reversed(self.messages):
+            if message.role == 'user':
+                return message.content
+
+        # Return an empty string if no user message is found
+        return None
+    
+        
+
 
 

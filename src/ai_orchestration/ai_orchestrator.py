@@ -15,7 +15,7 @@ def run_chain(chat_request: ChatRequest, chain_name: str) -> Message:
 
 
 def get_chain_by_name(chain_name: str, options: Optional[Dict[str, Any]] = None):    
-    if chain_name == "simple_rag_chain":
+    if chain_name == "simple_rag":
         from ai_orchestration.chains.simple_rag.chain import Chain
         return Chain(options=options)
     elif chain_name == "naked_llm":
