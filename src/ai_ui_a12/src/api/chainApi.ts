@@ -15,6 +15,7 @@ async function chainApiHttp(request: ChatRequest): Promise<Response> {
 export async function chainApi(request: ChatRequest): Promise<Message> {
     console.log("chainApi request", request);
     const httpResponse = await chainApiHttp(request);
+    console.log("chainApi response", httpResponse);
     if (httpResponse.ok) {
         const jsonResponse = await httpResponse.json();
         if (jsonResponse.content) {

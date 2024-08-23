@@ -14,6 +14,36 @@ const useCustomTheme = () => {
 const TagComponent = ({ keyName, value }: { keyName: string, value: any }) => {
     const theme = useCustomTheme();
     const tagColor = theme.colors.primary;
+
+    // Function to render value based on its type
+    const renderValue = (value: any) => {
+        if (typeof value === 'string') {
+            // Handle boolean type
+            return value
+        }
+        if (typeof value === 'object' && value !== null) {
+            // Handle object type
+            return (
+                <div>
+                    {Object.entries(value).map(([subKey, subValue]) => (
+                        <div key={subKey}>
+                            <TagComponent key={subKey} keyName={subKey} value={subValue} />
+                        </div>
+                    ))}
+                </div>
+            );
+        } else {
+            let value_str: string;
+            try {
+                value_str = value.toString();
+            } catch (error) {
+                console.error("Error converting value to string:", error);
+                value_str = "Invalid value";
+            }
+            return value_str;
+        }
+    };
+
     if (keyName == "model") {
         return (
             <Tag color={tagColor} icon={<Icon>psychology</Icon>}> LLM: {value}</Tag>
@@ -35,7 +65,7 @@ const TagComponent = ({ keyName, value }: { keyName: string, value: any }) => {
         );
     }
     return (
-        <Tag color={tagColor}>  {keyName}: {value}</Tag>
+        <Tag color={tagColor}>  {keyName}: {renderValue(value)}</Tag>
     );
 };
 
