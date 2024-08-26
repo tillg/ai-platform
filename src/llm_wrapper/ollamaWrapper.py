@@ -8,7 +8,7 @@ from ai_commons.apiModelsLlm import Model
 from copy import deepcopy
 from utils.simplify_dict import ensure_str_str_dict
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARN)
 logger = logging.getLogger(__name__)
 
 def get_models_as_json_array(client):

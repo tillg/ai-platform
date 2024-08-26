@@ -170,12 +170,14 @@ Use cases one could think of:
 * Calling `python -m ai_brain` or similar should start the fastAPI server
 * Make ability to load a brain with data, have it's configuration in a YAML file
 
-## Resources
+## Resources & things to look at
 
+* [A12 Widgets showcase](https://www.mgm-tp.com/a12.htmlshowcase/#/widgets/layout/application-frame)
+* [Persist your React State in the Browser - DEV](https://dev.to/ajejey/persist-your-react-state-in-the-browser-2bgm)
+* [10 essential tips to supercharge VS Code and code faster (0 to 100) - Medium](https://medium.com/coding-beauty/vscode-upgrade-tips-246481c27e8e)
 * Intersting Prompts: [Apple Just Quietly Exposed The *AI Prompts* Powering Apple Intelligence](https://medium.com/macoclock/apple-just-quietly-exposed-the-ai-prompts-powering-apple-intelligence-b4ac3314eb14)
 * Pamela Fox Pathon AI Scripts, including streaming: [python-openai-demos](https://github.com/pamelafox/python-openai-demos)
 * Pre-commit hooks: the [original documentation](https://pre-commit.com) 
-* [A12 Widgets showcase](https://www.mgm-tp.com/a12.htmlshowcase/#/widgets/layout/application-frame)
 * A very nice overview on how to move on: [17 (Advanced) RAG Techniques to Turn Your LLM App Prototype into a Production-Ready Solution - Medium](https://towardsdatascience.com/17-advanced-rag-techniques-to-turn-your-rag-app-prototype-into-a-production-ready-solution-5a048e36cdc8)
 * [Retrieval-Augmented Generation (RAG) from basics to advanced - Medium](https://medium.com/@tejpal.abhyuday/retrieval-augmented-generation-rag-from-basics-to-advanced-a2b068fd576c)
 * [Advanced RAG 01: Small-to-Big Retrieval - Medium](https://towardsdatascience.com/advanced-rag-01-small-to-big-retrieval-172181b396d4)
@@ -184,8 +186,3 @@ Use cases one could think of:
 * [Embeddings and Vector Databases With ChromaDB - Real Python](https://realpython.com/chromadb-vector-database/)
 * Original inspiration taken from [RAG on PostgreSQL - Github](https://github.com/Azure-Samples/rag-postgres-openai-python#) as explained in this video: [Building a RAG-powered AI chat app with Python and VS Code](https://www.youtube.com/watch?v=3ctFWU492xk&t=1177s)
 
-
-### Things to look at 
-
-apple-just-quietly-exposed-the-ai-prompts-powering-apple-intelligence-b4ac3314eb14)
-* https://medium.com/coding-beauty/vscode-upgrade-tips-246481c27e8e

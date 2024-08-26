@@ -14,6 +14,7 @@ export async function searchApi(searchRequest: SearchRequest): Promise<SearchRes
     });
     if (httpResponse.ok) {
         const jsonResponse = await httpResponse.json();
+        console.log("searchApi jsonResponse: ", jsonResponse)
         if (jsonResponse.result) {
             const searchResponse: SearchResult = new SearchResult(jsonResponse.result, jsonResponse.inner_working || {})
             return searchResponse;
