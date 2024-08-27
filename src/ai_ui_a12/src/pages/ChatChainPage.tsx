@@ -118,7 +118,7 @@ export const ChatChainPage = () => {
         <PageContainer>
             <Header>
                 <Button label="Settings" id={generateUid()} onClick={showConfiguration} icon={<Icon>settings</Icon>} />
-                <Tag icon={<Icon>chain</Icon>}> Chain: {selectedChainName}</Tag>
+                <Tag icon={<Icon>format_list_numbered</Icon>}> Chain: {selectedChainName}</Tag>
             </Header>
             {isConfigurationOpen && (
                 <ModalOverlay closeOnOutsideClick={false} onClose={closeConfiguration}>
