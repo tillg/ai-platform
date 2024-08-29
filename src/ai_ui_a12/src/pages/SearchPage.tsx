@@ -13,6 +13,9 @@ import { getBrainList, searchApi } from "../api/searchApi";
 import { UserInput } from "../components/UserInput";
 import { SearchHistory } from "../components/SearchHistory";
 
+// @ts-ignore
+import { useDbState, } from 'use-db-state';
+
 // Styled components
 const PageContainer = styled.div`
     display: flex;
@@ -28,7 +31,14 @@ const Header = styled.div`
     background-color: #e2e6e9;
     z-index: 1;
     padding: 5px;
+    justify-content: space-between
 `;
+
+const LeftContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
 const StickyInput = styled.div`
     position: sticky;
     bottom: 0;
@@ -47,15 +57,11 @@ export const SearchPage = () => {
 
     //Brains
     const [availableBrainModels, setAvailableBrainModels] = useState<BrainModel[]>([]);
-    const [selectedBrainId, setSelectedBrainId] = useState<string>();
+    const [selectedBrainId, setSelectedBrainId] = useDbState("SearchPage.selectedBrainId", undefined);
     const fetchBrains = async () => {
         try {
             const brains = await getBrainList();
             setAvailableBrainModels(brains);
-            if (selectedBrainId === undefined) {
-                console.log("Default Brain: ", brains[0].id)
-                setSelectedBrainId(brains[0].id);
-            }
         }
         catch (error) {
             console.error('SearchPage.fetchBrains: Failed to fetch brain list:', error);
@@ -81,7 +87,8 @@ export const SearchPage = () => {
     };
 
     // Search history
-    const [searchHistory, setSearchHistory] = useState<SearchHistoryItem[]>([]);
+    const emptySearchHistory: SearchHistoryItem[] = [];
+    const [searchHistory, setSearchHistory] = useDbState("SearchPage.searchHistory", emptySearchHistory);
 
     // User Questions
     async function sendQuestion(question: string) {
@@ -91,12 +98,20 @@ export const SearchPage = () => {
         const searchResult = await searchApi(searchRequest)
         setSearchHistory([...newSearchHistory, searchResult]);
     }
+    
+    const resetChatAndConfiguration = (): void => {
+        setSelectedBrainId(undefined)
+        setSearchHistory(emptySearchHistory)
+    }
 
     return (
         <PageContainer>
             <Header>
-                <Button label="Settings" id={generateUid()} onClick={showConfiguration} icon={<Icon>settings</Icon>} />
-                <Tag icon={<Icon>psychology</Icon>}> Brain: {selectedBrainId}</Tag>
+                <LeftContainer>
+                    <Button label="Settings" id={generateUid()} onClick={showConfiguration} icon={<Icon>settings</Icon>} />
+                    <Tag icon={<Icon>psychology</Icon>}> Brain: {selectedBrainId}</Tag>
+                </LeftContainer>
+                <Button label="Reset Config & Search History" id={generateUid()} onClick={resetChatAndConfiguration} icon={<Icon>power_settings_new</Icon>} />
             </Header>
             {isConfigurationOpen && (
                 <ModalOverlay closeOnOutsideClick={false} onClose={closeConfiguration}>

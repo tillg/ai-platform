@@ -15,6 +15,9 @@ import { UserInput } from "../components/UserInput";
 import { ChatHistory } from "../components/ChatHistory";
 import styled from "styled-components";
 
+// @ts-ignore
+import { useDbState, } from 'use-db-state';
+
 // Styled components
 const PageContainer = styled.div`
     display: flex;
@@ -30,6 +33,12 @@ const Header = styled.div`
     background-color: #e2e6e9;
     z-index: 1;
     padding: 5px;
+    justify-content: space-between;
+`;
+
+const LeftContainer = styled.div`
+  display: flex;
+  gap: 10px;
 `;
 
 const Content = styled.div`
@@ -56,10 +65,10 @@ export const ChatChainPage = () => {
 
     //Chains
     const [availableChains, setAvailableChains] = useState<string[]>([]);
-    const [selectedChainName, setSelectedChainName] = useState<string>();
+    const [selectedChainName, setSelectedChainName] = useDbState('ChatChainPage.selectedChainName', undefined);
     const fetchChains = async () => {
         try {
-            const chains = await getChains(); 
+            const chains = await getChains();
             setAvailableChains(chains);
         } catch (error) {
             console.error("Failed to fetch model names:", error);
@@ -78,12 +87,12 @@ export const ChatChainPage = () => {
     }, [selectedChainName])
     useEffect(() => {
         initiateSelectedChain();
-    }, [initiateSelectedChain]); 
+    }, [initiateSelectedChain]);
 
     // Config Pane
     const [isConfigurationOpen, setConfigurationOpen] = React.useState<boolean>(false);
-    const showConfiguration = (): void => setConfigurationOpen(true);
-    const closeConfiguration = (): void => setConfigurationOpen(false);
+    const showConfigurationWindow = (): void => setConfigurationOpen(true);
+    const closeConfigurationWindow = (): void => setConfigurationOpen(false);
 
     const setConfiguration = (config: Record<string, any>) => {
         if (config.chain && config.chain !== undefined) {
@@ -92,11 +101,11 @@ export const ChatChainPage = () => {
     };
     const handleSetConfiguration = (config: Record<string, any>) => {
         setConfiguration(config);
-        closeConfiguration();
+        closeConfigurationWindow();
     };
 
     // Chat history
-    const [chatHistory, setChatHistory] = useState<Message[]>([]);
+    const [chatHistory, setChatHistory] = useDbState('ChatChainPage.chatHistory', []); // useState<Message[]>([]);
 
     // User Questions
     const sendQuestion = (question: string) => {
@@ -114,17 +123,25 @@ export const ChatChainPage = () => {
             });
     }
 
+    const resetChatAndConfiguration = (): void => {
+        setSelectedChainName(undefined)
+        setChatHistory([])
+    }
+
     return (
         <PageContainer>
             <Header>
-                <Button label="Settings" id={generateUid()} onClick={showConfiguration} icon={<Icon>settings</Icon>} />
-                <Tag icon={<Icon>format_list_numbered</Icon>}> Chain: {selectedChainName}</Tag>
+                <LeftContainer>
+                    <Button label="Settings" id={generateUid()} onClick={showConfigurationWindow} icon={<Icon>settings</Icon>} />
+                    <Tag icon={<Icon>format_list_numbered</Icon>}> Chain: {selectedChainName}</Tag>
+                </LeftContainer>
+                <Button label="Reset Config & Chat" id={generateUid()} onClick={resetChatAndConfiguration} icon={<Icon>power_settings_new</Icon>} />
             </Header>
             {isConfigurationOpen && (
-                <ModalOverlay closeOnOutsideClick={false} onClose={closeConfiguration}>
+                <ModalOverlay closeOnOutsideClick={false} onClose={closeConfigurationWindow}>
                     <ActionContentbox
                         headingElements={<ContentBoxElements.Title ariaLevel={1} text="Settings" />}
-                        headingButtons={<ContentBoxElements.CloseButton onClick={closeConfiguration} />}
+                        headingButtons={<ContentBoxElements.CloseButton onClick={closeConfigurationWindow} />}
                     >
                         <ChainConfigurationPane chains={availableChains} chainConfiguration={{ chain: selectedChainName }} setConfiguration={handleSetConfiguration} />
                     </ActionContentbox>

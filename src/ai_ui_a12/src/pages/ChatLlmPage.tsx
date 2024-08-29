@@ -15,6 +15,9 @@ import { UserInput } from "../components/UserInput";
 import { ChatHistory } from "../components/ChatHistory";
 import styled from "styled-components";
 
+// @ts-ignore
+import { useDbState, } from 'use-db-state';
+
 // Styled components
 const PageContainer = styled.div`
     display: flex;
@@ -30,6 +33,12 @@ const Header = styled.div`
     background-color: #e2e6e9;
     z-index: 1;
     padding: 5px;
+    justify-content: space-between
+`;
+
+const LeftContainer = styled.div`
+  display: flex;
+  gap: 10px;
 `;
 
 const Content = styled.div`
@@ -56,7 +65,7 @@ export const ChatLlmPage = () => {
 
     //Models
     const [availableModels, setAvailableModels] = useState<Model[]>([]);
-    const [selectedModelName, setSelectedModelName] = useState<string>();
+    const [selectedModelName, setSelectedModelName] = useDbState("ChatLlmPage.selectedModelName", undefined);
     const fetchModels = async () => {
         try {
             const models = await getModels(); // This returns an array of Models
@@ -84,7 +93,7 @@ export const ChatLlmPage = () => {
     }, []);
 
     // Temperature
-    const [selectedTemp, setSelectedTemp] = useState<number>(0);
+    const [selectedTemp, setSelectedTemp] = useDbState("ChatLlmPage.setSelectedTemp", undefined);
 
     // Config Pane
     const [isConfigurationOpen, setConfigurationOpen] = React.useState<boolean>(false);
@@ -106,7 +115,7 @@ export const ChatLlmPage = () => {
     };
 
     // Chat history
-    const [chatHistory, setChatHistory] = useState<Message[]>([]);
+    const [chatHistory, setChatHistory] = useDbState("ChatLlmPage.chatHistory", []);
 
     // User Questions
     const sendQuestion = (question: string) => {
@@ -125,12 +134,21 @@ export const ChatLlmPage = () => {
             });
     }
 
+    const resetChatAndConfiguration = (): void => {
+        setSelectedModelName(undefined)
+        setSelectedTemp(undefined)
+        setChatHistory([])
+    }
+
     return (
         <PageContainer>
             <Header>
-                <Button label="Settings" id={generateUid()} onClick={showConfiguration} icon={<Icon>settings</Icon>} />
-                <Tag icon={<Icon>psychology</Icon>}> LLM: {selectedModelName}</Tag>
-                <Tag icon={<Icon>thermostat</Icon>}> Temperature: {selectedTemp}</Tag>
+                <LeftContainer>
+                    <Button label="Settings" id={generateUid()} onClick={showConfiguration} icon={<Icon>settings</Icon>} />
+                    <Tag icon={<Icon>psychology</Icon>}> LLM: {selectedModelName}</Tag>
+                    <Tag icon={<Icon>thermostat</Icon>}> Temperature: {selectedTemp}</Tag>
+                </LeftContainer>
+                <Button label="Reset Config & Chat" id={generateUid()} onClick={resetChatAndConfiguration} icon={<Icon>power_settings_new</Icon>} />
             </Header>
             {isConfigurationOpen && (
                 <ModalOverlay closeOnOutsideClick={false} onClose={closeConfiguration}>

@@ -26,6 +26,7 @@
     "remark-gfm": "^4.0.0",
     "styled-components": "^5.3.11",
     "typescript": "^5.3.3",
+    "use-db-state": "^2.0.2",
     "web-vitals": "^2.1.4"
   },
   "overrides": {

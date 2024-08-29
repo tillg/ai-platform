@@ -22,7 +22,7 @@ This is how the different bits are interacting:
 | LLM Wrapper      | ✅ | <a href="{{LLM_WRAPPER_URL}}/docs" target="_blank">OpenAPI Docs LLM Wrapper Docs</a>                   |                                                                    |
 
 </br>
-For the entire code base go see the [Github repo](https://github.com/tillg/ai-platform).
+For the entire code base go see the <a href="https://github.com/tillg/ai-platform" target="_blank">Github repo</a>.
 
 ## Chains
 
