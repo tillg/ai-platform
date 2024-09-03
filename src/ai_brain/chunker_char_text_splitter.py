@@ -45,7 +45,6 @@ class ChunkerCharacterTextSplitter(Chunker):
             chunk_overlap=self.chunk_overlap
         )
 
-
     @validate_call
     def chunkify(self, document: Document) -> List[Chunk]:
         #lc_document = document.to_lc_document()

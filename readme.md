@@ -83,7 +83,7 @@ An impression of what it looks like:
 
 ## The Brains
 
-A brain is a Vectore Database (or a namespace within a vector DB) that contains documents / embeddings about a certain domain. It is typically attached to a loader that configures what data is to be loaded from where.
+A brain is a Vectore Database (or a namespace within a vector DB) that contains documents / embeddings about a certain domain. It is typically attached to a pipeline that configures what data is to be loaded from where.
 
 Technically the Brain contains 2 data storages and one index file:
 
@@ -93,21 +93,36 @@ Technically the Brain contains 2 data storages and one index file:
 
 Filling a brain with consists of the following steps:
 
-* `acquisition` imports the documents. THis is typically done by a scraping process. We provide different `data_acquirer`
-* Indexing, that comprises
-  * `chunk` cuts the documents in chunks
-  * `index` imports the chunks with their embedding as index
+* **`scraper`** imports the documents. THis is typically done by a scraping process. We provide different `brain_scraper`:
+  * `brain_scraper_wikipedia`
+  * `brain_scraper_confluence`
+* **Chunking** consists of cutting the documents into digestable pieces. We plan to have different chunking strategies, currently we have 
+  * `ChunkerCharacterTextSplitter` that simply cuts text into equal length chunks.
+* **Indexing**, that calculates embeddings and adds those embeddings to the vector database. Currently we only have one way of calculating embedding:
+  * the default of [ChromaDB](https://www.trychroma.com) that is the [all-MiniLM-L6-v2](https://docs.trychroma.com/guides/embeddings#default:-all-minilm-l6-v2)
 
-These indexing steps  are performed by the `brain` itself.
+These steps are performed/triggered by the `brain` itself. So the brain has 
+* a scraper
+* a chunker
+* an indexer that calculates embeddings and has a vector DB.
 
-A brain is typically attached to a loader - the software that ingests the data into the brain.
+The different steps can also be run independenatly, so if you have scraped lots of data (and have it on your local disk) you can test different chunking and indexing strategies.
 
-Loaders (planned and done):
+Therefore a brain can be thought of a pipeline of a scraper > chunker > embedder > vector DB.
+
+Those pipeline components need configuration to become executable. A Wikipedias scraper needs the starting page, the number of hops to scrape from that page etc. Configured instances of those components are built by the corresponding factories:
+* the scraper factory
+* the chunker factory
+* the indexer factory
+Typically factories get a `parameters` object that contains everything they need to know.
+
+A configured scraper knows when it was run the last time. 
+
+Scrapers (planned and done):
 * **Wikipedia** ✅: Given a start page on Wikipedia and a depth (i.e. how many links should the crawler go down), the wikipedia data is scraped and added to the brain.
 * Confluence
 * Email
 * Discourse
-
 
 **Notes**
 * The Loader config is specific to the different loaders we have
@@ -161,14 +176,18 @@ Use cases one could think of:
 
 ## Todo
 
+* Add a brain scraper for Atlassian Confluences, and test / demo it with [my private demo space](https://ai-platform-2024.atlassian.net/wiki/home)
 * Visualize the chunks in their original document. Use this? [How to highlight any web page on Google Chrome (or Chromium-based Edge)](https://medium.com/@Bartleby/how-to-highlight-any-web-page-on-google-chrome-or-chromium-based-edge-83035c41eeec)
 * Add pre-commit hooks
 * The brain should keep track in the `_index.json` if a document was indexed, as well as using which embedding model
 * Add a function `brain.import_or_update()` 
 * Data Loader for confluence pages and Emails
-* API rule: Every call should return a `ìnner_working` dictionary, For the ai_brain this could contain: Brain name, no of docs/chunks, search time, result size...
-* Calling `python -m ai_brain` or similar should start the fastAPI server
+* ~~API rule: Every call should return a `ìnner_working` dictionary, For the ai_brain this could contain: Brain name, no of docs/chunks, search time, result size...~~
+* ~~Calling `python -m ai_brain` or similar should start the fastAPI server~~
 * Make ability to load a brain with data, have it's configuration in a YAML file
+* Have a user friendly way (markdown?) of documentation for every chain.
+* Have chain-specific parameter management incl. user interface. A12 models?
+* Change brain management to a pipeline concept: Different stages that can be combined (i.e. scraping, chunking, indexing)
 
 ## Resources
 
@@ -191,4 +210,4 @@ Use cases one could think of:
 * [10 essential tips to supercharge VS Code and code faster (0 to 100) - Medium](https://medium.com/coding-beauty/vscode-upgrade-tips-246481c27e8e)
 * Intersting Prompts: [Apple Just Quietly Exposed The *AI Prompts* Powering Apple Intelligence](https://medium.com/macoclock/apple-just-quietly-exposed-the-ai-prompts-powering-apple-intelligence-b4ac3314eb14)
 * A very nice overview on how to move on: [17 (Advanced) RAG Techniques to Turn Your LLM App Prototype into a Production-Ready Solution - Medium](https://towardsdatascience.com/17-advanced-rag-techniques-to-turn-your-rag-app-prototype-into-a-production-ready-solution-5a048e36cdc8)
-* 
+* [Perplexica](https://github.com/ItzCrazyKns/Perplexica): Perplexica is an open-source AI-powered searching tool or an AI-powered search engine that goes deep into the internet to find answers.
