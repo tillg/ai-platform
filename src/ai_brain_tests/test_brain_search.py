@@ -48,7 +48,7 @@ class TestBrainSearch(unittest.TestCase):
         # For inspection write the chunks in a file
         dir = os.path.join(TMP_DATA_DIR, get_now_as_string())
         for chunk in chunks:
-            chunk.write_2_file(dir)
+            chunk.write_2_json(dir)
 
 
 if __name__ == '__main__':

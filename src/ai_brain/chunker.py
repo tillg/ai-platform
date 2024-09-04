@@ -1,11 +1,8 @@
 from abc import ABC, abstractmethod
-from langchain.docstore.document import Document as lc_Document
 from ai_commons.apiModelsSearch import Document, Chunk
-from langchain.text_splitter import CharacterTextSplitter
 from typing import Any, Dict, List
 from dotenv import load_dotenv
 import logging
-from utils.robust_jsonify import robust_jsonify
 import os
 from pydantic import validate_call
 
@@ -13,32 +10,36 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-CHUNKER_SEPARATOR = os.environ.get('CHUNKER_SEPARATOR', '\n')
-if CHUNKER_SEPARATOR == '\\n':
-    CHUNKER_SEPARATOR = '\n'
-CHUNKER_CHUNK_SIZE = int(os.environ.get('CHUNKER_CHUNK_SIZE', 256))
-CHUNKER_CHUNK_OVERLAP = int(os.environ.get('CHUNKER_CHUNK_OVERLAP', 20))
-
-
 class Chunker(ABC):
 
-    def __init__(self, separator: str = CHUNKER_SEPARATOR, chunk_size: int = CHUNKER_CHUNK_SIZE, chunk_overlap: int = CHUNKER_CHUNK_OVERLAP):
-        logger.info(f"Chunker initialized with separator: {
-                    repr(separator)}, chunk_size: {chunk_size} [{type(chunk_size)}], chunk_overlap: {chunk_overlap} [{type(chunk_overlap)}]")
-        self.text_splitter = CharacterTextSplitter(
-            separator=separator,
-            chunk_size=chunk_size,
-            chunk_overlap=chunk_overlap
-        )
+    @validate_call
+    def __init__(self, parameters):
+        self.parameters = parameters
+        # Check that we have a source & target_dir
+        if "target_dir" not in parameters:
+            raise ValueError("target_dir is required for Brain Scraper.")
+        if "source_dir" not in parameters:
+            raise ValueError("source_dir is required for Brain Scraper.")
 
     @abstractmethod
-    def chunkify(self, document: Document) -> List[Chunk]:
+    def _chunkify_document(self, document: Document) -> List[Chunk]:
         pass
 
     @abstractmethod
-    def chunkify_documents(self, documents: List[Document]) -> List[Document]:
+    def _chunkify_documents(self, documents: List[Document]) -> List[Document]:
         pass
 
-    @abstractmethod
-    def get_params(self) -> Dict[str, Any]:
-        pass
+    def do_chunkify(self):
+        source_dir = self.parameters["source_dir"]
+        target_dir = self.parameters["target_dir"]
+        for root, dirs, files in os.walk(source_dir):
+            for file in files:
+                if file.endswith(".json"):
+                    logger.info(f"Chunking file: {file}")
+                    doc = Document.from_json_file(os.path.join(root, file))
+                    chunks = self._chunkify_document(doc)
+                    for chunk in chunks:
+                        chunk.write_2_json(target_dir)
+
+    def get_parameters(self) -> Dict[str, Any]:
+        return self.parameters

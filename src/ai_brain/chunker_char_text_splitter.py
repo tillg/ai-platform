@@ -1,6 +1,6 @@
-from langchain.docstore.document import Document as lc_Document
 from ai_brain.chunker import Chunker
 from ai_commons.apiModelsSearch import Document, Chunk
+from ai_commons.constants import CHUNKER_SEPARATOR, CHUNKER_CHUNK_SIZE, CHUNKER_CHUNK_OVERLAP
 from langchain.text_splitter import CharacterTextSplitter
 from typing import Any, Dict, List
 from dotenv import load_dotenv
@@ -14,39 +14,31 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
  
-CHUNKER_SEPARATOR = os.environ.get('CHUNKER_SEPARATOR', '\n')
-if CHUNKER_SEPARATOR == '\\n':
-    CHUNKER_SEPARATOR = '\n'
-CHUNKER_CHUNK_SIZE = int(os.environ.get('CHUNKER_CHUNK_SIZE', 256))
-CHUNKER_CHUNK_OVERLAP = int(os.environ.get('CHUNKER_CHUNK_OVERLAP', 20))
-
 
 class ChunkerCharacterTextSplitter(Chunker):
 
-    def __init__(self, params: Dict[str, Any]):
-        self.original_params = params.copy()
-        self.params = params.copy()
+    def __init__(self, parameters: Dict[str, Any]):
+        super().__init__(parameters=parameters)
 
-        self.params["chunker_type"] = "ChunkerCharacterTextSplitter"
+        self.parameters["chunker_type"] = "character_text_splitter"
         
-        self.separator = params.get("separator", CHUNKER_SEPARATOR)
-        self.params["separator"] = self.separator
+        # Complete some parameters with defaults
+        self.parameters["separator"] = parameters.get("separator", CHUNKER_SEPARATOR)
+        self.parameters["chunk_size"] = parameters.get(
+            "chunk_size", CHUNKER_CHUNK_SIZE)
+        self.parameters["chunk_overlap"] = parameters.get(
+            "chunk_overlap", CHUNKER_CHUNK_OVERLAP)
 
-        self.chunk_size = params.get("chunk_size", CHUNKER_CHUNK_SIZE)
-        self.params["chunk_size"] = self.chunk_size
-
-        self.chunk_overlap = params.get("chunk_overlap", CHUNKER_CHUNK_OVERLAP)
-        self.params["chunk_overlap"] = self.chunk_overlap
-
-        logger.info(f"ChunkerCharacterTextSplitter initialized with params: {self.params}")
+        logger.info(
+            f"character_text_splitter initialized with parameters: {self.parameters}")
         self.text_splitter = CharacterTextSplitter(
-            separator=self.separator,
-            chunk_size=self.chunk_size,
-            chunk_overlap=self.chunk_overlap
+            separator=self.parameters["separator"],
+            chunk_size=self.parameters["chunk_size"],
+            chunk_overlap=self.parameters["chunk_overlap"]
         )
 
     @validate_call
-    def chunkify(self, document: Document) -> List[Chunk]:
+    def _chunkify_document(self, document: Document) -> List[Chunk]:
         #lc_document = document.to_lc_document()
         try:
             logging.getLogger(
@@ -72,21 +64,8 @@ class ChunkerCharacterTextSplitter(Chunker):
         return chunks
 
     @validate_call
-    def chunkify_documents(self, documents: List[Document]) -> List[Document]:
-        if not isinstance(documents, list):
-            logger.error(
-                f"documents is not a list: {documents}. It is of type {type(documents)}")
-            raise TypeError(f"documents must be a list, not {type(documents)}")
-        if not all(isinstance(doc, Document) for doc in documents):
-            logger.error(
-                f"All elements in list are not instances of Document.")
-            raise TypeError(
-                "All elements in documents must be instances of Document")
-
+    def _chunkify_documents(self, documents: List[Document]) -> List[Document]:
         chunks = [
             chunk for document in documents for chunk in self.chunkify_document(document)]
-
         return chunks
     
-    def get_params(self) -> Dict[str, Any]:
-        return self.params

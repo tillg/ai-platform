@@ -84,5 +84,3 @@ class BrainScraperWikipedia(BrainScraper):
         links = list(page.links.keys())
         return SimpleNamespace(document=document, links=links)
 
-    def get_parameters(self):
-        return self.parameters

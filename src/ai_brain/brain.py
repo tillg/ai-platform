@@ -117,7 +117,7 @@ class Brain:
         chunker_factory = ChunkerFactory()
         self.chunker = chunker_factory.create_chunker(
             params.get("chunker", {}))
-        self.params["chunker"] = self.chunker.get_params()
+        self.params["chunker"] = self.chunker.get_parameters()
 
         logger.info(f"Brain initialized. Data path: {
                     self.data_directory}, no of document: {len(self)}, no of chunks: {self.number_of_chunks()}")
@@ -269,7 +269,7 @@ class Brain:
                 return
 
         # Add the document to the file store
-        document.write_2_file(self.document_directory)
+        document.write_2_json(self.document_directory)
         # Add the documen to the index
         self._add_document_to_index(document)
         return
@@ -279,7 +279,7 @@ class Brain:
         self.import_document(document)
 
         # Chunk the document
-        chunks = self.chunker.chunkify(document)
+        chunks = self.chunker._chunkify_document(document)
 
         self._add_chunks_to_chroma(chunks)
 
@@ -332,7 +332,7 @@ class Brain:
                 document = self.get_document_by_id(document_id)
 
                 # Chunk the document
-                chunks = self.chunker.chunkify(document)
+                chunks = self.chunker._chunkify_document(document)
 
                 self._add_chunks_to_chroma(chunks)
 

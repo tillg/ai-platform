@@ -1,3 +1,4 @@
+from typing import Any, Dict
 from ai_brain.brain import Brain
 import logging
 from abc import ABC, abstractmethod
@@ -12,7 +13,7 @@ class BrainScraper(ABC):
     def __init__(self, parameters):
         self.parameters = parameters
 
-        # Chat that we have a target_dir
+        # Check that we have a target_dir
         if "target_dir" not in parameters:
             raise ValueError("target_dir is required for Brain Scraper.")
 
@@ -20,6 +21,5 @@ class BrainScraper(ABC):
     def do_scrape(self):
         pass
 
-    @abstractmethod
-    def get_parameters(self):
-        pass
+    def get_parameters(self) -> Dict[str, Any]:
+        return self.parameters
