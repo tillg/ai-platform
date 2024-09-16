@@ -12,7 +12,7 @@ from pydantic import validate_call
 
 load_dotenv()
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARN)
  
 
 class ChunkerCharacterTextSplitter(Chunker):
@@ -28,7 +28,6 @@ class ChunkerCharacterTextSplitter(Chunker):
             "chunk_size", CHUNKER_CHUNK_SIZE)
         self.parameters["chunk_overlap"] = parameters.get(
             "chunk_overlap", CHUNKER_CHUNK_OVERLAP)
-
         logger.info(
             f"character_text_splitter initialized with parameters: {self.parameters}")
         self.text_splitter = CharacterTextSplitter(
@@ -39,7 +38,7 @@ class ChunkerCharacterTextSplitter(Chunker):
 
     @validate_call
     def _chunkify_document(self, document: Document) -> List[Chunk]:
-        #lc_document = document.to_lc_document()
+        super()._chunkify_document(document)
         try:
             logging.getLogger(
                 'langchain_text_splitters.base').setLevel(logging.ERROR)
@@ -63,9 +62,3 @@ class ChunkerCharacterTextSplitter(Chunker):
             [len(chunk.content) for chunk in chunks]}")
         return chunks
 
-    @validate_call
-    def _chunkify_documents(self, documents: List[Document]) -> List[Document]:
-        chunks = [
-            chunk for document in documents for chunk in self.chunkify_document(document)]
-        return chunks
-    

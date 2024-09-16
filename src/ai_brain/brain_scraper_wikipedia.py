@@ -9,11 +9,11 @@ from types import SimpleNamespace
 from ai_brain.brain_scraper import BrainScraper
 
 logger = logging.getLogger(__name__)
-LOG_LEVEL_FOR_IMPORT = logging.WARN
+LOG_LEVEL_FOR_SCRAPE = logging.WARN
 
-logger.setLevel(LOG_LEVEL_FOR_IMPORT)
+logger.setLevel(LOG_LEVEL_FOR_SCRAPE)
 wikipediaapi_logger = logging.getLogger('wikipediaapi')
-wikipediaapi_logger.setLevel(LOG_LEVEL_FOR_IMPORT)
+wikipediaapi_logger.setLevel(LOG_LEVEL_FOR_SCRAPE)
 
 class BrainScraperWikipedia(BrainScraper):
 
@@ -26,9 +26,9 @@ class BrainScraperWikipedia(BrainScraper):
         # Complete some parameters with defaults
         self.parameters["language"] = parameters.get("language", 'en')
         self.parameters["depth"] = parameters.get("depth", 2)
-        self.parameters["max_no_of_docs"] = parameters.get("max_no_of_docs", 0)
 
     def do_scrape(self):
+        super().do_scrape()
         self._load_wikipedia_page_tree(
             start_page_title=self.parameters["start_page_title"],
             language=self.parameters["language"],
@@ -42,14 +42,10 @@ class BrainScraperWikipedia(BrainScraper):
             logger.warning(f"Page '{start_page_title}' in '{language}' was not retrieved.")
         else:
             document = document_and_links.document
-            document.write_2_file(self.parameters["target_dir"])
+            document.write_2_json(self.parameters["target_dir"])
         if depth > 1:
             random.shuffle(document_and_links.links)
             for page in document_and_links.links:
-                if self.parameters["max_no_of_docs"] > 0 and len(self.brain) >= self.parameters["max_no_of_docs"]:
-                    logger.info(
-                        f"Ingestion reached max no of docs: {self.max_no_of_docs}")
-                    return
                 try:
                     print(".", end="", flush=True)
                     self._load_wikipedia_page_tree(

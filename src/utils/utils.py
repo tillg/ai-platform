@@ -7,7 +7,7 @@ import socket
 import re as re
 from datetime import datetime, timedelta
 from sys import exit
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 import coloredlogs
 import logging
@@ -150,3 +150,19 @@ def find_project_root(current_directory):
             raise FileNotFoundError(
                 "Could not find project root containing a .git directory.")
         return find_project_root(parent_directory)
+
+def _matches_any_pattern(file_name, patterns):
+    for pattern in patterns:
+        if fnmatch.fnmatch(file_name, pattern):
+            return True
+    return False
+
+@validate_call
+def get_files(directory, *, patterns_to_match: Optional[List[str]] = ["*"], patterns_to_ignore: Optional[List[str]] = []) -> List[str]:
+    result_files = []
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if _matches_any_pattern(file, patterns_to_match):
+                if not _matches_any_pattern(file, patterns_to_ignore):
+                    result_files.append(os.path.join(root, file))
+    return result_files

@@ -4,36 +4,50 @@ from ai_brain.brain import Brain
 from ai_commons.apiModelsSearch import Document, Chunk
 from utils.utils import get_now_as_string
 import logging
-from dotenv import load_dotenv
 import os
 import string
 import random
+from ai_commons.constants import TEST_DATA_DIR, TMP_DATA_DIR
+from ai_brain.chunker_factory import ChunkerFactory
+import shutil
 
-load_dotenv()
 logging.basicConfig(level=logging.INFO)
-
-# in relation to this file my test data resides in ../../data/test_data
-TEST_DATA_DIR = os.path.join(os.path.dirname(
-    os.path.dirname(os.path.dirname(__file__))), "data", "test_data")
-TMP_DATA_DIR = os.path.join(os.path.dirname(
-    os.path.dirname(os.path.dirname(__file__))), "data", "tmp")
 
 LONG_ARTICLE = "wikipedia_peru.txt"
 SHORT_ARTICLE = "rectus_abdominus.txt"
 
-
 class TestBrainSearch(unittest.TestCase):
 
+    def prep_chunk_directory(self):
+        path_to_docs = os.path.join(TMP_DATA_DIR, get_now_as_string()+"_docs")
+        path_to_chunks = os.path.join(TMP_DATA_DIR, get_now_as_string()+"_chunks")
+        shutil.rmtree(path_to_chunks, ignore_errors=True)
+        doc1 = Document.from_text_file(os.path.join(
+            TEST_DATA_DIR, LONG_ARTICLE))
+        doc2 = Document.from_text_file(os.path.join(
+            TEST_DATA_DIR, SHORT_ARTICLE))
+        doc1.write_2_json(path_to_docs)
+        doc2.write_2_json(path_to_docs)
+        parameters = {"source_dir": path_to_docs, "target_dir": path_to_chunks}
+        chunker = ChunkerFactory().create_chunker(parameters)
+        chunker.do_chunkify()
+        return path_to_chunks
+    
     def test_brain_search1(self):
+        chunk_dir = self.prep_chunk_directory()
         brain = Brain({"data_directory": TMP_DATA_DIR,
                        "path": get_now_as_string()+'_test_brain_search1',
                        })
+
         brain_size_pre = len(brain)
         doc1 = Document.from_text_file(os.path.join(
             TEST_DATA_DIR, LONG_ARTICLE))
         doc2 = Document.from_text_file(os.path.join(
             TEST_DATA_DIR, SHORT_ARTICLE))
-        brain.add_documents([doc1, doc2])
+        chunks = Chunk.from_json_directory(chunk_dir) 
+        brain.import_documents([doc1, doc2])
+        brain.import_chunks(chunks)
+
         brain_size_post = len(brain)
         self.assertEqual(brain_size_post-brain_size_pre, 2)
         chunks = brain.search_chunks_by_text("Peru politics").result.chunks

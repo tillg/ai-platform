@@ -108,13 +108,24 @@ These steps are performed/triggered by the `brain` itself. So the brain has
 
 The different steps can also be run independenatly, so if you have scraped lots of data (and have it on your local disk) you can test different chunking and indexing strategies.
 
-Therefore a brain can be thought of a pipeline of a scraper > chunker > embedder > vector DB.
+Therefore a brain can be thought of a pipeline of a scraper > chunker > embedder > vector DB. The last 2 steps, embedding & adding to the vector DB are subsumized in the `indexing` step.
+
+The `brain` class acts as a wrapper around 
+* the Chroma DB
+* the refreence to the emebedding model - that is part of the Chroma settings
+* the local file storage in which the imported documents and chunks are stored.
+
+It's relevant methods are
+* `import_documents`
+* `import_chunks`
+* `search_chunks_by_text`
+
 
 Those pipeline components need configuration to become executable. A Wikipedias scraper needs the starting page, the number of hops to scrape from that page etc. Configured instances of those components are built by the corresponding factories:
 * the scraper factory
 * the chunker factory
 * the indexer factory
-Typically factories get a `parameters` object that contains everything they need to know.
+Typically factories get a `parameters` object that contains everything they need to know. As the search parameters match the index parameters to a large extend (namely you have to use the same way of calculating the embeddings), you can use the the parameter set of the indexer factory also for the brain factory.
 
 A configured scraper knows when it was run the last time. 
 
@@ -123,10 +134,6 @@ Scrapers (planned and done):
 * Confluence
 * Email
 * Discourse
-
-**Notes**
-* The Loader config is specific to the different loaders we have
-* The `NoOfDocs` and `NoOfChunks` values are updated every time the brain info is questioned.
 
 ## The Prompts
 
@@ -176,6 +183,7 @@ Use cases one could think of:
 
 ## Todo
 
+* Re-structure the `ai_commons` to proper class files (`Documents`, `Chunks`) and separate factories for better readabilty.
 * Add a brain scraper for Atlassian Confluences, and test / demo it with [my private demo space](https://ai-platform-2024.atlassian.net/wiki/home)
 * Visualize the chunks in their original document. Use this? [How to highlight any web page on Google Chrome (or Chromium-based Edge)](https://medium.com/@Bartleby/how-to-highlight-any-web-page-on-google-chrome-or-chromium-based-edge-83035c41eeec)
 * Add pre-commit hooks

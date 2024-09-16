@@ -18,7 +18,7 @@ async def root():
 
 @router.get("/info")
 async def info() -> Dict[str, Any]:
-    return brain.get_params_and_stats()
+    return brain.get_parameters_and_statistics()
 
 @router.get("/list")
 async def list():
@@ -38,7 +38,7 @@ async def search(q: Optional[str] = None, body: Optional[SearchRequest] = Body(d
         if not Brain.is_valid_brain_id(body.brain_id):
             raise HTTPException(
                 status_code=400, detail=f"Brain with ID {body.brain_id} not found.")
-        if body.brain_id != brain.get_params()["brain_id"]:
+        if body.brain_id != brain.get_parameters()["brain_id"]:
             brain = Brain.get_brain_by_id(body.brain_id)
     search_result = brain.search_chunks_by_text(search_term)
     #search_result = SearchResultChunksAndDocuments(chunks=chunks)

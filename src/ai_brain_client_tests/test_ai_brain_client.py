@@ -2,7 +2,7 @@ import unittest
 from ai_commons.apiModelsChat import ChatRequest, Message
 from ai_brain_client.ai_brain_client import Client as AiBrainClient
 from ai_commons.apiModelsLlm import Model
-from ai_commons.apiModelsSearch import Document, Chunk, SearchResultChunksAndDocuments, SearchResult, BrainModel, SearchRequest
+from ai_commons.apiModelsSearch import Document, Chunk, SearchResultChunksAndDocuments, SearchResult, BrainParameters, SearchRequest
 import logging
 
 logger = logging.getLogger(__name__)
@@ -19,7 +19,7 @@ class TestAiBrainClient(unittest.TestCase):
         logger.info(f"Brains: {brains}")
         for brain in brains:
             self.assertIsInstance(
-                brain, BrainModel, f"Each model should be a Model, but got '{type(brain)}'")
+                brain, BrainParameters, f"Each model should be a Model, but got '{type(brain)}'")
 
     def test_search_chunks_by_text(self):
         ai_brain_client = AiBrainClient()

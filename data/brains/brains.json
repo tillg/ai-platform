@@ -2,34 +2,52 @@
     "berlin": {
         "name": "Berlin",
         "description": "The Wikipedia page of Berlin and 2 hops away",
-        "path": "berlin",
-        "importer": {
-            "importer_type": "wikipedia",
+        "data_directory": "../../data/tmp/berlin_data",
+        "chunks_directory": "../../data/tmp/berlin_chunks",
+        "scraper": {
+            "scraper_type": "wikipedia",
             "start_page_title": "Berlin",
             "language": "en",
-            "depth": 2
+            "depth": 2,
+            "target_dir": "data/tmp/berlin_scrapes"
+        },
+        "chunker": {
+            "source_dir": "../../data/tmp/berlin_scrapes"
         }
     },
-    "berlin2": {
-        "name": "Berlin2",
-        "description": "The Wikipedia page of Berlin and 2 hops away",
-        "path": "berlin2",
-        "importer": {
-            "importer_type": "wikipedia",
-            "start_page_title": "Berlin",
+    "math_small": {
+        "name": "Mathematics - Small",
+        "description": "The Wikipedia page of Mathematics w/o any hops",
+        "data_directory": "../../data/tmp/math_small_data",
+        "chunks_directory": "../../data/tmp/math_small_chunks",
+        "embedding_function": {
+            "embedding_function_type": "default_embedding_function"
+        },
+        "scraper": {
+            "scraper_type": "wikipedia",
+            "start_page_title": "Mathematics",
             "language": "en",
-            "depth": 2
+            "depth": 1,
+            "target_dir": "../../data/tmp/math_small_scrapes"
+        },
+        "chunker": {
+            "source_dir": "../../data/tmp/math_small_scrapes"
         }
     },
     "mathematics": {
         "name": "Mathematics",
         "description": "The Wikipedia page of Mathematics and 2 hops away",
-        "path": "mathematics",
-        "importer": {
-            "importer_type": "wikipedia",
+        "data_directory": "../../data/tmp/math_data",
+        "chunks_directory": "../../data/tmp/math_chunks",
+        "scraper": {
+            "scraper_type": "wikipedia",
             "start_page_title": "Mathematics",
             "language": "en",
-            "depth": 2
+            "depth": 2,
+            "target_dir": "../../data/tmp/math_scrapes"
+        },
+        "chunker": {
+            "source_dir": "../../data/tmp/math_scrapes"
         }
     }
 }

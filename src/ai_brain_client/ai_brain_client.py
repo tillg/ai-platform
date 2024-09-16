@@ -8,7 +8,7 @@ from ai_commons.apiModelsChat import ChatRequest, Message
 from ai_commons.apiModelsLlm import Model
 import logging
 from ai_commons.constants import AI_BRAIN_HOST, AI_BRAIN_PORT
-from ai_commons.apiModelsSearch import BrainModel, SearchResult, SearchRequest
+from ai_commons.apiModelsSearch import BrainParameters, SearchResult, SearchRequest
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -41,11 +41,11 @@ class Client:
         logger.info(f"LLM Client get_httpx_client: {self._client}")
         return self._client
 
-    def get_brain_list(self) -> List[BrainModel]:
+    def get_brain_list(self) -> List[BrainParameters]:
         response = self.get_httpx_client().get("/list")
         logger.info(f"GET /list: {response}")
         response.raise_for_status()
-        return [BrainModel(**x) for x in response.json()]
+        return [BrainParameters(**x) for x in response.json()]
 
     @validate_call
     def search_chunks_by_text(self,  search_request: SearchRequest) -> SearchResult:

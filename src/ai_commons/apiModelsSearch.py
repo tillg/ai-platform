@@ -1,13 +1,13 @@
 from typing import Any, Dict, List, Optional
 import uuid
-from pydantic import BaseModel
+from pydantic import BaseModel, Extra
 from langchain.docstore.document import Document as lc_Document
 import os
 from utils.dict2file import write_dict_to_file, read_dict_from_file
 import logging
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARN)
 
 class SearchRequest(BaseModel):
     search_term: str
@@ -71,6 +71,15 @@ class Document(BaseModel):
         return Document(**document_dict)
 
     @classmethod
+    def from_json_directory(cls, directory: str) -> List['Document']:
+        documents = []
+        for file in os.listdir(directory):
+            if file.endswith('.json'):
+                documents.append(Document.from_json_file(
+                    os.path.join(directory, file)))
+        return documents    
+    
+    @classmethod
     def get_filename_by_id(cls, directory: str, id: str, prefix: str = None):
         if prefix:
             return os.path.join(directory,  prefix + "_" + id + ".json")
@@ -121,6 +130,37 @@ class Chunk(Document):
                 chunk.search_info = search_info
             chunks.append(chunk)
         return chunks
+    
+    @classmethod
+    def from_json_file(cls, file_path: str) -> 'Chunk':
+        # Check that the file is a json file
+        if not file_path.endswith('.json'):
+            raise ValueError("The file must be a JSON file")
+        chunk_dict = read_dict_from_file(full_filename=file_path)
+
+        # Make sure we have what we need
+        if 'title' not in chunk_dict:
+            raise ValueError(
+                f"The JSON file must contain a 'title' field. File: {file_path}")
+        if 'content' not in chunk_dict:
+            raise ValueError(
+                f"The JSON file must contain a 'content' field. File: {file_path}")
+        if 'uri' not in chunk_dict:
+            raise ValueError(
+                f"The JSON file must contain a 'uri' field. File: {file_path}")
+        if 'original_document_id' not in chunk_dict:
+            raise ValueError(
+                f"The JSON file must contain a 'original_document_id' field. File: {file_path}")
+        return Chunk(**chunk_dict)
+
+    @classmethod
+    def from_json_directory(cls, directory: str) -> List['Chunk']:
+        chunks = []
+        for file in os.listdir(directory):
+            if file.endswith('.json'):
+                chunks.append(Chunk.from_json_file(
+                    os.path.join(directory, file)))
+        return chunks
 
 
 class SearchResultChunksAndDocuments(BaseModel):
@@ -139,9 +179,12 @@ class SearchResult(BaseModel):
     inner_working: Optional[Dict[str, Any]] = None
 
 
-class BrainModel(BaseModel):
+class BrainParameters(BaseModel):
     id: str
     name: str
     description: str
-    path: str
-    importer: Optional[Dict[str, Any]] = None
+    data_directory: str
+    scraper: Optional[Dict[str, Any]] = None
+
+    class Config:
+        extra = "allow"
