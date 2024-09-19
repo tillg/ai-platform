@@ -34,7 +34,7 @@ class Color:
 
 internalDateFormat = "%Y-%m-%d %H:%M:%S"
 logger = logging.getLogger(__name__)
-
+logger.setLevel(logging.INFO)
 
 
 def transform_date2string(date_to_transform: datetime) -> str:
@@ -130,8 +130,9 @@ def simplify_text(some_text: str) -> str:
     """
     simplified_text = some_text.replace('"', "'")
     simplified_text = unidecode.unidecode(simplified_text)
-    simplified_text = re.sub("[^A-Za-z-_]+", "_", simplified_text)
+    simplified_text = re.sub("[^0-9A-Za-z-_]+", "_", simplified_text)
     simplified_text = re.sub('_+', '_', simplified_text)
+    logger.info(f"Original text: {some_text}, Simplified text: {simplified_text}")
     return simplified_text
 
 

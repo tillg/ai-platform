@@ -5,6 +5,7 @@ from langchain.docstore.document import Document as lc_Document
 import os
 from utils.dict2file import write_dict_to_file, read_dict_from_file
 import logging
+from utils.utils import get_files
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARN)
@@ -73,10 +74,10 @@ class Document(BaseModel):
     @classmethod
     def from_json_directory(cls, directory: str) -> List['Document']:
         documents = []
-        for file in os.listdir(directory):
-            if file.endswith('.json'):
-                documents.append(Document.from_json_file(
-                    os.path.join(directory, file)))
+        files = get_files(directory, patterns_to_match=["*.json"], patterns_to_ignore=["*index.json"])
+        for file in files:
+            documents.append(cls.from_json_file(
+                os.path.join(directory, file)))
         return documents    
     
     @classmethod
@@ -153,14 +154,17 @@ class Chunk(Document):
                 f"The JSON file must contain a 'original_document_id' field. File: {file_path}")
         return Chunk(**chunk_dict)
 
-    @classmethod
-    def from_json_directory(cls, directory: str) -> List['Chunk']:
-        chunks = []
-        for file in os.listdir(directory):
-            if file.endswith('.json'):
-                chunks.append(Chunk.from_json_file(
-                    os.path.join(directory, file)))
-        return chunks
+    # @classmethod
+    # def from_json_directory(cls, directory: str) -> List['Chunk']:
+    #     chunks = []
+    #     files = get_files(directory, patterns_to_match=[
+    #                       "*.json"], patterns_to_ignore=["*index.json"])
+
+    #     for file in os.listdir(directory):
+    #         if file.endswith('.json'):
+    #             chunks.append(Chunk.from_json_file(
+    #                 os.path.join(directory, file)))
+    #     return chunks
 
 
 class SearchResultChunksAndDocuments(BaseModel):

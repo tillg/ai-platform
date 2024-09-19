@@ -29,7 +29,7 @@ class TestWikipediaScraper(unittest.TestCase):
         test_dir = os.path.join(
             TMP_DATA_DIR, get_now_as_string()+'_test_wikipedia_save_page')
         doc: Document = scraper._get_page_as_document_and_links(WIKIPEDIA_PAGE, "en")
-        doc.document.write_2_file(test_dir)
+        doc.document.write_2_json(test_dir)
 
     def test_scrape_page(self):
         parameters = {"start_page_title": WIKIPEDIA_PAGE,

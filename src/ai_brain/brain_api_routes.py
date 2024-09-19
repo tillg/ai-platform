@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 router = fastapi.APIRouter()
-brain = Brain.get_default_brain()
+brain = Brain.get_default_brain_id()
 
 @router.get("/")
 async def root():
@@ -22,7 +22,7 @@ async def info() -> Dict[str, Any]:
 
 @router.get("/list")
 async def list():
-    return Brain.get_brain_list()
+    return Brain.get_brain_parameters_list()
 
 @router.post("/search")
 async def search(q: Optional[str] = None, body: Optional[SearchRequest] = Body(default=None)) -> SearchResult:
@@ -38,7 +38,7 @@ async def search(q: Optional[str] = None, body: Optional[SearchRequest] = Body(d
         if not Brain.is_valid_brain_id(body.brain_id):
             raise HTTPException(
                 status_code=400, detail=f"Brain with ID {body.brain_id} not found.")
-        if body.brain_id != brain.get_parameters()["brain_id"]:
+        if body.brain_id != brain.get_parameters()["id"]:
             brain = Brain.get_brain_by_id(body.brain_id)
     search_result = brain.search_chunks_by_text(search_term)
     #search_result = SearchResultChunksAndDocuments(chunks=chunks)

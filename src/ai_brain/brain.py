@@ -1,3 +1,7 @@
+# TODO: Review if it still makes sense to keep the documents as files.
+# TODO: Import chunks in batches if there are many.
+
+
 from ast import Tuple
 import os
 from uuid import UUID
@@ -29,54 +33,51 @@ class Brain:
         return {}
 
     @classmethod
-    def get_brain_list(cls, brains_index_filename: str = AI_BRAINS_INDEX_FILE) -> List[BrainParameters]:
-        brain_dict = read_dict_from_file(full_filename=brains_index_filename)
+    def get_brain_parameters_list(cls, brains_index_file: str = AI_BRAINS_INDEX_FILE) -> List[BrainParameters]:
+        brain_dict = read_dict_from_file(full_filename=brains_index_file)
         logger.info(f"Brain dict: {brain_dict}")
         brain_parameters = [BrainParameters(id=brain_id, **brain) for brain_id, brain in brain_dict.items()] 
         return brain_parameters
 
     @classmethod
-    def is_valid_brain_id(cls, brain_id: str) -> bool:
-        brain_list = cls.get_brain_list()
+    def is_valid_brain_id(cls, brain_id: str, brains_index_file: str = AI_BRAINS_INDEX_FILE) -> bool:
+        brain_list = cls.get_brain_parameters_list(brains_index_file)
         for brain in brain_list:
             if brain.id == brain_id:
                 return True
         return False
 
     @classmethod
-    def get_default_brain(cls):
-        brain_list = cls.get_brain_list()
-        # This gets the first brain's name
-        default_brain_id = next(iter(brain_list))
-        for brain_id in brain_list:
-            if brain_list[brain_id].get("default", False):
-                default_brain_id = brain_id
+    def get_default_brain_id(cls, brains_index_file: str = AI_BRAINS_INDEX_FILE) -> str:
+        brain_list = cls.get_brain_parameters_list(brains_index_file)
+        # This gets the first brain's id
+        default_brain_id = next(iter(brain_list)).id
+        for brain_parameter in brain_list:
+            if getattr(brain_parameter, 'default', False):
+                default_brain_id = brain_parameter.id
                 break
         return cls.get_brain_by_id(default_brain_id)
     
     @classmethod
-    def get_brain_by_id(cls, brain_id: str):
-        brain_list = cls.get_brain_list()
-        for brain_parameters in brain_list:
+    def get_brain_by_id(cls, brain_id: str, brains_index_filename: str = AI_BRAINS_INDEX_FILE):
+        brain_parameters_list = cls.get_brain_parameters_list(
+            brains_index_filename)
+        for brain_parameters in brain_parameters_list:
             if brain_parameters.id == brain_id:
                 logger.info(f"Brain found: {brain_parameters}")
                 return Brain(brain_parameters)
         logger.error(f"Brain not found: {brain_id}")
         raise ValueError(f"Brain not found: {brain_id}")
     
-    @classmethod
-    def get_env(cls) -> Dict[str, Any]:
-        return {
-            "AI_BRAINS_INDEX_FILE": AI_BRAINS_INDEX_FILE,
-        }
     
+    @validate_call
     def __init__(self, parameters: BrainParameters):
         self.parameters = parameters.dict()
         logger.info(f"Initializing Brain with parameters: {self.parameters}")
 
-        # Ensure some mandatory variables
+        # Check chunk variable
         if not self.parameters.get("chunks_directory"):
-            raise ValueError("chunks_directory is required.")
+            logger.warning("chunks_directory not given, brain will not be able to load.")
 
         # Setting some parameters to their defaults in case they are not provided
         self.parameters["allow_duplicates"] = self.parameters.get('allow_duplicates', False)
@@ -84,8 +85,9 @@ class Brain:
         self.parameters["embedding_function"] = self.parameters.get("embedding_function", {})
         
         # Chunks-dir
-        self.parameters["chunker"] = self.parameters.get("chunker", {})
-        self.parameters["chunker"]["target_dir"] = self.parameters["chunks_directory"]
+        if self.parameters.get("chunks_directory", None):
+            self.parameters["chunker"] = self.parameters.get("chunker", {})
+            self.parameters["chunker"]["target_dir"] = self.parameters["chunks_directory"]
 
         # Setup Chroma DB
         self.parameters["chroma_directory"] = os.path.join(
@@ -106,7 +108,7 @@ class Brain:
             self.parameters["index_filename"])
 
         logger.info(f"Brain initialized. Data directory: {
-                    self.parameters["data_directory"]}, no of document: {len(self)}, no of chunks: {self.number_of_chunks()}")
+                    self.parameters["data_directory"]}, no of document: {self.number_of_documents()}, no of chunks: {self.number_of_chunks()}")
 
     def get_chroma_client(self) -> chromadb.PersistentClient:
         return self.chroma_client
@@ -116,7 +118,7 @@ class Brain:
 
     def get_statistics(self) -> Dict[str, Any]:
         stats = {
-            "no_of_documents": len(self),
+            "no_of_documents": self.number_of_documents(),
             "no_of_chunks": self.number_of_chunks()
         }
         return stats
@@ -132,7 +134,7 @@ class Brain:
             "chunker_statistics": chunker_statistics}
         return parameters_and_statistics
     
-    def __len__(self):
+    def number_of_documents(self):
         """Return the number of documents, ensuring the document index is up-to-date."""
         self.document_index = self._read_index_from_file(self.parameters["index_filename"])
         if "_stats" in self.document_index:
@@ -141,7 +143,7 @@ class Brain:
         return len(self.document_index)
 
     def __str__(self):
-        return f"Brain with {len(self)} documents and {self.number_of_chunks()} chunks, stored in {self.data_directory} directory."
+        return f"Brain with {self.number_of_documents()} documents and {self.number_of_chunks()} chunks, stored in {self.data_directory} directory."
 
     def _delete_all_chroma(self):
         self.chroma_client.delete_collection(AI_BRAIN_COLLECTION_NAME)
@@ -233,6 +235,7 @@ class Brain:
 
     @validate_call
     def import_chunks(self, chunks: List[Chunk]):
+        # TODO: Check if the chunks are already in the collection
         # Store the chunks in the collection
         chunks_content = []
         for chunk in chunks:
@@ -246,6 +249,10 @@ class Brain:
 
     #validate_call
     def import_chunks_from_directory(self):
+        # Check chunk variable
+        if not self.parameters.get("chunks_directory"):
+            raise ValueError("chunks_directory not given, brain is not be able to load.")
+        
         # Check that the chunks directory exists
         if not os.path.exists(self.parameters["chunks_directory"]):
             logger.error(f"Chunks directory does not exist: {
@@ -264,7 +271,7 @@ class Brain:
     
     @validate_call
     def import_document(self, document: Document):
-        if self.parameters["max_no_of_docs"] > 0 and len(self) >= self.parameters["max_no_of_docs"]:
+        if self.parameters["max_no_of_docs"] > 0 and self.number_of_documents() >= self.parameters["max_no_of_docs"]:
             logger.warning(
                 f"Max number of documents reached: {self.parameters["max_no_of_docs"]}. Document not added.")
             return
@@ -285,7 +292,7 @@ class Brain:
         return
 
     @validate_call
-    def import_documents(self, documents: List[Document], show_progress=False):
+    def import_documents(self, documents: List[Document], show_progress=True):
         if show_progress:
             documents = tqdm(documents)
         for document in documents:
