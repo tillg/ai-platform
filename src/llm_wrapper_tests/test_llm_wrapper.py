@@ -1,7 +1,7 @@
 import unittest
 import uuid
-from ai_commons.apiModelsChat import ChatRequest, ChatResponse, Message
-from llm_wrapper.ollamaWrapper import get_models_as_json_array, get_models, get_default_model, chat
+from ai_commons.apiModelsChat import ChatRequest, Message
+from llm_wrapper.ollamaWrapper import get_models_as_json_array, get_models, get_default_model_name, chat
 from ai_commons.apiModelsLlm import Model
 
 class TestOllamaWrapper(unittest.TestCase):
@@ -15,9 +15,9 @@ class TestOllamaWrapper(unittest.TestCase):
                 model, Model, f"Each model should be a Model, but got '{type(model)}'")
 
     def test_default_model(self):
-        default_model = get_default_model()
-        self.assertIsNotNone(default_model)
-        self.assertIsInstance(default_model, Model)
+        default_model_name = get_default_model_name()
+        self.assertIsNotNone(default_model_name)
+        self.assertIsInstance(default_model_name, str)
 
     def test_chat_with_pydantic_request(self):
 
@@ -28,11 +28,11 @@ class TestOllamaWrapper(unittest.TestCase):
         # Create a sample ChatRequest instance
         chat_request = ChatRequest(
             messages=[message1],
-            model = get_default_model().name
+            model=get_default_model_name()
         )
 
         chat_response = chat(chat_request)
-        self.assertIsInstance(chat_response, ChatResponse)
+        self.assertIsInstance(chat_response, Message)
         self.assertIsInstance(chat_response.content, str)
 
 if __name__ == '__main__':

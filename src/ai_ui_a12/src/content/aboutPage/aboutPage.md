@@ -15,11 +15,11 @@ This is how the different bits are interacting:
 
 </br>
 
-| Component        | State   | API                                                                                                    | Comments soon                                              |
-|------------------|---------|--------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
-| AI Orchestration | ✅ | <a href="{{AI_ORCHESTRATION_URL}}/docs" target="_blank">OpenAPI Docs for AI Orchestration & Chains</a> | Currently only 2 chains: *Default* (a mock chain) and  *Naked LLM* |
-| AI Brains        | ✅ | <a href="{{AI_BRAIN_URL}}/docs" target="_blank">OpenAPI Docs for Brains & Search</a>                   |                                                                    |
-| LLM Wrapper      | ✅ | <a href="{{LLM_WRAPPER_URL}}/docs" target="_blank">OpenAPI Docs LLM Wrapper Docs</a>                   |                                                                    |
+| Component           | API                                                                                                    | Comments                                              |
+|-------------------------|--------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
+| AI Orchestration | <a href="{{AI_ORCHESTRATION_URL}}/docs" target="_blank">OpenAPI Docs for AI Orchestration & Chains</a> | Currently only 2 chains: *Default* (a mock chain) and  *Naked LLM* |
+| AI Brains         | <a href="{{AI_BRAIN_URL}}/docs" target="_blank">OpenAPI Docs for Brains & Search</a>                   |                                                                    |
+| LLM Wrapper      | <a href="{{LLM_WRAPPER_URL}}/docs" target="_blank">OpenAPI Docs LLM Wrapper Docs</a>                   |                                                                    |
 
 </br>
 For the entire code base go see the <a href="https://github.com/tillg/ai-platform" target="_blank">Github repo</a>.

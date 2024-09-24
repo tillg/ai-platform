@@ -4,7 +4,7 @@ from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
 import logging
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 class EmbeddingFunctionFactory:
 

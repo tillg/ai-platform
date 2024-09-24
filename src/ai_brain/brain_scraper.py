@@ -1,5 +1,4 @@
 from typing import Any, Dict
-from ai_brain.brain import Brain
 import logging
 from abc import ABC, abstractmethod
 import os
@@ -36,3 +35,6 @@ class BrainScraper(ABC):
 
     def get_parameters(self) -> Dict[str, Any]:
         return self.parameters
+    
+    def get_statistics(self) -> Dict[str, Any]:
+        return self.index

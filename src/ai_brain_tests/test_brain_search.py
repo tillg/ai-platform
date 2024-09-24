@@ -17,6 +17,9 @@ LONG_ARTICLE = "wikipedia_peru.txt"
 SHORT_ARTICLE = "rectus_abdominus.txt"
 
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+
 class TestBrainSearch(unittest.TestCase):
 
     def prep_chunk_directory(self):
@@ -40,10 +43,10 @@ class TestBrainSearch(unittest.TestCase):
         brain_parameters = BrainParameters(id="whatever",
                                            name="whatever",
                                            description="whatever",
-                                           data_directory=TMP_DATA_DIR,
+                                           data_directory=os.path.join(
+                                               TMP_DATA_DIR, get_now_as_string()+"test_brain_search1"),
                                            scraper=None,
                                            allow_duplicates=True,
-                                           path=get_now_as_string()+'_test_brain_search1',
                                            chunks_directory= chunk_dir)
         brain = Brain(brain_parameters)
 

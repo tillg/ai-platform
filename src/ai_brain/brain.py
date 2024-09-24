@@ -19,9 +19,11 @@ from pydantic import field_validator, validate_call
 import time
 from ai_commons.constants import AI_BRAINS_INDEX_FILE, AI_BRAIN_COLLECTION_NAME
 from ai_brain.embedding_function_factory import EmbeddingFunctionFactory
+from ai_brain.brain_scraper import BrainScraper
+from ai_brain.brain_scraper_factory import BrainScraperFactory
 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
 
 class Brain:
 
@@ -34,6 +36,8 @@ class Brain:
 
     @classmethod
     def get_brain_parameters_list(cls, brains_index_file: str = AI_BRAINS_INDEX_FILE) -> List[BrainParameters]:
+        logger.info(f"get_brain_parameters_list: Reading from brains index file: {
+            brains_index_file}")
         brain_dict = read_dict_from_file(full_filename=brains_index_file)
         logger.info(f"Brain dict: {brain_dict}")
         brain_parameters = [BrainParameters(id=brain_id, **brain) for brain_id, brain in brain_dict.items()] 
@@ -48,7 +52,21 @@ class Brain:
         return False
 
     @classmethod
-    def get_default_brain_id(cls, brains_index_file: str = AI_BRAINS_INDEX_FILE) -> str:
+    def get_brain_by_id(cls, brain_id: str, brains_index_filename: str = AI_BRAINS_INDEX_FILE):
+        brain_parameters_list = cls.get_brain_parameters_list(
+            brains_index_filename)
+        for brain_parameters in brain_parameters_list:
+            if brain_parameters.id == brain_id:
+                logger.info(f"Brain found: {brain_parameters}")
+                return Brain(brain_parameters, id=brain_id)
+        logger.error(f"Brain not found: {brain_id}")
+        raise ValueError(f"Brain not found: {brain_id}")
+
+    @classmethod
+    @validate_call
+    def get_default_brain(cls, brains_index_file: str = AI_BRAINS_INDEX_FILE):
+        logger.info(f"get_default_brain: Reading from brains index file: {
+            brains_index_file}")
         brain_list = cls.get_brain_parameters_list(brains_index_file)
         # This gets the first brain's id
         default_brain_id = next(iter(brain_list)).id
@@ -56,44 +74,25 @@ class Brain:
             if getattr(brain_parameter, 'default', False):
                 default_brain_id = brain_parameter.id
                 break
-        return cls.get_brain_by_id(default_brain_id)
-    
-    @classmethod
-    def get_brain_by_id(cls, brain_id: str, brains_index_filename: str = AI_BRAINS_INDEX_FILE):
-        brain_parameters_list = cls.get_brain_parameters_list(
-            brains_index_filename)
-        for brain_parameters in brain_parameters_list:
-            if brain_parameters.id == brain_id:
-                logger.info(f"Brain found: {brain_parameters}")
-                return Brain(brain_parameters)
-        logger.error(f"Brain not found: {brain_id}")
-        raise ValueError(f"Brain not found: {brain_id}")
-    
+        return cls.get_brain_by_id(default_brain_id, brains_index_filename=brains_index_file)
     
     @validate_call
-    def __init__(self, parameters: BrainParameters):
+    def __init__(self, parameters: BrainParameters, id: str = None):
         self.parameters = parameters.dict()
         logger.info(f"Initializing Brain with parameters: {self.parameters}")
 
-        # Check chunk variable
-        if not self.parameters.get("chunks_directory"):
-            logger.warning("chunks_directory not given, brain will not be able to load.")
-
         # Setting some parameters to their defaults in case they are not provided
+        self.parameters["id"] = id
         self.parameters["allow_duplicates"] = self.parameters.get('allow_duplicates', False)
         self.parameters["max_no_of_docs"] = self.parameters.get('max_no_of_docs', 0)
         self.parameters["embedding_function"] = self.parameters.get("embedding_function", {})
         
-        # Chunks-dir
-        if self.parameters.get("chunks_directory", None):
-            self.parameters["chunker"] = self.parameters.get("chunker", {})
-            self.parameters["chunker"]["target_dir"] = self.parameters["chunks_directory"]
-
         # Setup Chroma DB
         self.parameters["chroma_directory"] = os.path.join(
             self.parameters["data_directory"], "chroma")
         self.parameters["document_directory"] = os.path.join(
             self.parameters["data_directory"], "documents")
+        logging.getLogger("chromadb.api.segment").setLevel(logging.WARNING)
         self.chroma_client = chromadb.PersistentClient(
             path=self.parameters["chroma_directory"], settings=Settings(anonymized_telemetry=False))
         embedding_function = EmbeddingFunctionFactory().create_embedding_function(parameters=self.parameters["embedding_function"])
@@ -110,10 +109,29 @@ class Brain:
         logger.info(f"Brain initialized. Data directory: {
                     self.parameters["data_directory"]}, no of document: {self.number_of_documents()}, no of chunks: {self.number_of_chunks()}")
 
-    def get_chroma_client(self) -> chromadb.PersistentClient:
-        return self.chroma_client
+    
+    def get_chunker(self) -> Chunker:
+        if (not self.parameters.get("chunker")):
+            logger.warning("Chunker not found in brain parameters.")
+            return None
+        logger.info(f"Creating chunker for brain with parameters: {self.parameters}")
+        return ChunkerFactory().create_chunker(parameters=self.parameters["chunker"])
+    
+    def get_scraper(self) -> BrainScraper:
+        if (not self.parameters.get("scraper")):
+            logger.warning("Scraper not found in brain parameters.")
+            return None
+        return BrainScraperFactory().create_brain_scraper(parameters=self.parameters["scraper"])
     
     def get_parameters(self) -> Dict[str, Any]:
+        chunker = self.get_chunker()
+        if chunker:
+            chunker_parameters = chunker.get_parameters()
+            self.parameters["chunker"] = chunker_parameters
+        scraper = self.get_scraper()
+        if scraper:
+            scraper_parameters = scraper.get_parameters()
+            self.parameters["scraper"] = scraper_parameters
         return self.parameters
 
     def get_statistics(self) -> Dict[str, Any]:
@@ -121,17 +139,22 @@ class Brain:
             "no_of_documents": self.number_of_documents(),
             "no_of_chunks": self.number_of_chunks()
         }
+        chunker = self.get_chunker()
+        if chunker:
+            chunker_statistics = chunker.get_statistics()
+            stats["chunker_statistics"] = chunker_statistics
+        scraper = self.get_scraper()
+        if scraper:
+            scraper_statistics = scraper.get_statistics()
+            stats["scraper_statistics"] = scraper_statistics
         return stats
 
     def get_parameters_and_statistics(self) -> Dict[str, Any]:
         parameters = self.get_parameters()
         statistics = self.get_statistics()
-        chunker = ChunkerFactory().create_chunker(parameters=self.parameters["chunker"])
-        chunker_statistics = chunker.get_statistics()
         parameters_and_statistics = {
             **parameters, 
-            "chroma_statistics":statistics,
-            "chunker_statistics": chunker_statistics}
+            **statistics}
         return parameters_and_statistics
     
     def number_of_documents(self):
@@ -152,7 +175,6 @@ class Brain:
         return
 
     def _delete_all_documents(self):
-
         # Convert dict_keys to a list for mutability
         filenames = list(self.document_index.keys())
 

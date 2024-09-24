@@ -180,6 +180,7 @@ Use cases one could think of:
 * Manual of software package or library: Add all the manual documents to a brain and question it.
 * IT Assiatnt: Load all the confluence space of an IT organisation and assist based on that knowledge.
 * Better writing assistant: Maybe even integrated into a Confluence plugin.
+* Update documentation: The AI could scan the git diffs from one version to another and suggest modifications of the documentation.
 
 ## Todo
 

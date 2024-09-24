@@ -32,6 +32,7 @@ class TestBrain(unittest.TestCase):
                                            path=get_now_as_string()+'_test_brain')
 
         brain = Brain(brain_parameters)
+        self.assertIsInstance(brain, Brain, "Brain object is not an instance of Brain class")
 
     def test_brain_import_doc(self):
         brain_parameters = BrainParameters(id="whatever",
@@ -177,15 +178,20 @@ class TestBrain(unittest.TestCase):
         logging.info(brains_list)
         self.assertTrue(len(brains_list) > 0)
 
-    def test_get_default_brain_name(self):
-        brain = Brain.get_default_brain_id(brains_index_file=os.path.join(
-            TEST_DATA_DIR, "brains.json"))
+    def test_get_default_brain(self):
+        brains_index_file = os.path.join(TEST_DATA_DIR, "brains.json")
+        logger.info(f"test_get_default_brain: Reading from brains index file: {
+                    brains_index_file}")
+        brain = Brain.get_default_brain(brains_index_file=brains_index_file)
         brain_name = brain.get_parameters()["name"]
+        self.assertIsInstance(brain, Brain, "Default brain is not an instance of Brain class")
         self.assertEqual(brain_name, "Mathematics")
 
-    def test_get_default_brain_name_without_default(self):
-        brain = Brain.get_default_brain_id(brains_index_file=os.path.join(
+    def test_get_default_brain_without_default(self):
+        brain = Brain.get_default_brain(brains_index_file=os.path.join(
             TEST_DATA_DIR, "brains_with_no_default.json"))
+        self.assertIsInstance(
+            brain, Brain, "Default brain is not an instance of Brain class")
         brain_name = brain.get_parameters()["name"]
         self.assertEqual(brain_name, "Berlin")
 

@@ -9,15 +9,26 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 router = fastapi.APIRouter()
-brain = Brain.get_default_brain_id()
+brain = Brain.get_default_brain()
+
+def _set_global_brain(brain_id: str):
+    global brain
+    logger.info(f"Setting global brain to {brain_id}")
+    if not Brain.is_valid_brain_id(brain_id):
+        raise HTTPException(
+            status_code=400, detail=f"Brain with ID {brain_id} not found.")
+    if brain_id != brain.parameters["id"]:
+        logger.info(f"Instatiating brain {brain_id}")
+        brain = Brain.get_brain_by_id(brain_id)
 
 @router.get("/")
 async def root():
     return {"message": "This is the AI Brain Service! 🧠"}
 
-
 @router.get("/info")
-async def info() -> Dict[str, Any]:
+async def info(brain_id: str) -> Dict[str, Any]:
+    global brain
+    _set_global_brain(brain_id)
     return brain.get_parameters_and_statistics()
 
 @router.get("/list")
