@@ -8,7 +8,7 @@ import os
 import string
 import random
 from ai_commons.constants import TEST_DATA_DIR, TMP_DATA_DIR
-from utils.utils import get_now_as_string
+from utils.utils import get_now_as_string, simplify_text, get_test_filename
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -26,10 +26,9 @@ class TestBrain(unittest.TestCase):
         brain_parameters = BrainParameters(id="whatever",
                                            name="whatever",
                                            description="whatever",
-                                           data_directory=TMP_DATA_DIR,
+                                           data_directory=get_test_filename(TMP_DATA_DIR),
                                            scraper=None,
-                                           allow_duplicates=True,
-                                           path=get_now_as_string()+'_test_brain')
+                                           allow_duplicates=True)
 
         brain = Brain(brain_parameters)
         self.assertIsInstance(brain, Brain, "Brain object is not an instance of Brain class")
@@ -38,10 +37,10 @@ class TestBrain(unittest.TestCase):
         brain_parameters = BrainParameters(id="whatever",
                                            name="whatever",
                                            description="whatever",
-                                           data_directory=TMP_DATA_DIR,
+                                           data_directory=get_test_filename(
+                                               TMP_DATA_DIR),
                                            scraper=None,
-                                           allow_duplicates=True,
-                                           path=get_now_as_string()+'_test_brain')
+                                           allow_duplicates=True)
         brain = Brain(brain_parameters)
         brain_size_pre = brain.number_of_documents()
         doc = Document.from_text_file(os.path.join(
@@ -54,10 +53,10 @@ class TestBrain(unittest.TestCase):
         brain_parameters = BrainParameters(id="whatever",
                                            name="whatever",
                                            description="whatever",
-                                           data_directory=TMP_DATA_DIR,
+                                           data_directory=get_test_filename(
+                                               TMP_DATA_DIR),
                                            scraper=None,
-                                           allow_duplicates=True,
-                                           path=get_now_as_string()+'_test_brain')
+                                           allow_duplicates=True)
         brain = Brain(brain_parameters)
         brain.delete_all()
         brain_size_pre = brain.number_of_documents()
@@ -73,10 +72,10 @@ class TestBrain(unittest.TestCase):
         brain_parameters = BrainParameters(id="whatever",
                                            name="whatever",
                                            description="whatever",
-                                           data_directory=TMP_DATA_DIR,
+                                           data_directory=get_test_filename(
+                                               TMP_DATA_DIR),
                                            scraper=None,
-                                           allow_duplicates=True,
-                                           path=get_now_as_string()+'_test_brain')
+                                           allow_duplicates=True)
 
         brain = Brain(brain_parameters)
         doc = Document.from_text_file(os.path.join(
@@ -90,10 +89,10 @@ class TestBrain(unittest.TestCase):
         brain_parameters = BrainParameters(id="whatever",
                                            name="whatever",
                                            description="whatever",
-                                           data_directory=TMP_DATA_DIR,
+                                           data_directory=get_test_filename(
+                                               TMP_DATA_DIR),
                                            scraper=None,
-                                           allow_duplicates=True,
-                                           path=get_now_as_string()+'_test_brain')
+                                           allow_duplicates=True)
         brain = Brain(brain_parameters)
         doc = Document.from_text_file(os.path.join(
             TEST_DATA_DIR, SHORT_ARTICLE))
@@ -106,10 +105,10 @@ class TestBrain(unittest.TestCase):
         brain_parameters = BrainParameters(id="whatever",
                                            name="whatever",
                                            description="whatever",
-                                           data_directory=TMP_DATA_DIR,
+                                           data_directory=get_test_filename(
+                                               TMP_DATA_DIR),
                                            scraper=None,
-                                           allow_duplicates=True,
-                                           path=get_now_as_string()+'_test_brain')
+                                           allow_duplicates=True)
 
         brain = Brain(brain_parameters)
         doc = Document.from_text_file(os.path.join(
@@ -122,10 +121,10 @@ class TestBrain(unittest.TestCase):
         brain_parameters = BrainParameters(id="whatever",
                                            name="whatever",
                                            description="whatever",
-                                           data_directory=TMP_DATA_DIR,
+                                           data_directory=get_test_filename(
+                                               TMP_DATA_DIR),
                                            scraper=None,
-                                           allow_duplicates=True,
-                                           path=get_now_as_string()+'_test_brain')
+                                           allow_duplicates=True)
 
         brain = Brain(brain_parameters)
         doc = Document.from_text_file(os.path.join(
@@ -140,10 +139,10 @@ class TestBrain(unittest.TestCase):
         brain_parameters = BrainParameters(id="whatever",
                                            name="whatever",
                                            description="whatever",
-                                           data_directory=TMP_DATA_DIR,
+                                           data_directory=get_test_filename(
+                                               TMP_DATA_DIR),
                                            scraper=None,
-                                           allow_duplicates=True,
-                                           path=get_now_as_string()+'_test_brain')
+                                           allow_duplicates=True)
 
         brain = Brain(brain_parameters)
         brain.delete_all()
@@ -159,15 +158,14 @@ class TestBrain(unittest.TestCase):
         brain_parameters = BrainParameters(id="whatever",
                                            name="whatever",
                                            description="whatever",
-                                           data_directory=TMP_DATA_DIR,
+                                           data_directory=get_test_filename(
+                                               TMP_DATA_DIR),
                                            scraper=None,
-                                           allow_duplicates=True,
-                                           path=get_now_as_string()+'_test_brain')
+                                           allow_duplicates=True)
 
         brain = Brain(brain_parameters)
         params = brain.get_parameters()
         self.assertIn("data_directory", params)
-        self.assertIn("path", params)
         self.assertIn("allow_duplicates", params)
         formatted_params = json.dumps(params, indent=4)
         logger.info(f"Params: {formatted_params}")

@@ -14,6 +14,7 @@ import logging
 import unidecode
 from requests import Response, Session
 from pydantic import field_validator, validate_call
+import inspect 
 
 INTERNAL_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 coloredlogs.install()
@@ -167,3 +168,10 @@ def get_files(directory, *, patterns_to_match: Optional[List[str]] = ["*"], patt
                 if not _matches_any_pattern(file, patterns_to_ignore):
                     result_files.append(os.path.join(root, file))
     return result_files
+
+
+def get_calling_function_name():
+    return inspect.stack()[1].function
+
+def get_test_filename(directory: str = "", file_ext:str="") -> str:
+    return os.path.join(directory, simplify_text(get_now_as_string()+"_"+inspect.stack()[1].function+file_ext))

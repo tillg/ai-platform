@@ -183,20 +183,22 @@ Use cases one could think of:
 * Update documentation: The AI could scan the git diffs from one version to another and suggest modifications of the documentation.
 
 ## Todo
-
-* Re-structure the `ai_commons` to proper class files (`Documents`, `Chunks`) and separate factories for better readabilty.
+* BUG: Paths are mixed up. Make sure that we always use absolute paths and start by the project root directory.
+* Make sure that all the APIs to the brain use the `brain_id`
+* ~~Re-structure the `ai_commons` to proper class files (`Documents`, `Chunks`) and separate factories for better readabilty.~~
 * Add a brain scraper for Atlassian Confluences, and test / demo it with [my private demo space](https://ai-platform-2024.atlassian.net/wiki/home)
+* Add a brain scraper for emails.
 * Visualize the chunks in their original document. Use this? [How to highlight any web page on Google Chrome (or Chromium-based Edge)](https://medium.com/@Bartleby/how-to-highlight-any-web-page-on-google-chrome-or-chromium-based-edge-83035c41eeec)
 * Add pre-commit hooks
 * The brain should keep track in the `_index.json` if a document was indexed, as well as using which embedding model
-* Add a function `brain.import_or_update()` 
-* Data Loader for confluence pages and Emails
+* ~~Add a function `brain.import_or_update()`~~
 * ~~API rule: Every call should return a `ìnner_working` dictionary, For the ai_brain this could contain: Brain name, no of docs/chunks, search time, result size...~~
 * ~~Calling `python -m ai_brain` or similar should start the fastAPI server~~
-* Make ability to load a brain with data, have it's configuration in a YAML file
+* ~~Make ability to load a brain with data, have it's configuration in a YAML file~~
 * Have a user friendly way (markdown?) of documentation for every chain.
 * Have chain-specific parameter management incl. user interface. A12 models?
-* Change brain management to a pipeline concept: Different stages that can be combined (i.e. scraping, chunking, indexing)
+* ~~Change brain management to a pipeline concept: Different stages that can be combined (i.e. scraping, chunking, indexing)~~
+* Check if we can re-use parts of [this RAG Stack](https://pub.towardsai.net/the-best-rag-stack-to-date-8dc035075e13).
 
 ## Resources
 
