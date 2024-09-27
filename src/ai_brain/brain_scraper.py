@@ -37,4 +37,5 @@ class BrainScraper(ABC):
         return self.parameters
     
     def get_statistics(self) -> Dict[str, Any]:
+        # TODO: Return at least the number of docs in the target_dir
         return self.index

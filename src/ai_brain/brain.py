@@ -22,9 +22,8 @@ from ai_brain.embedding_function_factory import EmbeddingFunctionFactory
 from ai_brain.brain_scraper import BrainScraper
 from ai_brain.brain_scraper_factory import BrainScraperFactory
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
+logger.setLevel(logging.WARNING)
 class Brain:
 
     @classmethod

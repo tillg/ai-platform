@@ -4,12 +4,16 @@ import argparse
 import sys
 import logging
 import json
+import os 
 
 sys.path.append('..')
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 
 from ai_brain.brain_scraper_factory import BrainScraperFactory
 from ai_brain.chunker_factory import ChunkerFactory
 from ai_brain.brain import Brain
+from utils.robust_jsonify import robust_jsonify
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -18,7 +22,6 @@ console_handler.setLevel(logging.INFO)  # Set log level for the handler
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')  # Create a formatter
 console_handler.setFormatter(formatter)  # Set formatter for the handler
 logger.addHandler(console_handler)  # Add handler to the logger
-
 
 if __name__ == "__main__":
 
@@ -62,9 +65,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.command == 'list':
-        brains = Brain.get_brain_list()
-        brains_dicts = [brain.dict() for brain in brains]
-        formatted_brains = json.dumps(brains_dicts, indent=4)
+        brain_parameters = Brain.get_brain_parameters_list()
+        brains_dicts = [brain.dict() for brain in brain_parameters]
+        formatted_brains = robust_jsonify(brain_parameters, indent=4)
         print('Available Brains:')
         print(formatted_brains)
 

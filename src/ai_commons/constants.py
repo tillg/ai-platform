@@ -18,6 +18,7 @@ CHAT_BACKEND_URL = "http://localhost"
 
 PROJECT_ROOT = find_project_root(os.path.abspath(__file__))
 DATA_DIRECTORY = os.path.join(PROJECT_ROOT, "data")
+SRC_DIRECTORY = os.path.join(PROJECT_ROOT, "src")
 
 AI_BRAINS_INDEX_FILE = os.path.join(DATA_DIRECTORY, "brains/brains.json")
 AI_BRAIN_COLLECTION_NAME = 'COLLECTION_NAME'
@@ -29,10 +30,8 @@ CHUNKER_CHUNK_SIZE = 256
 CHUNKER_CHUNK_OVERLAP = 20
 
 # in relation to this file my test data resides in ../../data/test_data
-TEST_DATA_DIR = os.path.join(os.path.dirname(
-    os.path.dirname(os.path.dirname(__file__))), "data", "test_data")
-TMP_DATA_DIR = os.path.join(os.path.dirname(
-    os.path.dirname(os.path.dirname(__file__))), "data", "tmp")
+TEST_DATA_DIR = os.path.join(DATA_DIRECTORY, "test_data")
+TMP_DATA_DIR = os.path.join(DATA_DIRECTORY, "tmp")
 
 
 EMBEDDING_MODEL = "nomic-embed-text"
