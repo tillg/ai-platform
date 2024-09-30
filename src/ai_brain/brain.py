@@ -1,6 +1,4 @@
 # TODO: Review if it still makes sense to keep the documents as files.
-# TODO: Import chunks in batches if there are many.
-
 
 from ast import Tuple
 from collections import OrderedDict
@@ -22,6 +20,8 @@ from ai_commons.constants import AI_BRAINS_INDEX_FILE, AI_BRAIN_COLLECTION_NAME
 from ai_brain.embedding_function_factory import EmbeddingFunctionFactory
 from ai_brain.brain_scraper import BrainScraper
 from ai_brain.brain_scraper_factory import BrainScraperFactory
+
+DEFAULT_BATCH_SIZE = 100
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
@@ -258,20 +258,23 @@ class Brain:
                            document_id} not found in index.")
 
     @validate_call
-    def import_chunks(self, chunks: List[Chunk]):
+    def import_chunks(self, chunks: List[Chunk], batch_size=DEFAULT_BATCH_SIZE):
         """ Import chunks into the ChromaDB """
         # TODO: Check if the chunks are already in the collection
-        # Store the chunks in the collection
         chunks_content = []
         for chunk in chunks:
             chunks_content.append(chunk.content)
         chunks_metadatas = [{"title": chunk.title, "uri": chunk.uri,
                             "original_document_id": chunk.original_document_id} for chunk in chunks]
         chunks_ids = [chunk.id for chunk in chunks]
-        logger.info(f"Adding {len(chunks)} chunks to the ChromaDB...")
-        print(f"Adding {len(chunks)} chunks to the ChromaDB...")
-        self.chroma_collection.add(documents=chunks_content,
-                                   metadatas=chunks_metadatas, ids=chunks_ids)
+        for i in tqdm(range(0, len(chunks_content), batch_size), desc=f"Adding {len(chunks)} chunks to ChromaDB in batches of {batch_size}"):
+            chunks_content_batch = chunks_content[i:i + batch_size]
+            batch_metadatas = chunks_metadatas[i:i + batch_size]
+            batch_ids = chunks_ids[i:i + batch_size]
+
+            self.chroma_collection.add(documents=chunks_content_batch,
+                                    metadatas=batch_metadatas,
+                                    ids=batch_ids)
         logger.info(f"Done: Adding {len(chunks)} chunks to the ChromaDB.")
         return
 
@@ -322,7 +325,7 @@ class Brain:
     @validate_call
     def import_documents(self, documents: List[Document], show_progress=True):
         if show_progress:
-            documents = tqdm(documents)
+            documents = tqdm(documents, desc="Importing documents")
         for document in documents:
             self.import_document(document)
         return
