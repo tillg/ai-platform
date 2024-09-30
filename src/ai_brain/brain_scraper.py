@@ -4,12 +4,13 @@ from abc import ABC, abstractmethod
 import os
 
 from utils.dict2file import read_dict_from_file, write_dict_to_file
-from utils.utils import get_now_as_string
+from utils.utils import get_files, get_now_as_string
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 INDEX_FILENAME = "_scrape_index.json"
+FILES_TO_IGNORE = ["*index.json"]
 
 class BrainScraper(ABC):
     brain = None
@@ -37,5 +38,8 @@ class BrainScraper(ABC):
         return self.parameters
     
     def get_statistics(self) -> Dict[str, Any]:
-        # TODO: Return at least the number of docs in the target_dir
-        return self.index
+        target_dir = self.parameters["target_dir"]
+        document_files = get_files(
+            target_dir, patterns_to_ignore=FILES_TO_IGNORE, patterns_to_match=["*.json"])
+        no_documents = len(document_files)
+        return {"no_documents": no_documents}

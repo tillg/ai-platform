@@ -81,32 +81,33 @@ if __name__ == "__main__":
         print('Brain Details:')
         brain = Brain.get_brain_by_id(args.brain)
         brain_desc = brain.get_parameters_and_statistics()
-        formatted_brain_desc = json.dumps(brain_desc, indent=4, sort_keys=True)
+        formatted_brain_desc = json.dumps(brain_desc, indent=4)
         print(formatted_brain_desc)
 
     elif args.command == 'scrape':
         print('Scraping Brain:')
         brain = Brain.get_brain_by_id(args.brain)
-        brain_params = brain.get_parameters()
-        chunker_params = brain_params.get('scraper', {})
-        scraper = BrainScraperFactory().create_brain_scraper(chunker_params)
-        print(f"Ready to scrape:")
-        print(json.dumps(scraper.get_parameters(), indent=4))
-        confirmation = input(
-            "Do you really want to run an scrape with the above parameters? (yes/no): ")
-        if confirmation.lower() == 'yes':
-            scraper.do_scrape()
-            print('Scrape completed.')
+        scraper = brain.get_scraper()
+        if scraper is None:
+            logger.error(f"No scraper found for brain {args.brain}.")
         else:
-            print("Scrape cancelled.")
+            print(f"Ready to scrape:")
+            print(json.dumps(scraper.get_parameters(), indent=4))
+            confirmation = input(
+                "Do you really want to run an scrape with the above parameters? (yes/no): ")
+            if confirmation.lower() == 'yes':
+                scraper.do_scrape()
+                print('Scrape completed.')
+            else:
+                print("Scrape cancelled.")
 
     elif args.command == 'chunk':
         print('Chunking Brain:')
         brain = Brain.get_brain_by_id(args.brain)
         brain_params = brain.get_parameters()
-        chunker_params = brain_params.get('chunker', {})
-        chunker_params["c"]
-        chunker = ChunkerFactory().create_chunker(chunker_params)
+        scraper_params = brain_params.get('chunker', {})
+        scraper_params["c"]
+        chunker = ChunkerFactory().create_chunker(scraper_params)
         print(f"Ready to chunk:")
         print(json.dumps(chunker.get_parameters(), indent=4))
         confirmation = input(

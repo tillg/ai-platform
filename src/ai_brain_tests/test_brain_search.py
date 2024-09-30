@@ -7,7 +7,7 @@ import logging
 import os
 import string
 import random
-from ai_commons.constants import TEST_DATA_DIR, TMP_DATA_DIR
+from ai_commons.constants import TEST_DATA_DIRECTORY, TMP_DATA_DIRECTORY
 from ai_brain.chunker_factory import ChunkerFactory
 import shutil
 
@@ -23,14 +23,14 @@ logging.basicConfig(level=logging.INFO)
 class TestBrainSearch(unittest.TestCase):
 
     def prep_chunk_directory(self):
-        path_to_docs = os.path.join(TMP_DATA_DIR, simplify_text(get_now_as_string()+"_docs"))
+        path_to_docs = os.path.join(TMP_DATA_DIRECTORY, simplify_text(get_now_as_string()+"_docs"))
         path_to_chunks = os.path.join(
-            TMP_DATA_DIR, simplify_text(get_now_as_string()+"_chunks"))
+            TMP_DATA_DIRECTORY, simplify_text(get_now_as_string()+"_chunks"))
         shutil.rmtree(path_to_chunks, ignore_errors=True)
         doc1 = Document.from_text_file(os.path.join(
-            TEST_DATA_DIR, LONG_ARTICLE))
+            TEST_DATA_DIRECTORY, LONG_ARTICLE))
         doc2 = Document.from_text_file(os.path.join(
-            TEST_DATA_DIR, SHORT_ARTICLE))
+            TEST_DATA_DIRECTORY, SHORT_ARTICLE))
         doc1.write_2_json(path_to_docs)
         doc2.write_2_json(path_to_docs)
         parameters = {"source_dir": path_to_docs, "target_dir": path_to_chunks}
@@ -44,7 +44,7 @@ class TestBrainSearch(unittest.TestCase):
                                            name="whatever",
                                            description="whatever",
                                            data_directory=os.path.join(
-                                               TMP_DATA_DIR, get_now_as_string()+"test_brain_search1"),
+                                               TMP_DATA_DIRECTORY, get_now_as_string()+"test_brain_search1"),
                                            scraper=None,
                                            allow_duplicates=True,
                                            chunks_directory= chunk_dir)
@@ -52,9 +52,9 @@ class TestBrainSearch(unittest.TestCase):
 
         brain_size_pre = brain.number_of_documents()
         doc1 = Document.from_text_file(os.path.join(
-            TEST_DATA_DIR, LONG_ARTICLE))
+            TEST_DATA_DIRECTORY, LONG_ARTICLE))
         doc2 = Document.from_text_file(os.path.join(
-            TEST_DATA_DIR, SHORT_ARTICLE))
+            TEST_DATA_DIRECTORY, SHORT_ARTICLE))
         chunks = Chunk.from_json_directory(chunk_dir)
         brain.import_documents([doc1, doc2])
         brain.import_chunks_from_directory()
@@ -71,7 +71,7 @@ class TestBrainSearch(unittest.TestCase):
                 chunk, Chunk, "Expected item to be an instance of Chunk")
 
         # For inspection write the chunks in a file
-        dir = os.path.join(TMP_DATA_DIR, get_now_as_string())
+        dir = os.path.join(TMP_DATA_DIRECTORY, get_now_as_string())
         for chunk in chunks:
             chunk.write_2_json(dir)
 

@@ -3,6 +3,7 @@
 
 
 from ast import Tuple
+from collections import OrderedDict
 import os
 from uuid import UUID
 import chromadb
@@ -154,7 +155,9 @@ class Brain:
         parameters_and_statistics = {
             **parameters, 
             **statistics}
-        return parameters_and_statistics
+        sorted_parameters_and_statistics = OrderedDict(
+            sorted(parameters_and_statistics.items()))
+        return sorted_parameters_and_statistics
     
     def number_of_documents(self):
         """Return the number of documents, ensuring the document index is up-to-date."""
@@ -256,6 +259,7 @@ class Brain:
 
     @validate_call
     def import_chunks(self, chunks: List[Chunk]):
+        """ Import chunks into the ChromaDB """
         # TODO: Check if the chunks are already in the collection
         # Store the chunks in the collection
         chunks_content = []
@@ -264,8 +268,11 @@ class Brain:
         chunks_metadatas = [{"title": chunk.title, "uri": chunk.uri,
                             "original_document_id": chunk.original_document_id} for chunk in chunks]
         chunks_ids = [chunk.id for chunk in chunks]
+        logger.info(f"Adding {len(chunks)} chunks to the ChromaDB...")
+        print(f"Adding {len(chunks)} chunks to the ChromaDB...")
         self.chroma_collection.add(documents=chunks_content,
                                    metadatas=chunks_metadatas, ids=chunks_ids)
+        logger.info(f"Done: Adding {len(chunks)} chunks to the ChromaDB.")
         return
 
     #validate_call

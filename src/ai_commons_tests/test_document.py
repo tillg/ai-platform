@@ -1,7 +1,7 @@
 import unittest
 import uuid
 from ai_commons.apiModelsSearch import Document
-from ai_commons.constants import TMP_DATA_DIR, TEST_DATA_DIR
+from ai_commons.constants import TMP_DATA_DIRECTORY, TEST_DATA_DIRECTORY
 import os
 import logging
 
@@ -43,7 +43,7 @@ class TestDocument(unittest.TestCase):
                          "uri": "some_uri", "title": "apple", "id": doc.id})
 
     def test_document_from_file(self):
-        file_path = os.path.join(TEST_DATA_DIR, "wikipedia_peru.txt")
+        file_path = os.path.join(TEST_DATA_DIRECTORY, "wikipedia_peru.txt")
         with open(file_path, 'r', encoding='utf-8') as file:
             wikipedia_peru_content = file.read()
 
@@ -54,10 +54,10 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(doc.content, wikipedia_peru_content)
 
     def test_document_from_json_file(self):
-        file_path_for_sample_doc = os.path.join(TEST_DATA_DIR, "wikipedia_peru.txt")
+        file_path_for_sample_doc = os.path.join(TEST_DATA_DIRECTORY, "wikipedia_peru.txt")
 
         doc = Document.from_text_file(file_path_for_sample_doc)
-        file_path_for_json_doc = os.path.join(TMP_DATA_DIR, "wikipedia_peru")
+        file_path_for_json_doc = os.path.join(TMP_DATA_DIRECTORY, "wikipedia_peru")
         logger.info(f"Writing doc to json file: {file_path_for_json_doc}")
         doc.write_2_json(file_path_for_json_doc)
 
