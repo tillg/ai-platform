@@ -132,12 +132,14 @@ class Brain:
         if scraper:
             scraper_parameters = scraper.get_parameters()
             self.parameters["scraper"] = scraper_parameters
-        return self.parameters
+        sorted_parameters = OrderedDict(
+            sorted(self.parameters.items()))
+        return sorted_parameters
 
     def get_statistics(self) -> Dict[str, Any]:
         stats = {
-            "no_of_documents": self.number_of_documents(),
-            "no_of_chunks": self.number_of_chunks()
+            "no_of_chunks": self.number_of_chunks(),
+            "no_of_documents": self.number_of_documents()
         }
         chunker = self.get_chunker()
         if chunker:
@@ -335,7 +337,10 @@ class Brain:
 
     @validate_call
     def search_chunks_by_text(self, query_text: str, n: int = 10) -> SearchResult:
-        search_result = SearchResult(inner_working={'vectore store': 'ChromaDB', **self.get_statistics()})
+        search_result = SearchResult(inner_working={
+            'vectore store': 'ChromaDB', 
+            'id': self.parameters.get('id', None),
+            **self.get_statistics()})
         if (query_text is None) or (len(query_text) == 0):
             error_text = "Empty search query."
             logger.warning(error_text)

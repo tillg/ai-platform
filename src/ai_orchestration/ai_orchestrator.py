@@ -17,11 +17,11 @@ def run_chain(chat_request: ChatRequest, chain_name: str) -> Message:
 def get_chain_by_name(chain_name: str, options: Optional[Dict[str, Any]] = None):    
     if chain_name == "simple_rag":
         from ai_orchestration.chains.simple_rag.chain import Chain
-        return Chain(options=options)
+        return Chain(parameters=options)
     elif chain_name == "naked_llm":
         from ai_orchestration.chains.naked_llm.chain import Chain
-        return Chain(options=options)
+        return Chain(parameters=options)
     else:
         from ai_orchestration.chains.default.chain import Chain
-        return Chain(options=options)
+        return Chain(parameters=options)
     

@@ -14,8 +14,8 @@ logger.setLevel(logging.INFO)
 
 class Chain(Chain):
     
-    def run(self, chat_request: ChatRequest, options: Dict[str, Any]) -> Message:
-        logger.info(f"Running Simple_Rag chain with {chat_request} and options {options}")
+    def run(self, chat_request: ChatRequest, parameters: Dict[str, Any]) -> Message:
+        logger.info(f"Running Simple_Rag chain with {chat_request} and options {parameters}")
         llm_client = LlmClient()
         brain_client = BrainClient()
         inner_working = {}

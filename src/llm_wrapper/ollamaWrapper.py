@@ -114,3 +114,4 @@ def check_and_fix_model_in_request(chat_request: ChatRequest) -> ChatRequest:
     else:
         # If model is specified, return the original request
         return chat_request
+

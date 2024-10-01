@@ -63,3 +63,5 @@ class Client:
         logger.info(f"POST /chat: {response}")
         response.raise_for_status()
         return Message(**response.json())
+    
+    

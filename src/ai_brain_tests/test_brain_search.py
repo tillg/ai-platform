@@ -2,7 +2,7 @@ import unittest
 import uuid
 from ai_brain.brain import Brain
 from ai_commons.apiModelsSearch import BrainParameters, Document, Chunk
-from utils.utils import get_now_as_string, simplify_text
+from utils.utils import get_now_as_string, simplify_text, get_test_filename
 import logging
 import os
 import string
@@ -23,9 +23,9 @@ logging.basicConfig(level=logging.INFO)
 class TestBrainSearch(unittest.TestCase):
 
     def prep_chunk_directory(self):
-        path_to_docs = os.path.join(TMP_DATA_DIRECTORY, simplify_text(get_now_as_string()+"_docs"))
-        path_to_chunks = os.path.join(
-            TMP_DATA_DIRECTORY, simplify_text(get_now_as_string()+"_chunks"))
+        path_to_docs = get_test_filename(TMP_DATA_DIRECTORY, file_ext="_json")
+        path_to_chunks = get_test_filename(
+            TMP_DATA_DIRECTORY, file_ext="_chunks")
         shutil.rmtree(path_to_chunks, ignore_errors=True)
         doc1 = Document.from_text_file(os.path.join(
             TEST_DATA_DIRECTORY, LONG_ARTICLE))
@@ -43,8 +43,7 @@ class TestBrainSearch(unittest.TestCase):
         brain_parameters = BrainParameters(id="whatever",
                                            name="whatever",
                                            description="whatever",
-                                           data_directory=os.path.join(
-                                               TMP_DATA_DIRECTORY, get_now_as_string()+"test_brain_search1"),
+                                           data_directory=get_test_filename(TMP_DATA_DIRECTORY),
                                            scraper=None,
                                            allow_duplicates=True,
                                            chunks_directory= chunk_dir)
@@ -71,7 +70,7 @@ class TestBrainSearch(unittest.TestCase):
                 chunk, Chunk, "Expected item to be an instance of Chunk")
 
         # For inspection write the chunks in a file
-        dir = os.path.join(TMP_DATA_DIRECTORY, get_now_as_string())
+        dir = get_test_filename(TMP_DATA_DIRECTORY, file_ext="_chunks")
         for chunk in chunks:
             chunk.write_2_json(dir)
 

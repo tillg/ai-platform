@@ -106,7 +106,6 @@ if __name__ == "__main__":
         brain = Brain.get_brain_by_id(args.brain)
         brain_params = brain.get_parameters()
         scraper_params = brain_params.get('chunker', {})
-        scraper_params["c"]
         chunker = ChunkerFactory().create_chunker(scraper_params)
         print(f"Ready to chunk:")
         print(json.dumps(chunker.get_parameters(), indent=4))
