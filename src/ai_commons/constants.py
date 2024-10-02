@@ -1,8 +1,8 @@
 import os
 from utils.utils import find_project_root
 
-AI_ORCHESTRATION_HOST = "localhost"
-AI_ORCHESTRATION_PORT = 8003
+AI_CHAINS_HOST = "localhost"
+AI_CHAINS_PORT = 8003
 
 AI_LLM_WRAPPER_HOST = "localhost"
 AI_LLM_WRAPPER_PORT = 8002
@@ -31,7 +31,7 @@ CHUNKER_SEPARATOR = '\n'
 CHUNKER_CHUNK_SIZE = 256
 CHUNKER_CHUNK_OVERLAP = 20
 
-
+CHAINS_INDEX_FILE=os.path.join(DATA_DIRECTORY, "chains/chains.json")
 
 EMBEDDING_MODEL = "nomic-embed-text"
 COLLECTION_NAME = "collection"

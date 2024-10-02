@@ -2,20 +2,27 @@ from typing import Any, Dict
 from ai_commons.apiModelsChat import ChatRequest, Message
 from ai_commons.apiModelsSearch import SearchRequest
 import logging
-from ai_orchestration.chain import Chain
+from ai_chains.chain import Chain
 from llm_wrapper_client.llm_client import Client as LlmClient
 from prompt_lib.prompts import get_prompt
 from ai_brain_client.ai_brain_client import Client as BrainClient
 import copy
 from ai_commons.inner_working import add_inner_working
+import json
+from pydantic import field_validator, validate_call
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 class Chain(Chain):
     
-    def run(self, chat_request: ChatRequest, parameters: Dict[str, Any]) -> Message:
-        logger.info(f"Running Simple_Rag chain with {chat_request} and options {parameters}")
+    def __init__(self, parameters: Dict[str, Any] = {}):
+        super().__init__(parameters)
+        logger.info(f"Creating Simple_Rag chain with parameters: {parameters}")
+        
+    @validate_call
+    def run(self, chat_request: ChatRequest, parameters: Dict[str, Any] = {}) -> Message:
+        logger.info(f"Running Simple_Rag chain with {chat_request} and parameters {json.dumps(parameters, indent=2)}")
         llm_client = LlmClient()
         brain_client = BrainClient()
         inner_working = {}
@@ -49,4 +56,4 @@ class Chain(Chain):
         return overall_answer
     
     def get_name(self) -> str:
-        return "naked_llm"
+        return "simple_rag"

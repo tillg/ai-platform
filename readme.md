@@ -183,7 +183,8 @@ Use cases one could think of:
 * Update documentation: The AI could scan the git diffs from one version to another and suggest modifications of the documentation.
 
 ## Todo
-* BUG: Paths are mixed up. Make sure that we always use absolute paths and start by the project root directory.
+* Review if it still makes sense to keep the documents as files in brains.
+* ~~BUG: Paths are mixed up. Make sure that we always use absolute paths and start by the project root directory.~~
 * Make sure that all the APIs to the brain use the `brain_id`
 * ~~Re-structure the `ai_commons` to proper class files (`Documents`, `Chunks`) and separate factories for better readabilty.~~
 * Add a brain scraper for Atlassian Confluences, and test / demo it with [my private demo space](https://ai-platform-2024.atlassian.net/wiki/home)
@@ -215,6 +216,7 @@ Use cases one could think of:
 * Original inspiration taken from [RAG on PostgreSQL - Github](https://github.com/Azure-Samples/rag-postgres-openai-python#) as explained in this video: [Building a RAG-powered AI chat app with Python and VS Code](https://www.youtube.com/watch?v=3ctFWU492xk&t=1177s)
 * [Vector Admin - Github](https://github.com/Mintplex-Labs/vector-admin) a UI for vector databases
 * [Microsoft Autogen - Github](https://github.com/microsoft/autogen), an open-source programming framework for building AI agents and facilitating cooperation among multiple agents to solve tasks.
+* A command line tool for using AI assistants with a nice prompt management: [fabric](https://github.com/danielmiessler/fabric)
 
 ## Things to look at
 

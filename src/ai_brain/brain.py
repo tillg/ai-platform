@@ -1,4 +1,3 @@
-# TODO: Review if it still makes sense to keep the documents as files.
 
 from ast import Tuple
 from collections import OrderedDict

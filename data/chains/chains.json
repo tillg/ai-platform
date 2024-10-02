@@ -1,0 +1,7 @@
+{
+  "rag_berlin": {
+    "chain_type": "simple_rag",
+    "brain": "berlin",
+    "llm": "ollama_mixtral"
+  }
+}

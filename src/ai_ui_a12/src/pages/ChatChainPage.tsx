@@ -87,7 +87,7 @@ export const ChatChainPage = () => {
     }, [selectedChainName])
     useEffect(() => {
         initiateSelectedChain();
-    }, [initiateSelectedChain]);
+    }, []);
 
     // Config Pane
     const [isConfigurationOpen, setConfigurationOpen] = React.useState<boolean>(false);
@@ -95,6 +95,7 @@ export const ChatChainPage = () => {
     const closeConfigurationWindow = (): void => setConfigurationOpen(false);
 
     const setConfiguration = (config: Record<string, any>) => {
+        console.log("Setting configuration: ", config);
         if (config.chain && config.chain !== undefined) {
             setSelectedChainName(config.chain);
         }
