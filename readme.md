@@ -176,13 +176,15 @@ Marie Curie (1867–1934) was a Polish and naturalised-French physicist and chem
 ## Use cases
 
 Use cases one could think of:
-
+ 
 * Manual of software package or library: Add all the manual documents to a brain and question it.
 * IT Assiatnt: Load all the confluence space of an IT organisation and assist based on that knowledge.
 * Better writing assistant: Maybe even integrated into a Confluence plugin.
 * Update documentation: The AI could scan the git diffs from one version to another and suggest modifications of the documentation.
 
-## Todo
+## TODO
+* Make sure that everywhere we mesn the `brain_id` we also call it `brain_id`. In many places currentyl we call it `brain`.
+* Annotate `@override` in child brains and chains.
 * Review if it still makes sense to keep the documents as files in brains.
 * ~~BUG: Paths are mixed up. Make sure that we always use absolute paths and start by the project root directory.~~
 * Make sure that all the APIs to the brain use the `brain_id`

@@ -3,5 +3,10 @@
     "chain_type": "simple_rag",
     "brain": "berlin",
     "llm": "ollama_mixtral"
+  },
+  "rag_berlin_large_chunks": {
+    "chain_type": "simple_rag",
+    "brain": "berlin_large_chunks",
+    "llm": "ollama_mixtral"
   }
 }

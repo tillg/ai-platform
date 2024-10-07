@@ -11,7 +11,6 @@ logger.setLevel(logging.INFO)
 
 CHAIN_TYPES = ["default", "simple_rag", "naked_llm"]
 
-
 class ChainFactory:
     chains_index = {}
 

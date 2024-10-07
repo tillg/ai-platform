@@ -91,7 +91,10 @@ export const ChatChainPage = () => {
 
     // Config Pane
     const [isConfigurationOpen, setConfigurationOpen] = React.useState<boolean>(false);
-    const showConfigurationWindow = (): void => setConfigurationOpen(true);
+    const showConfigurationWindow = async (): Promise<void> => {
+        await fetchChains();
+        setConfigurationOpen(true);
+    };
     const closeConfigurationWindow = (): void => setConfigurationOpen(false);
 
     const setConfiguration = (config: Record<string, any>) => {

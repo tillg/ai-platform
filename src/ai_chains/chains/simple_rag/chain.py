@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, override
 from ai_commons.apiModelsChat import ChatRequest, Message
 from ai_commons.apiModelsSearch import SearchRequest
 import logging
@@ -21,8 +21,15 @@ class Chain(Chain):
         logger.info(f"Creating Simple_Rag chain with parameters: {parameters}")
         
     @validate_call
-    def run(self, chat_request: ChatRequest, parameters: Dict[str, Any] = {}) -> Message:
-        logger.info(f"Running Simple_Rag chain with {chat_request} and parameters {json.dumps(parameters, indent=2)}")
+    @override
+    def run(self, chat_request: ChatRequest) -> Message:
+        logger.info(f"Running Simple_Rag chain with {chat_request} and parameters {json.dumps(self.parameters, indent=2)}")
+
+        # If we get here, the chain should already match the chain in the chat_request
+        chain_id = chat_request.chain
+        if self.parameters.get("id", None) is not None:
+            assert chain_id == self.parameters["id"]
+
         llm_client = LlmClient()
         brain_client = BrainClient()
         inner_working = {}
@@ -30,7 +37,7 @@ class Chain(Chain):
         # Get Document chunks
         question = chat_request.get_last_question()
         logger.info(f"{question=}")
-        search_request = SearchRequest(search_term=question)
+        search_request = SearchRequest(search_term=question, brain_id=self.parameters.get("brain", "default"))
         search_result = brain_client.search_chunks_by_text(search_request)
         inner_working = add_inner_working(inner_working, "Step: Search Vector DB", search_result)
 
@@ -55,5 +62,6 @@ class Chain(Chain):
 
         return overall_answer
     
+    @override
     def get_name(self) -> str:
         return "simple_rag"

@@ -10,10 +10,27 @@
             "language": "en",
             "depth": 2,
             "target_dir": "{{PROJECT_ROOT}}/data/tmp/berlin_scrapes"
+        }
+    },
+    "berlin_large_chunks": {
+        "name": "Berlin - Large chunks",
+        "description": "The Wikipedia page of Berlin and 2 hops away, with large chunks",
+        "data_directory": "{{PROJECT_ROOT}}/data/tmp/berlin_large_chunks_data",
+        "chunks_directory": "{{PROJECT_ROOT}}/data/tmp/berlin_large_chunks",
+        "scraper": {
+            "scraper_type": "wikipedia",
+            "start_page_title": "Berlin",
+            "language": "en",
+            "depth": 2,
+            "target_dir": "{{PROJECT_ROOT}}/data/tmp/berlin_scrapes"
         },
         "chunker": {
             "source_dir": "{{PROJECT_ROOT}}/data/tmp/berlin_scrapes",
-            "target_dir": "{{PROJECT_ROOT}}/data/tmp/berlin_chunks"
+            "target_dir": "{{PROJECT_ROOT}}/data/tmp/berlin_large_chunks",
+             "chunker_type": "character_text_splitter",
+            "separator": "\n",
+            "chunk_size": 1000,
+            "chunk_overlap": 100
         }
     },
     "math_small": {

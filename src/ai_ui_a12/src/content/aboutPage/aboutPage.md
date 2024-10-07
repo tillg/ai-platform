@@ -5,7 +5,7 @@ In order to play with it we have stuff:
 * Vector DBs packaged in **Brains** that you can search
 * **LLM**'s all over the place
 * **Prompts** that we can modify ant test
-* **Orchestration** that combines it all in chains - Brains, prompts and chats...
+* **Chains** that combines it all - Brains, prompts and chats...
 
 This is how the different bits are interacting:
 
@@ -17,7 +17,7 @@ This is how the different bits are interacting:
 
 | Component           | API                                                                                                    | Comments                                              |
 |-------------------------|--------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
-| AI Chains | <a href="{{AI_ORCHESTRATION_URL}}/docs" target="_blank">OpenAPI Docs for AI Orchestration & Chains</a> | Currently only 2 chains: *Default* (a mock chain) and  *Naked LLM* |
+| AI Chains | <a href="{{AI_ORCHESTRATION_URL}}/docs" target="_blank">OpenAPI Docs for AI Orchestration & Chains</a> | Currently only 3 chain types: *Default* (a mock chain), *Naked LLM* and *Simple RAG* |
 | AI Brains         | <a href="{{AI_BRAIN_URL}}/docs" target="_blank">OpenAPI Docs for Brains & Search</a>                   |                                                                    |
 | LLM Wrapper      | <a href="{{LLM_WRAPPER_URL}}/docs" target="_blank">OpenAPI Docs LLM Wrapper Docs</a>                   |                                                                    |
 

@@ -73,7 +73,10 @@ export const SearchPage = () => {
 
     // Config Pane
     const [isConfigurationOpen, setConfigurationOpen] = React.useState<boolean>(false);
-    const showConfiguration = (): void => setConfigurationOpen(true);
+    const showConfiguration = async (): Promise<void> => {
+        await fetchBrains();
+        setConfigurationOpen(true);
+    };
     const closeConfiguration = (): void => setConfigurationOpen(false);
 
     const setConfiguration = (config: Record<string, any>) => {
