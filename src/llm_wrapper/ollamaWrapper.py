@@ -16,7 +16,7 @@ def get_models_as_json_array(client):
     try:
         models = client.list()["models"]
     except Exception as e:
-        logger.error(f"Error: {e}")
+        logger.error(f"get_models_as_json_array {e}")
         return None
     return models
 

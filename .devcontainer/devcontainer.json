@@ -5,6 +5,7 @@
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"shutdownAction": "stopCompose",
 	"features": {
+		"ghcr.io/devcontainers/features/python:1": {},
 	    "ghcr.io/hwaien/devcontainer-features/match-host-time-zone": {}
 	}
 }
