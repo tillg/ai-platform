@@ -1,0 +1,11 @@
+services:
+  ai-platform:
+    build:
+      context: ../
+      dockerfile: ./.devcontainer/Dockerfile
+    volumes:
+      - ../..:/workspaces:cached
+    environment:
+        - TZ=Europe/Berlin
+    command: sleep infinity
+    container_name: ai-platform

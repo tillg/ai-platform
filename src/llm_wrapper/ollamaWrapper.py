@@ -37,7 +37,7 @@ def get_models() -> List[Model]:
     models_as_json = get_models_as_json_array(client)
     if models_as_json is None:
         logger.error("Error: Could not get models")
-        return None
+        return [] 
     running = get_running_models_as_json(client)
     models = []
     for model in models_as_json:

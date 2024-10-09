@@ -183,6 +183,7 @@ Use cases one could think of:
 * Update documentation: The AI could scan the git diffs from one version to another and suggest modifications of the documentation.
 
 ## TODO
+* To make the terminal user friendly in the devcontainer setup read thru the article [VSCode devcontainer with zsh, oh-my-zsh and agnoster theme](https://medium.com/@jamiekt/vscode-devcontainer-with-zsh-oh-my-zsh-and-agnoster-theme-8adf884ad9f6)
 * Make sure that everywhere we mesn the `brain_id` we also call it `brain_id`. In many places currentyl we call it `brain`.
 * Annotate `@override` in child brains and chains.
 * Review if it still makes sense to keep the documents as files in brains.
