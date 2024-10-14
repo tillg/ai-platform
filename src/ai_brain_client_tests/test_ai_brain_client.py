@@ -6,7 +6,7 @@ from ai_commons.apiModelsSearch import Document, Chunk, SearchResultChunksAndDoc
 import logging
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 class TestAiBrainClient(unittest.TestCase):
     

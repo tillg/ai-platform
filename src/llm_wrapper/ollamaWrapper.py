@@ -51,6 +51,7 @@ def get_models() -> List[Model]:
             default = True
         models.append(
             Model(name=model['name'], description=description, details=details, state=state, default=default))
+    logger.info(f"get_models: Models: {models}")
     return models
 
 def get_model_names() -> List[str]:

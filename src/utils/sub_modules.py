@@ -3,7 +3,7 @@ import logging
 from typing import List
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 
 def list_submodules(module) -> List[str]:

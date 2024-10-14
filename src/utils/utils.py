@@ -35,7 +35,7 @@ class Color:
 
 internalDateFormat = "%Y-%m-%d %H:%M:%S"
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 
 def transform_date2string(date_to_transform: datetime) -> str:

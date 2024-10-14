@@ -10,7 +10,7 @@ from ai_commons.constants import AI_LLM_WRAPPER_HOST, AI_LLM_WRAPPER_PORT
 
 load_dotenv()
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 
 logger.info(f"LLM Wrapper port: {AI_LLM_WRAPPER_PORT}")

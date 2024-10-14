@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from ai_brain.brain import Brain
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 
 app = FastAPI(

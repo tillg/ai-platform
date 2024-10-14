@@ -7,7 +7,7 @@ import logging
 from utils.dict2file import write_dict_to_file, read_dict_from_file
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 CHAIN_TYPES = ["default", "simple_rag", "naked_llm"]
 

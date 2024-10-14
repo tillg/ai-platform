@@ -5,7 +5,7 @@ from pydantic import validate_call
 import logging
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 class Chain(ABC):
     def __init__(self, parameters: Dict[str, Any]):

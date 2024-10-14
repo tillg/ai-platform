@@ -5,7 +5,7 @@ import logging
 from ai_chains.chain_factory import ChainFactory
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 router = fastapi.APIRouter()
 chain_factory = ChainFactory()

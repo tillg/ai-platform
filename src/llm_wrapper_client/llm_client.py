@@ -9,7 +9,7 @@ import logging
 from ai_commons.constants import AI_LLM_WRAPPER_HOST, AI_LLM_WRAPPER_PORT
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 # 60s timeout for reading (i.e. getting the first package of an answer), and a 5s timeout elsewhere.
 TIMEOUT = httpx.Timeout(5.0, read=60.0)

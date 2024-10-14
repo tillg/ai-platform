@@ -4,7 +4,7 @@ import logging
 from ai_chains.chain import Chain
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 class Chain(Chain):
     def run(self, chat_request: ChatRequest, options: Dict[str, Any]) -> Message:

@@ -6,7 +6,7 @@ from ai_commons.apiModelsLlm import Model
 from llm_wrapper import ollamaWrapper
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 router = fastapi.APIRouter()
 
