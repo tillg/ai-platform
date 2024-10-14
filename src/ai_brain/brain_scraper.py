@@ -7,7 +7,7 @@ from utils.dict2file import read_dict_from_file, write_dict_to_file
 from utils.utils import get_files, get_now_as_string
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 INDEX_FILENAME = "_scrape_index.json"
 FILES_TO_IGNORE = ["*index.json"]

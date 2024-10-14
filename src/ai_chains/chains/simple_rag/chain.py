@@ -12,7 +12,7 @@ import json
 from pydantic import field_validator, validate_call
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 class Chain(Chain):
     

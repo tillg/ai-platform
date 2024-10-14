@@ -9,7 +9,7 @@ from pydantic import ValidationError
 from ai_brain.chunker_factory import ChunkerFactory
 
 load_dotenv()
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 # in relation to this file my test data resides in ../../data/test_data

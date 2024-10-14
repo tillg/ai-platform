@@ -8,7 +8,7 @@ import ai_commons.constants as constants
 from fastapi.middleware.cors import CORSMiddleware
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 logger.info(f"Orchestration port: {AI_CHAINS_PORT}")
 

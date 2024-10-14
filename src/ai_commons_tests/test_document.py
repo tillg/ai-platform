@@ -5,7 +5,7 @@ from ai_commons.constants import TMP_DATA_DIRECTORY, TEST_DATA_DIRECTORY
 import os
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 class TestDocument(unittest.TestCase):

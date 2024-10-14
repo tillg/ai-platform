@@ -6,7 +6,7 @@ import os
 from utils.dict2file import read_dict_from_template_file
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 class TestDict2File(unittest.TestCase):
 

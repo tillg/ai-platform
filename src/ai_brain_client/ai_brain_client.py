@@ -11,7 +11,7 @@ from ai_commons.constants import AI_BRAIN_HOST, AI_BRAIN_PORT
 from ai_commons.apiModelsSearch import BrainParameters, SearchResult, SearchRequest
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 # 60s timeout for reading (i.e. getting the first package of an answer), and a 5s timeout elsewhere.
 TIMEOUT = httpx.Timeout(5.0, read=60.0)

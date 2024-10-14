@@ -6,7 +6,7 @@ from ai_commons.apiModelsSearch import Chunk, SearchRequest, SearchResultChunksA
 from ai_brain.brain import Brain
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 router = fastapi.APIRouter()
 brain = Brain.get_default_brain()

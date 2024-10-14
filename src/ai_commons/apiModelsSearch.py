@@ -184,7 +184,7 @@ class SearchResult(BaseModel):
 
 
 class BrainParameters(BaseModel):
-    id: str
+    brain_id: str
     name: str
     description: str
     data_directory: str

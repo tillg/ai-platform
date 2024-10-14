@@ -35,11 +35,10 @@ class Brain:
 
     @classmethod
     def get_brain_parameters_list(cls, brains_index_file: str = AI_BRAINS_INDEX_FILE) -> List[BrainParameters]:
-        logger.info(f"get_brain_parameters_list: Reading from brains index file: {
-            brains_index_file}")
+        logger.info(f"get_brain_parameters_list: Reading from brains index file: {brains_index_file}")
         brain_dict = read_dict_from_file(full_filename=brains_index_file)
         logger.info(f"Brain dict: {brain_dict}")
-        brain_parameters = [BrainParameters(id=brain_id, **brain) for brain_id, brain in brain_dict.items()] 
+        brain_parameters = [BrainParameters(brain_id=brain_id, **brain) for brain_id, brain in brain_dict.items()] 
         return brain_parameters
 
     @classmethod
@@ -55,7 +54,7 @@ class Brain:
         brain_parameters_list = cls.get_brain_parameters_list(
             brains_index_filename)
         for brain_parameters in brain_parameters_list:
-            if brain_parameters.id == brain_id:
+            if brain_parameters.brain_id == brain_id:
                 logger.info(f"Brain found: {brain_parameters}")
                 return Brain(brain_parameters, id=brain_id)
         logger.error(f"Brain not found: {brain_id}")
@@ -64,14 +63,13 @@ class Brain:
     @classmethod
     @validate_call
     def get_default_brain(cls, brains_index_file: str = AI_BRAINS_INDEX_FILE):
-        logger.info(f"get_default_brain: Reading from brains index file: {
-            brains_index_file}")
+        logger.info(f"get_default_brain: Reading from brains index file: {brains_index_file}")
         brain_list = cls.get_brain_parameters_list(brains_index_file)
         # This gets the first brain's id
-        default_brain_id = next(iter(brain_list)).id
+        default_brain_id = next(iter(brain_list)).brain_id
         for brain_parameter in brain_list:
             if getattr(brain_parameter, 'default', False):
-                default_brain_id = brain_parameter.id
+                default_brain_id = brain_parameter.brain_id
                 break
         return cls.get_brain_by_id(default_brain_id, brains_index_filename=brains_index_file)
     
@@ -105,9 +103,8 @@ class Brain:
         self.document_index = self._read_index_from_file(
             self.parameters["index_filename"])
 
-        logger.info(f"Brain initialized. Data directory: {
-                    self.parameters["data_directory"]}, no of document: {self.number_of_documents()}, no of chunks: {self.number_of_chunks()}")
-
+        data_directory = self.parameters["data_directory"]
+        logger.info(f"Brain initialized. Data directory: {data_directory}, no of document: {self.number_of_documents()}, no of chunks: {self.number_of_chunks()}")
     
     def get_chunker(self) -> Chunker:
         if (not self.parameters.get("chunker")):
@@ -255,8 +252,7 @@ class Brain:
             del self.document_index[filename]
             self._write_index_to_file()
         else:
-            logger.warning(f"Document with ID {
-                           document_id} not found in index.")
+            logger.warning(f"Document with ID {document_id} not found in index.")
 
     @validate_call
     def import_chunks(self, chunks: List[Chunk], batch_size=DEFAULT_BATCH_SIZE):
@@ -287,10 +283,9 @@ class Brain:
         
         # Check that the chunks directory exists
         if not os.path.exists(self.parameters["chunks_directory"]):
-            logger.error(f"Chunks directory does not exist: {
-                         self.parameters["chunks_directory"]}")
-            raise FileNotFoundError(f"Chunks directory does not exist: {
-                                    self.parameters["chunks_directory"]}")
+            chunks_directory = self.parameters["chunks_directory"]
+            logger.error(f"Chunks directory does not exist: {chunks_directory}")
+            raise FileNotFoundError(f"Chunks directory does not exist: {self.parameters["chunks_directory"]}")
         # Read chunks from directory
         files = get_files(self.parameters["chunks_directory"], patterns_to_match=[
                           "*.json"], patterns_to_ignore=["*index.json"])
@@ -313,8 +308,7 @@ class Brain:
 
         if not self.parameters["allow_duplicates"]:
             if self.is_in_by_uri(document.uri):
-                logger.warning(f"Document with URI {
-                               document.uri} already exists in the collection.")
+                logger.warning(f"Document with URI {document.uri} already exists in the collection.")
                 return
 
         # Add the document to the file store

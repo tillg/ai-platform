@@ -5,7 +5,7 @@ import os
 from pydantic import validate_call
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 
 class Indexer():

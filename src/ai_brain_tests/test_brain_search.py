@@ -11,14 +11,10 @@ from ai_commons.constants import TEST_DATA_DIRECTORY, TMP_DATA_DIRECTORY
 from ai_brain.chunker_factory import ChunkerFactory
 import shutil
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 
 LONG_ARTICLE = "wikipedia_peru.txt"
 SHORT_ARTICLE = "rectus_abdominus.txt"
-
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
 
 class TestBrainSearch(unittest.TestCase):
 
@@ -40,7 +36,7 @@ class TestBrainSearch(unittest.TestCase):
 
     def test_brain_search1(self):
         chunk_dir = self.prep_chunk_directory()
-        brain_parameters = BrainParameters(id="whatever",
+        brain_parameters = BrainParameters(brain_id="whatever",
                                            name="whatever",
                                            description="whatever",
                                            data_directory=get_test_filename(TMP_DATA_DIRECTORY),

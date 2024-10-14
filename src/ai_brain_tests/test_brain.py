@@ -10,7 +10,7 @@ import random
 from ai_commons.constants import TEST_DATA_DIRECTORY, TMP_DATA_DIRECTORY
 from utils.utils import get_now_as_string, simplify_text, get_test_filename
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 LONG_ARTICLE = "wikipedia_peru.txt"
@@ -23,7 +23,7 @@ def generate_random_string(length):
 class TestBrain(unittest.TestCase):
 
     def test_brain_initialization(self):
-        brain_parameters = BrainParameters(id="whatever",
+        brain_parameters = BrainParameters(brain_id="whatever",
                                            name="whatever",
                                            description="whatever",
                                            data_directory=get_test_filename(TMP_DATA_DIRECTORY),
@@ -34,7 +34,7 @@ class TestBrain(unittest.TestCase):
         self.assertIsInstance(brain, Brain, "Brain object is not an instance of Brain class")
 
     def test_brain_import_doc(self):
-        brain_parameters = BrainParameters(id="whatever",
+        brain_parameters = BrainParameters(brain_id="whatever",
                                            name="whatever",
                                            description="whatever",
                                            data_directory=get_test_filename(
@@ -50,7 +50,7 @@ class TestBrain(unittest.TestCase):
         self.assertEqual(brain_size_post-brain_size_pre, 1)
 
     def test_brain_import_multiple_docs(self):
-        brain_parameters = BrainParameters(id="whatever",
+        brain_parameters = BrainParameters(brain_id="whatever",
                                            name="whatever",
                                            description="whatever",
                                            data_directory=get_test_filename(
@@ -69,7 +69,7 @@ class TestBrain(unittest.TestCase):
         self.assertEqual(brain_size_post-brain_size_pre, 2)
 
     def test_brain_get_doc_by_id(self):
-        brain_parameters = BrainParameters(id="whatever",
+        brain_parameters = BrainParameters(brain_id="whatever",
                                            name="whatever",
                                            description="whatever",
                                            data_directory=get_test_filename(
@@ -86,7 +86,7 @@ class TestBrain(unittest.TestCase):
         self.assertEqual(doc, doc_retrieved)
 
     def test_brain_get_doc_by_uri(self):
-        brain_parameters = BrainParameters(id="whatever",
+        brain_parameters = BrainParameters(brain_id="whatever",
                                            name="whatever",
                                            description="whatever",
                                            data_directory=get_test_filename(
@@ -102,7 +102,7 @@ class TestBrain(unittest.TestCase):
         self.assertEqual(doc, doc_retrieved)
 
     def test_brain_delete_all(self):
-        brain_parameters = BrainParameters(id="whatever",
+        brain_parameters = BrainParameters(brain_id="whatever",
                                            name="whatever",
                                            description="whatever",
                                            data_directory=get_test_filename(
@@ -118,7 +118,7 @@ class TestBrain(unittest.TestCase):
         self.assertEqual(brain.number_of_documents(), 0)
 
     def test_brain_delete_all_and_then_add_a_doc(self):
-        brain_parameters = BrainParameters(id="whatever",
+        brain_parameters = BrainParameters(brain_id="whatever",
                                            name="whatever",
                                            description="whatever",
                                            data_directory=get_test_filename(
@@ -136,7 +136,7 @@ class TestBrain(unittest.TestCase):
         self.assertEqual(brain.number_of_documents(), 1)
 
     def test_import_doc_without_duplicate(self):
-        brain_parameters = BrainParameters(id="whatever",
+        brain_parameters = BrainParameters(brain_id="whatever",
                                            name="whatever",
                                            description="whatever",
                                            data_directory=get_test_filename(
@@ -155,7 +155,7 @@ class TestBrain(unittest.TestCase):
         self.assertEqual(brain_increase, 1)
 
     def test_get_params(self):
-        brain_parameters = BrainParameters(id="whatever",
+        brain_parameters = BrainParameters(brain_id="whatever",
                                            name="whatever",
                                            description="whatever",
                                            data_directory=get_test_filename(

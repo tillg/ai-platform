@@ -11,7 +11,7 @@ import random
 from utils.utils import get_now_as_string, simplify_text
 from ai_brain.brain_scraper_wikipedia import BrainScraperWikipedia
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 # in relation to this file my test data resides in ../../data/test_data

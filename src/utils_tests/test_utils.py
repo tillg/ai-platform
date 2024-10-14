@@ -3,7 +3,7 @@ from utils.utils import get_now_as_string, simplify_text
 import logging
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
 
 class TestUtils(unittest.TestCase):
 
