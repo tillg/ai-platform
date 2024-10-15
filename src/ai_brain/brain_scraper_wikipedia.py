@@ -12,8 +12,9 @@ logger = logging.getLogger(__name__)
 LOG_LEVEL_FOR_SCRAPE = logging.WARN
 
 logger.setLevel(LOG_LEVEL_FOR_SCRAPE)
-wikipediaapi_logger = logging.getLogger('wikipediaapi')
+wikipediaapi_logger = logging.getLogger("wikipediaapi")
 wikipediaapi_logger.setLevel(LOG_LEVEL_FOR_SCRAPE)
+
 
 class BrainScraperWikipedia(BrainScraper):
 
@@ -24,7 +25,7 @@ class BrainScraperWikipedia(BrainScraper):
             raise ValueError("start_page_title is required for Wikipedia Importer.")
 
         # Complete some parameters with defaults
-        self.parameters["language"] = parameters.get("language", 'en')
+        self.parameters["language"] = parameters.get("language", "en")
         self.parameters["depth"] = parameters.get("depth", 2)
 
     def do_scrape(self):
@@ -32,14 +33,19 @@ class BrainScraperWikipedia(BrainScraper):
         self._load_wikipedia_page_tree(
             start_page_title=self.parameters["start_page_title"],
             language=self.parameters["language"],
-            depth=self.parameters["depth"]
+            depth=self.parameters["depth"],
         )
 
-    def _load_wikipedia_page_tree(self, start_page_title: str, language: str = 'en', depth: int = 2):
+    def _load_wikipedia_page_tree(
+        self, start_page_title: str, language: str = "en", depth: int = 2
+    ):
         document_and_links = self._get_page_as_document_and_links(
-            page_title=start_page_title, language=language)
+            page_title=start_page_title, language=language
+        )
         if document_and_links is None:
-            logger.warning(f"Page '{start_page_title}' in '{language}' was not retrieved.")
+            logger.warning(
+                f"Page '{start_page_title}' in '{language}' was not retrieved."
+            )
         else:
             document = document_and_links.document
             document.write_2_json(self.parameters["target_dir"])
@@ -49,10 +55,8 @@ class BrainScraperWikipedia(BrainScraper):
                 try:
                     print(".", end="", flush=True)
                     self._load_wikipedia_page_tree(
-                            start_page_title=page,
-                            language=language,
-                            depth=depth-1
-                        )
+                        start_page_title=page, language=language, depth=depth - 1
+                    )
                 except Exception as e:
                     logger.error(f"Error loading page tree for {page}: {str(e)}")
         return
@@ -60,10 +64,12 @@ class BrainScraperWikipedia(BrainScraper):
     def _get_page_as_document_and_links(self, page_title: str, language: str):
         try:
             wiki = wikipediaapi.Wikipedia(
-                user_agent='brain_loader_bot/0.1 (till.gartner@gmail.com) WikipediaAPI Python',
+                user_agent=(
+                    "brain_loader_bot/0.1 (till.gartner@gmail.com) WikipediaAPI Python"
+                ),
                 language=language,
                 extract_format=wikipediaapi.ExtractFormat.WIKI,
-                timeout=30
+                timeout=30,
             )
             page = wiki.page(page_title)
         except Exception as e:
@@ -72,11 +78,7 @@ class BrainScraperWikipedia(BrainScraper):
         if not page.exists():
             logger.error(f"Page '{page_title}' in '{language}' does not exist.")
             return None
-            # raise Exception(f"Page {page_title} in {language} does not exist.")    
-        document = Document(
-            title=page_title,
-            uri=page.canonicalurl,
-            content=page.text)
+            # raise Exception(f"Page {page_title} in {language} does not exist.")
+        document = Document(title=page_title, uri=page.canonicalurl, content=page.text)
         links = list(page.links.keys())
         return SimpleNamespace(document=document, links=links)
-

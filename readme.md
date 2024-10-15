@@ -208,6 +208,8 @@ our code is formatted with [black](https://github.com/psf/black) and linted with
 
 ## TODO
 
+* Create shell scripts to format and lint code.
+* Introduce a build system that uses `pyproject.toml` properly.
 * To make the terminal user friendly in the devcontainer setup read thru the article [VSCode devcontainer with zsh, oh-my-zsh and agnoster theme](https://medium.com/@jamiekt/vscode-devcontainer-with-zsh-oh-my-zsh-and-agnoster-theme-8adf884ad9f6)
 * ~~Make sure that everywhere we mesn the `brain_id` we also call it `brain_id`. In many places currentyl we call it `brain`.~~
 * Annotate `@override` in child brains and chains.

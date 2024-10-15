@@ -185,10 +185,8 @@ class TestBrain(unittest.TestCase):
 
     def test_get_default_brain(self):
         brains_index_file = os.path.join(TEST_DATA_DIRECTORY, "brains.json")
-        logger.info(
-            f"test_get_default_brain: Reading from brains index file: {
-                    brains_index_file}"
-        )
+        logger.info(f"test_get_default_brain: Reading from brains index file: {
+                    brains_index_file}")
         brain = Brain.get_default_brain(brains_index_file=brains_index_file)
         brain_name = brain.get_parameters()["name"]
         self.assertIsInstance(

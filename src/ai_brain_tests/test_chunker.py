@@ -32,10 +32,12 @@ class TestChunker(unittest.TestCase):
             "source_dir": TMP_DATA_DIR,
         }
         chunker = ChunkerCharacterTextSplitter(parameters)
+        logger.info(f"{chunker=}")
 
     def test_chunker_initialization_with_defaults(self):
         parameters = {"target_dir": TMP_DATA_DIR, "source_dir": TMP_DATA_DIR}
         chunker = ChunkerCharacterTextSplitter(parameters)
+        logger.info(f"{chunker=}")
 
     def test_chunker_fails_on_wrong_input(self):
         parameters = {
@@ -95,10 +97,8 @@ class TestChunker(unittest.TestCase):
         chunker = factory.create_chunker(parameters)
         parameters = chunker.get_parameters()
         formatted_params = json.dumps(parameters, indent=4)
-        logger.info(
-            f"Params from chunmker created by factory: {
-                    formatted_params}"
-        )
+        logger.info(f"Params from chunmker created by factory: {
+                    formatted_params}")
         self.assertIsInstance(chunker, ChunkerCharacterTextSplitter)
 
     def test_chunker_factory_with_default(self):
@@ -107,10 +107,8 @@ class TestChunker(unittest.TestCase):
         chunker = factory.create_chunker(parameters)
         params = chunker.get_parameters()
         formatted_params = json.dumps(params, indent=4)
-        logger.info(
-            f"Params from chunmker created by factory without any params: {
-                    formatted_params}"
-        )
+        logger.info(f"Params from chunmker created by factory without any params: {
+                    formatted_params}")
         self.assertIsInstance(chunker, ChunkerCharacterTextSplitter)
 
     def test_chunker_do_chunkify(self):
@@ -122,10 +120,8 @@ class TestChunker(unittest.TestCase):
         chunker = factory.create_chunker(parameters)
         params = chunker.get_parameters()
         formatted_params = json.dumps(params, indent=4)
-        logger.info(
-            f"Params from chunmker created by factory for do_chunkify test: {
-                    formatted_params}"
-        )
+        logger.info(f"Params from chunmker created by factory for do_chunkify test: {
+                    formatted_params}")
         chunker.do_chunkify()
 
 

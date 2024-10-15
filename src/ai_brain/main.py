@@ -26,9 +26,12 @@ app.add_middleware(
 
 app.include_router(ai_brain.brain_api_routes.router)
 
-def start_ai_brain(reload = False):
-   uvicorn.run("ai_brain.main:app",
-               host=AI_BRAIN_HOST, port=AI_BRAIN_PORT, reload=reload)
-   
+
+def start_ai_brain(reload=False):
+    uvicorn.run(
+        "ai_brain.main:app", host=AI_BRAIN_HOST, port=AI_BRAIN_PORT, reload=reload
+    )
+
+
 if __name__ == "__main__":
-   start_ai_brain(reload=True) 
+    start_ai_brain(reload=True)
