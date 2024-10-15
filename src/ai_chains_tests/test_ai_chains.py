@@ -13,4 +13,4 @@ class TestAiChains(unittest.TestCase):
 
     def test_ai_chain_factory_chrreation_wo_existing_index(self):
         factory = ChainFactory(chains_index_file="a path that doesn't exist")
-        self.assertIsNotNone(factory)
+        self.assertIsNotNone(factory) 

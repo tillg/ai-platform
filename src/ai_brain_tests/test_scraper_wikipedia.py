@@ -22,7 +22,6 @@ TMP_DATA_DIR = os.path.join(os.path.dirname(
 
 WIKIPEDIA_PAGE = "Berlin"
 
-
 class TestWikipediaScraper(unittest.TestCase):
 
     def test_save_page_as_doc(self):

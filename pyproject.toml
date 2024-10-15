@@ -1,0 +1,34 @@
+[project]
+name = "ai-platform"
+description = "An AI Platform for tinkering."
+requires-python = ">=3.12"
+authors = [  { name = "Till Gartner", email = "till.gartner@gmail.com" }]
+keywords = [  "ai"]
+dynamic = ["readme", "version","dependencies"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Environment :: GPU",
+  "Environment :: Web Environment",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.urls]
+Repository = "https://github.com/tillg/ai-platform"
+
+
+[tool.black]
+line-length = 88
+target-version = ['py312']
+include = '\.pyi?$'
+# We need to switch on unstable in order to also format the contents of 
+# long lines with long strings.
+unstable = true

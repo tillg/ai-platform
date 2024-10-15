@@ -1,9 +1,26 @@
-# ai-platform 🧠
+# AI-Platform 
+An AI Platform for tinkering.
 
-An AI Platform that consist of basic, functional modules and that is prepared to tinker with it.
+[![Python Version](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+---
+
+__Table of contents__
+
+- [AI-Platform](#ai-platform)
+  - [Local Development](#local-development)
+    - [Setting up \& running](#setting-up--running)
+    - [Running the tests](#running-the-tests)
+  - [The UI](#the-ui)
+  - [The Brains](#the-brains)
+  - [The Prompts](#the-prompts)
+  - [Use cases](#use-cases)
+  - [Code hygiene](#code-hygiene)
+  - [TODO](#todo)
+  - [Resources](#resources)
+  - [Things to look at](#things-to-look-at)
 
 ![Overview](ai_platform_overview.svg)
-
 
 ## Local Development
 
@@ -181,6 +198,13 @@ Use cases one could think of:
 * IT Assiatnt: Load all the confluence space of an IT organisation and assist based on that knowledge.
 * Better writing assistant: Maybe even integrated into a Confluence plugin.
 * Update documentation: The AI could scan the git diffs from one version to another and suggest modifications of the documentation.
+
+## Code hygiene
+
+our code is formatted with [black](https://github.com/psf/black) and linted with [flake8](https://flake8.pycqa.org/en/latest/).
+
+* flake8 is configured via [setup.cfg](setup.cfg)
+* black is configured via the [pyproject.toml](pyproject.toml)
 
 ## TODO
 
