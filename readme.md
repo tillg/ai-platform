@@ -17,6 +17,7 @@ __Table of contents__
   - [Use cases](#use-cases)
   - [Code hygiene](#code-hygiene)
   - [TODO](#todo)
+  - [DONE](#done)
   - [Resources](#resources)
   - [Things to look at](#things-to-look-at)
 
@@ -208,28 +209,33 @@ our code is formatted with [black](https://github.com/psf/black) and linted with
 
 ## TODO
 
+* Finish the migration to a proper `llm_wrapper` class and the `ollama_wrapper` subclass
 * Create shell scripts to format and lint code.
 * Introduce a build system that uses `pyproject.toml` properly.
 * To make the terminal user friendly in the devcontainer setup read thru the article [VSCode devcontainer with zsh, oh-my-zsh and agnoster theme](https://medium.com/@jamiekt/vscode-devcontainer-with-zsh-oh-my-zsh-and-agnoster-theme-8adf884ad9f6)
-* ~~Make sure that everywhere we mesn the `brain_id` we also call it `brain_id`. In many places currentyl we call it `brain`.~~
-* Annotate `@override` in child brains and chains.
+* Annotate `@override` in ch~~ld brains and chains.
 * Review if it still makes sense to keep the documents as files in brains.
-* ~~BUG: Paths are mixed up. Make sure that we always use absolute paths and start by the project root directory.~~
-* Make sure that all the APIs to the brain use the `brain_id`
-* ~~Re-structure the `ai_commons` to proper class files (`Documents`, `Chunks`) and separate factories for better readabilty.~~
 * Add a brain scraper for Atlassian Confluences, and test / demo it with [my private demo space](https://ai-platform-2024.atlassian.net/wiki/home)
 * Add a brain scraper for emails.
 * Visualize the chunks in their original document. Use this? [How to highlight any web page on Google Chrome (or Chromium-based Edge)](https://medium.com/@Bartleby/how-to-highlight-any-web-page-on-google-chrome-or-chromium-based-edge-83035c41eeec)
 * Add pre-commit hooks
 * The brain should keep track in the `_index.json` if a document was indexed, as well as using which embedding model
+* Have a user friendly way (markdown?) of documentation for every chain.
+* Have chain-specific parameter management incl. user interface. A12 models?
+* Check if we can re-use parts of [this RAG Stack](https://pub.towardsai.net/the-best-rag-stack-to-date-8dc035075e13).
+
+## DONE
+
+* ~~Make sure that everywhere we mesn the `brain_id` we also call it `brain_id`. In many places currentyl we call it `brain`.~~
+* ~~BUG: Paths are mixed up. Make sure that we always use absolute paths and start by the project root directory.~~
+* ~~Make sure that all the APIs to the brain use the `brain_id`~~
+* ~~Change brain management to a pipeline concept: Different stages that can be combined (i.e. scraping, chunking, indexing)~~
+* ~~Re-structure the `ai_commons` to proper class files (`Documents`, `Chunks`) and separate factories for better readabilty.~~
 * ~~Add a function `brain.import_or_update()`~~
 * ~~API rule: Every call should return a `ìnner_working` dictionary, For the ai_brain this could contain: Brain name, no of docs/chunks, search time, result size...~~
 * ~~Calling `python -m ai_brain` or similar should start the fastAPI server~~
 * ~~Make ability to load a brain with data, have it's configuration in a YAML file~~
-* Have a user friendly way (markdown?) of documentation for every chain.
-* Have chain-specific parameter management incl. user interface. A12 models?
-* ~~Change brain management to a pipeline concept: Different stages that can be combined (i.e. scraping, chunking, indexing)~~
-* Check if we can re-use parts of [this RAG Stack](https://pub.towardsai.net/the-best-rag-stack-to-date-8dc035075e13).
+
 
 ## Resources
 

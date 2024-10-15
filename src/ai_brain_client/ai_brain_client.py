@@ -13,25 +13,27 @@ from ai_commons.apiModelsSearch import BrainParameters, SearchResult, SearchRequ
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
 
-# 60s timeout for reading (i.e. getting the first package of an answer), and a 5s timeout elsewhere.
+# 60s timeout for reading (i.e. getting the first package of an answer),
+# and a 5s timeout elsewhere.
 TIMEOUT = httpx.Timeout(5.0, read=60.0)
+
 
 @define
 class Client:
-    """A class for easily accessing a ai_brain service.
-    """
+    """A class for easily accessing a ai_brain service."""
 
     raise_on_unexpected_status: bool = field(default=False, kw_only=True)
     _base_url: str = field(alias="base_url", default=f"http://{
                            AI_BRAIN_HOST}:{AI_BRAIN_PORT}")
     _timeout: Optional[httpx.Timeout] = field(
-        default=TIMEOUT, kw_only=True, alias="timeout")
+        default=TIMEOUT, kw_only=True, alias="timeout"
+    )
     _client: Optional[httpx.Client] = field(default=None, init=False)
-    _async_client: Optional[httpx.AsyncClient] = field(
-        default=None, init=False)
-    
+    _async_client: Optional[httpx.AsyncClient] = field(default=None, init=False)
+
     def get_httpx_client(self) -> httpx.Client:
-        """Get the underlying httpx.Client, constructing a new one if not previously set"""
+        """Get the underlying httpx.Client, constructing a new one
+        if not previously set"""
         logger.info(f"Client get_httpx_client: {self._client}")
         if self._client is None:
             self._client = httpx.Client(
@@ -48,10 +50,10 @@ class Client:
         return [BrainParameters(**x) for x in response.json()]
 
     @validate_call
-    def search_chunks_by_text(self,  search_request: SearchRequest) -> SearchResult:
-        response = self.get_httpx_client().post("/search", json=search_request.model_dump())
+    def search_chunks_by_text(self, search_request: SearchRequest) -> SearchResult:
+        response = self.get_httpx_client().post(
+            "/search", json=search_request.model_dump()
+        )
         logger.info(f"POST /search: {response}")
         response.raise_for_status()
         return SearchResult(**response.json())
-    
-    
