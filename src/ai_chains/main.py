@@ -34,5 +34,9 @@ def start_ai_chains(reload=False):
     )
 
 
-if __name__ == "__main__":
+def main():
     start_ai_chains(reload=True)
+
+
+if __name__ == "__main__":
+    main()

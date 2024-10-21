@@ -41,5 +41,9 @@ def start_llm_wrapper(reload=False):
     )
 
 
-if __name__ == "__main__":
+def main():
     start_llm_wrapper(reload=True)
+
+
+if __name__ == "__main__":
+    main()

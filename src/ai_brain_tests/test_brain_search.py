@@ -1,5 +1,4 @@
 import unittest
-import uuid
 from ai_brain.brain import Brain
 from ai_commons.apiModelsSearch import BrainParameters, Document, Chunk
 from utils.utils import get_now_as_string, simplify_text, get_test_filename

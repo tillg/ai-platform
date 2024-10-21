@@ -2,9 +2,13 @@ import unittest
 from ai_commons.apiModelsChat import ChatRequest, Message
 from llm_wrapper_client.llm_client import Client
 from ai_commons.apiModelsLlm import Model
+from utils_tests.base_fastapi_test import BaseTest
+from ai_commons.constants import AI_LLM_WRAPPER_PORT
 
 
-class TestLlmWrapperClient(unittest.TestCase):
+class TestLlmWrapperClient(BaseTest):
+    server_port = AI_LLM_WRAPPER_PORT
+    server_app = "llm_wrapper.main:app"
 
     def test_model_list(self):
         client = Client()

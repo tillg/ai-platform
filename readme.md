@@ -8,10 +8,10 @@ An AI Platform for tinkering.
 __Table of contents__
 
 - [AI-Platform](#ai-platform)
-  - [Local Development](#local-development)
-    - [Setting up \& running](#setting-up--running)
+  - [Developer Guide](#developer-guide)
+    - [Installing](#installing)
+    - [Running](#running)
     - [Running the tests](#running-the-tests)
-  - [The UI](#the-ui)
   - [The Brains](#the-brains)
   - [The Prompts](#the-prompts)
   - [Use cases](#use-cases)
@@ -23,15 +23,17 @@ __Table of contents__
 
 ![Overview](ai_platform_overview.svg)
 
-## Local Development
+## Developer Guide
 
-### Setting up & running
+### Installing
 
-In order to install the server side:
-* Make sure you are in the root directory of the project
-* Create a local Python env: `python3.12 -m venv .venv`
-* Activate it: `source .venv/bin/activate`
-* Install the requirements: `pip install -r requirements.txt`
+
+__Prerequisites__:
+
+* Python 3.12
+* [Poetry](https://python-poetry.org/)
+
+To setup the backend run `poetry install` and you are done ;) 
 
 For the frontend:
 ```
@@ -39,40 +41,35 @@ cd src/ai_ui
 npm install
 ```
 
+### Running
+
 Run the backend components:
 
-```
-# Orchestration
-cd src
-python -m ai_orchestration.main  
+```bash
+# Chains
+ai_chains
 
-# AI Workspace
-python -m ai_workspace.main
+# LLM Wrapper
+llm_wraper
+
+# Brains
+ai_brain
 ```
 
-To start all the backend components at one there is a script:
+To start all the backend components at once there is a script:
 ```bash
 cd src
 ./start_backend.sh
 ```
 
-Run the AI-UI: 
-```bash
-cd src/ai_ui
-npm run dev
-```
-
-Run the A12 based UI:
+Run the UI:
 ```bash
 cd src/ai_ui_a12
 npm start
 ```
-Run tests:
-* Make sure you are in the `src` directory
-* `python -m pytest backend_tests --capture=no --log-cli-level=INFO`
-  * Note: This is to also see the print and log statements.
 
 ### Running the tests
+
 
 For the backend tests:
 ```bash
@@ -90,14 +87,6 @@ For the UI tests:
 cd src/ui
 npm test
 ```
-
-## The UI
-
-The UI is inspired from [RAG on PostgreSQL - Github](https://github.com/Azure-Samples/rag-postgres-openai-python#) as explained in this video: [Building a RAG-powered AI chat app with Python and VS Code](https://www.youtube.com/watch?v=3ctFWU492xk&t=1177s).
-
-An impression of what it looks like:
-
-![UI from rag OpenAI](image.png)
 
 ## The Brains
 
@@ -209,6 +198,7 @@ our code is formatted with [black](https://github.com/psf/black) and linted with
 
 ## TODO
 
+* Add `mypy` typecheccking to tests and/or build
 * Finish the migration to a proper `llm_wrapper` class and the `ollama_wrapper` subclass
 * Create shell scripts to format and lint code.
 * Introduce a build system that uses `pyproject.toml` properly.
@@ -226,6 +216,8 @@ our code is formatted with [black](https://github.com/psf/black) and linted with
 
 ## DONE
 
+* 2024-10-15: Added ba
+  lack for Python Code Formatting and Flake8 for linting
 * ~~Make sure that everywhere we mesn the `brain_id` we also call it `brain_id`. In many places currentyl we call it `brain`.~~
 * ~~BUG: Paths are mixed up. Make sure that we always use absolute paths and start by the project root directory.~~
 * ~~Make sure that all the APIs to the brain use the `brain_id`~~

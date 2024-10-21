@@ -33,5 +33,9 @@ def start_ai_brain(reload=False):
     )
 
 
-if __name__ == "__main__":
+def main():
     start_ai_brain(reload=True)
+
+
+if __name__ == "__main__":
+    main()

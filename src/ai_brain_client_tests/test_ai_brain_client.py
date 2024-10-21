@@ -11,14 +11,22 @@ from ai_commons.apiModelsSearch import (
     SearchRequest,
 )
 import logging
+import subprocess
+import time
+from ai_commons.constants import AI_BRAIN_PORT
+import httpx
+from utils_tests.base_fastapi_test import BaseTest
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
 
 
-class TestAiBrainClient(unittest.TestCase):
+class TestAiBrainClient(BaseTest):
+    server_port = AI_BRAIN_PORT
+    server_app = "ai_brain.main:app"
 
     def test_brain_list(self):
+
         ai_brain_client = AiBrainClient()
         brains = ai_brain_client.get_brain_list()
 
@@ -33,6 +41,7 @@ class TestAiBrainClient(unittest.TestCase):
             )
 
     def test_search_chunks_by_text(self):
+
         ai_brain_client = AiBrainClient()
 
         search_request = SearchRequest(search_term="what can i do in Berlin?")
