@@ -3,6 +3,7 @@ from utils.dict2file import write_dict_to_file, read_dict_from_file
 
 logger = logging.getLogger(__name__)
 
+
 class FireDict(dict):
     """
     A dictionary with additional features:
@@ -17,9 +18,10 @@ class FireDict(dict):
         All arguments are the same as the built-in dict, with one additional
         argument:
         filename: str, optional
-            If provided, the dict is initialized with data from this file and changes are persisted to it.
+            If provided, the dict is initialized with data from this file and
+            changes are persisted to it.
         """
-        self._file = kwargs.pop('filename', None)
+        self._file = kwargs.pop("filename", None)
         super().__init__(*args, **kwargs)
         if self._file:
             try:
@@ -27,7 +29,7 @@ class FireDict(dict):
                 self.update(file_data)
             except FileNotFoundError:
                 logger.warning(f"File {self._file} not found. Creating a new one.")
-                
+
     def get(self, *keys):
         current = self
         for key in keys:
@@ -48,17 +50,15 @@ class FireDict(dict):
         super().__delitem__(key)
         self._save_to_file()
 
-
     def clear(self):
         super().clear()
         self._save_to_file()
-
 
     def pop(self, key, default=None):
         result = super().pop(key, default)
         self._save_to_file()
         return result
-    
+
     def update(self, *args, **kwargs):
         super().update(*args, **kwargs)
         self._save_to_file()

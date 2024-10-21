@@ -1,9 +1,15 @@
 import unittest
 import uuid
 from ai_commons.apiModelsChat import ChatRequest, Message
-from llm_wrapper.ollamaWrapper import get_models_as_json_array, get_models, get_default_model_name, chat
+from llm_wrapper.ollamaWrapper import (
+    get_models_as_json_array,
+    get_models,
+    get_default_model_name,
+    chat,
+)
 from ai_commons.apiModelsLlm import Model
 from ai_chains.chain_factory import ChainFactory
+
 
 class TestAiChains(unittest.TestCase):
 

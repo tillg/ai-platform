@@ -10,15 +10,17 @@ logger.setLevel(logging.WARNING)
 
 router = fastapi.APIRouter()
 
+
 @router.get("/")
 async def root():
     return {"message": "This is the LLM Wrapper Service! 🧠"}
+
 
 @router.get("/models")
 async def info() -> List[Model]:
     return ollamaWrapper.get_models()
 
+
 @router.post("/chat")
 async def chat(chat_request: ChatRequest) -> Message:
     return ollamaWrapper.chat(chat_request)
-

@@ -2,6 +2,7 @@ from typing import Any, Dict
 from ai_brain.brain_scraper_wikipedia import BrainScraperWikipedia
 from ai_brain.brain_scraper import BrainScraper
 
+
 class BrainScraperFactory:
 
     def create_brain_scraper(self, parameters: Dict[str, Any]) -> BrainScraper:

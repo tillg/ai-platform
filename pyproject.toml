@@ -1,0 +1,74 @@
+[project]
+name = "ai-platform"
+description = "An AI Platform for tinkering."
+requires-python = ">=3.12"
+authors = [  { name = "Till Gartner", email = "till.gartner@gmail.com" }]
+keywords = [  "ai"]
+dynamic = ["readme", "version","dependencies"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Environment :: GPU",
+  "Environment :: Web Environment",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.urls]
+Repository = "https://github.com/tillg/ai-platform"
+
+[tool.black]
+line-length = 88
+target-version = ['py312']
+include = '\.pyi?$'
+# We need to switch on unstable in order to also format the contents of 
+# long lines with long strings.
+unstable = true
+
+[tool.poetry]
+name = "ai-platform"
+version = "0.1.0"
+description = "A platform to tinker with AI"
+authors = ["Till Gartner <till.gartner@gmail.com>"]
+readme = "readme.md"
+packages = [
+  { include = "ai_brain", from="src" },
+  { include = "ai_chains", from="src"},
+  { include = "llm_wrapper", from="src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+atlassian-python-api = "^3.41.16"
+beautifulsoup4 = "^4.12.3"
+chromadb = "^0.5.15"
+fastapi = "^0.115.2"
+langchain = "^0.3.3"
+ollama = "^0.3.3"
+pydantic = "^2.9.2"
+pyflakes = "^3.2.0"
+uvicorn = "^0.32.0"
+unidecode = "^1.3.8"
+jinja2 = "^3.1.4"
+wikipedia-api = "^0.7.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+psutil = "^6.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+ai_brain = "ai_brain.main:main"
+llm_wrapper = "llm_wrapper.main:main"
+ai_chains = "ai_chains.main:main"

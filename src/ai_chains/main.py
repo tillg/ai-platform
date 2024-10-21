@@ -1,4 +1,3 @@
-
 from fastapi import Depends, FastAPI
 import uvicorn
 from ai_commons.constants import AI_CHAINS_HOST, AI_CHAINS_PORT
@@ -28,9 +27,16 @@ app.add_middleware(
 
 app.include_router(ai_chains.chain_api_routes.router)
 
+
 def start_ai_chains(reload=False):
-    uvicorn.run("ai_chains.main:app",
-                host=AI_CHAINS_HOST, port=AI_CHAINS_PORT, reload=reload)
+    uvicorn.run(
+        "ai_chains.main:app", host=AI_CHAINS_HOST, port=AI_CHAINS_PORT, reload=reload
+    )
+
+
+def main():
+    start_ai_chains(reload=True)
+
 
 if __name__ == "__main__":
-        start_ai_chains(reload=True)
+    main()

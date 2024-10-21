@@ -14,23 +14,23 @@ import logging
 import unidecode
 from requests import Response, Session
 from pydantic import field_validator, validate_call
-import inspect 
+import inspect
 
 INTERNAL_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 coloredlogs.install()
 
 
 class Color:
-    PURPLE = '\033[95m'
-    CYAN = '\033[96m'
-    DARKCYAN = '\033[36m'
-    BLUE = '\033[94m'
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    RED = '\033[91m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    END = '\033[0m'
+    PURPLE = "\033[95m"
+    CYAN = "\033[96m"
+    DARKCYAN = "\033[36m"
+    BLUE = "\033[94m"
+    GREEN = "\033[92m"
+    YELLOW = "\033[93m"
+    RED = "\033[91m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
+    END = "\033[0m"
 
 
 internalDateFormat = "%Y-%m-%d %H:%M:%S"
@@ -41,21 +41,26 @@ logger.setLevel(logging.WARNING)
 def transform_date2string(date_to_transform: datetime) -> str:
     try:
         date_str = date_to_transform.strftime(INTERNAL_DATE_FORMAT)
-    except:
+    except Exception as e:
         logger.error(
-            f"Error transforming date: {date_to_transform}. Continuing with empty date string.")
+            f"Error transforming date: {date_to_transform}. Continuing with empty date"
+            f" string. {e=}"
+        )
         date_str = ""
     return date_str
 
 
 def transform_string2date(string_to_transform: str) -> Optional[datetime]:
-    """Transforms a String that holds a date in my standard format to a Date. 
-        In case it can't transform it, it return None."""
+    """Transforms a String that holds a date in my standard format to a Date.
+    In case it can't transform it, it return None."""
     try:
         date_obj = datetime.strptime(string_to_transform, internalDateFormat)
-    except:
-        logger.info("transformString2Date", "Error transforming string to date: ",
-                    string_to_transform)
+    except:  # noqa
+        logger.info(
+            "transformString2Date",
+            "Error transforming string to date: ",
+            string_to_transform,
+        )
         date_obj = None
     return date_obj
 
@@ -83,8 +88,9 @@ def are_variables_set(var_names) -> bool:
 
 def is_variable_set(var_name: str) -> bool:
     if (os.getenv(var_name) is None) or (os.getenv(var_name) == ""):
-        logger.info("isVariableSet", "Error",
-                    f'Variable {var_name} is not set in environment.')
+        logger.info(
+            "isVariableSet", "Error", f"Variable {var_name} is not set in environment."
+        )
         return False
     return True
 
@@ -114,12 +120,11 @@ def date_string_distance_in_hours(date_str1: str, date_str2: str) -> int:
     return diff_in_hours
 
 
-
 def load_page(http_session: Session, url: str) -> Optional[Response]:
     try:
         page = http_session.get(url)
         return page
-    except:
+    except:  # noqa
         logger.error("loadPage", url, ": Error!")
         return None
 
@@ -132,7 +137,7 @@ def simplify_text(some_text: str) -> str:
     simplified_text = some_text.replace('"', "'")
     simplified_text = unidecode.unidecode(simplified_text)
     simplified_text = re.sub("[^0-9A-Za-z-_]+", "_", simplified_text)
-    simplified_text = re.sub('_+', '_', simplified_text)
+    simplified_text = re.sub("_+", "_", simplified_text)
     logger.info(f"Original text: {some_text}, Simplified text: {simplified_text}")
     return simplified_text
 
@@ -143,15 +148,18 @@ def find_project_root(current_directory):
     starting from the current directory and moving upwards in the directory tree.
     Returns the path to the directory containing the .git folder.
     """
-    if os.path.exists(os.path.join(current_directory, '.git')):
+    if os.path.exists(os.path.join(current_directory, ".git")):
         return current_directory
     else:
         parent_directory = os.path.dirname(current_directory)
         if parent_directory == current_directory:
-            # This means we have reached the root of the filesystem without finding a .git directory
+            # This means we have reached the root of the filesystem without finding a
+            # .git directory
             raise FileNotFoundError(
-                "Could not find project root containing a .git directory.")
+                "Could not find project root containing a .git directory."
+            )
         return find_project_root(parent_directory)
+
 
 def _matches_any_pattern(file_name, patterns):
     for pattern in patterns:
@@ -159,8 +167,14 @@ def _matches_any_pattern(file_name, patterns):
             return True
     return False
 
+
 @validate_call
-def get_files(directory, *, patterns_to_match: Optional[List[str]] = ["*"], patterns_to_ignore: Optional[List[str]] = []) -> List[str]:
+def get_files(
+    directory,
+    *,
+    patterns_to_match: Optional[List[str]] = ["*"],
+    patterns_to_ignore: Optional[List[str]] = [],
+) -> List[str]:
     result_files = []
     for root, dirs, files in os.walk(directory):
         for file in files:
@@ -173,5 +187,11 @@ def get_files(directory, *, patterns_to_match: Optional[List[str]] = ["*"], patt
 def get_calling_function_name():
     return inspect.stack()[1].function
 
-def get_test_filename(directory: str = "", file_ext:str="") -> str:
-    return os.path.join(directory, simplify_text(get_now_as_string()+"_"+inspect.stack()[1].function+file_ext))
+
+def get_test_filename(directory: str = "", file_ext: str = "") -> str:
+    return os.path.join(
+        directory,
+        simplify_text(
+            get_now_as_string() + "_" + inspect.stack()[1].function + file_ext
+        ),
+    )

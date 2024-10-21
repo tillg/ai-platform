@@ -4,6 +4,7 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
 
+
 def robust_jsonify(obj, *args, **kwargs):
 
     seen = set()
@@ -18,7 +19,7 @@ def robust_jsonify(obj, *args, **kwargs):
             # Take care of circular references
             if id(o) in seen:
                 logger.info(f"Object in seen, returning <Circular Reference>")
-                return '<Circular Reference>'
+                return "<Circular Reference>"
             # Otherwise, add it to the set of seen objects
             seen.add(id(o))
 
@@ -28,13 +29,12 @@ def robust_jsonify(obj, *args, **kwargs):
                 logger.info(f"Returning dictionary {dict_representation}")
                 return dict_representation
             except AttributeError:
-                logger.warning(
-                    f"Failed to get dictionary representation of {o}")
+                logger.warning(f"Failed to get dictionary representation of {o}")
 
                 # If that fails, convert the object to a string
-                str = str(o)
-                logger.info(f"Returning string {str}")
-                return str
+                _str = str(o)
+                logger.info(f"Returning string {_str}")
+                return _str
 
         def encode(self, obj):
             logger.info(f"Encoding {obj} with type {type(obj)} and id {id(obj)}")
@@ -47,11 +47,11 @@ def robust_jsonify(obj, *args, **kwargs):
             return iter
 
     logger.info(f"{obj=}, {args=}, {kwargs=}")
-    kwargs.setdefault('indent', 3)
-    kwargs.setdefault('sort_keys', True)
-    kwargs.setdefault('skipkeys', True)
-    kwargs.setdefault('cls', RobustEncoder)
-    kwargs.setdefault('check_circular', False)
+    kwargs.setdefault("indent", 3)
+    kwargs.setdefault("sort_keys", True)
+    kwargs.setdefault("skipkeys", True)
+    kwargs.setdefault("cls", RobustEncoder)
+    kwargs.setdefault("check_circular", False)
     logger.info(f"{kwargs=}")
 
     return json.dumps(obj, *args, **kwargs)

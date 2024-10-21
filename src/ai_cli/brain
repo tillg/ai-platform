@@ -4,10 +4,10 @@ import argparse
 import sys
 import logging
 import json
-import os 
+import os
 
-sys.path.append('..')
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append("..")
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 
 from ai_brain.brain_scraper_factory import BrainScraperFactory
@@ -19,7 +19,13 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
 console_handler = logging.StreamHandler()  # Create console handler
 console_handler.setLevel(logging.WARNING)  # Set log level for the handler
+<<<<<<< HEAD
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')  # Create a formatter
+=======
+formatter = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)  # Create a formatter
+>>>>>>> gitbutler/integration
 console_handler.setFormatter(formatter)  # Set formatter for the handler
 logger.addHandler(console_handler)  # Add handler to the logger
 
@@ -27,65 +33,78 @@ if __name__ == "__main__":
 
     # Define the parser
     parser = argparse.ArgumentParser(
-                        prog='brain',
-                        description='Interacting with the Brain Module of the ai_platform.',
-                        epilog='** Brain over and out 😉 **')
+        prog="brain",
+        description="Interacting with the Brain Module of the ai_platform.",
+        epilog="** Brain over and out 😉 **",
+    )
 
-    subparsers = parser.add_subparsers(
-                title='Commands',
-                dest='command',
-                required=True)
+    subparsers = parser.add_subparsers(title="Commands", dest="command", required=True)
 
     # create the parser for the "list" command
-    parser_list = subparsers.add_parser('list', help='Get the list of available brains')
+    parser_list = subparsers.add_parser("list", help="Get the list of available brains")
 
     # create the parser for the "env" command
-    parser_env = subparsers.add_parser('env', help='Get the details of the environment')
+    parser_env = subparsers.add_parser("env", help="Get the details of the environment")
 
     # create the parser for the "details" command
-    parser_details = subparsers.add_parser('details', help='Get the details of a brain')
-    parser_details.add_argument('brain', type=str, help='The id of the brain')
+    parser_details = subparsers.add_parser("details", help="Get the details of a brain")
+    parser_details.add_argument("brain", type=str, help="The id of the brain")
 
     # create the parser for the "scrape" command
     parser_import = subparsers.add_parser(
-        'scrape', help='Scrape a brain - that basically means retrieving all the documents from their source.')
-    parser_import.add_argument('brain', type=str, help='The id of the brain')
+        "scrape",
+        help=(
+            "Scrape a brain - that basically means retrieving all the documents from"
+            " their source."
+        ),
+    )
+    parser_import.add_argument("brain", type=str, help="The id of the brain")
 
     # create the parser for the "chunk" command
     parser_import = subparsers.add_parser(
-        'chunk', help='Chunk the documents of a brain - that basically means splitting the documents into smaller parts.')
-    parser_import.add_argument('brain', type=str, help='The id of the brain')
+        "chunk",
+        help=(
+            "Chunk the documents of a brain - that basically means splitting the "
+            "documents into smaller parts."
+        ),
+    )
+    parser_import.add_argument("brain", type=str, help="The id of the brain")
 
     # create the parser for the "import_chunks" command
     parser_reindex = subparsers.add_parser(
-        'import_chunks', help='Import chunks into a brain. This assumes the documents have been chunked.')
+        "import_chunks",
+        help=(
+            "Import chunks into a brain. This assumes the documents have been chunked."
+        ),
+    )
     parser_reindex.add_argument(
-        'brain', type=str, help='The id of the brain to be imported')
+        "brain", type=str, help="The id of the brain to be imported"
+    )
 
     args = parser.parse_args()
 
-    if args.command == 'list':
+    if args.command == "list":
         brain_parameters = Brain.get_brain_parameters_list()
         brains_dicts = [brain.dict() for brain in brain_parameters]
         formatted_brains = robust_jsonify(brain_parameters, indent=4)
-        print('Available Brains:')
+        print("Available Brains:")
         print(formatted_brains)
 
-    elif args.command == 'env':
-        print('Environment Details:')
+    elif args.command == "env":
+        print("Environment Details:")
         env_desc = Brain.get_env()
         formatted_env_desc = json.dumps(env_desc, indent=4)
         print(formatted_env_desc)
 
-    elif args.command == 'details':
-        print('Brain Details:')
+    elif args.command == "details":
+        print("Brain Details:")
         brain = Brain.get_brain_by_id(args.brain)
         brain_desc = brain.get_parameters_and_statistics()
         formatted_brain_desc = json.dumps(brain_desc, indent=4)
         print(formatted_brain_desc)
 
-    elif args.command == 'scrape':
-        print('Scraping Brain:')
+    elif args.command == "scrape":
+        print("Scraping Brain:")
         brain = Brain.get_brain_by_id(args.brain)
         scraper = brain.get_scraper()
         if scraper is None:
@@ -94,43 +113,46 @@ if __name__ == "__main__":
             print(f"Ready to scrape:")
             print(json.dumps(scraper.get_parameters(), indent=4))
             confirmation = input(
-                "Do you really want to run an scrape with the above parameters? (yes/no): ")
-            if confirmation.lower() == 'yes':
+                "Do you really want to run an scrape with the above parameters?"
+                " (yes/no): "
+            )
+            if confirmation.lower() == "yes":
                 scraper.do_scrape()
-                print('Scrape completed.')
+                print("Scrape completed.")
             else:
                 print("Scrape cancelled.")
 
-    elif args.command == 'chunk':
-        print('Chunking Brain:')
+    elif args.command == "chunk":
+        print("Chunking Brain:")
         brain = Brain.get_brain_by_id(args.brain)
         brain_params = brain.get_parameters()
-        scraper_params = brain_params.get('chunker', {})
+        scraper_params = brain_params.get("chunker", {})
         chunker = ChunkerFactory().create_chunker(scraper_params)
         print(f"Ready to chunk:")
         print(json.dumps(chunker.get_parameters(), indent=4))
         confirmation = input(
-            "Do you really want to chunk with the above parameters? (yes/no): ")
-        if confirmation.lower() == 'yes':
+            "Do you really want to chunk with the above parameters? (yes/no): "
+        )
+        if confirmation.lower() == "yes":
             chunker.do_chunkify()
-            print('Chunking completed.')
+            print("Chunking completed.")
         else:
             print("Chunking cancelled.")
 
-    elif args.command == 'import_chunks':
-        print('Importing Chunks:')
+    elif args.command == "import_chunks":
+        print("Importing Chunks:")
         brain = Brain.get_brain_by_id(args.brain)
         print(f"Ready to index:")
         print(f"Brain: {json.dumps(brain.get_parameters_and_statistics(), indent=4)}")
         confirmation = input(
-            "Do you really want to import chunks with the above parameters? (yes/no): ")
-        if confirmation.lower() == 'yes':
+            "Do you really want to import chunks with the above parameters? (yes/no): "
+        )
+        if confirmation.lower() == "yes":
             brain.import_chunks_from_directory()
-            print('Import completed.')
+            print("Import completed.")
             print(f"Brain: {json.dumps(brain.get_statistics(), indent=4)}")
         else:
             print("Import cancelled.")
-
 
     else:
         print(f"Unknown command: {args.command}")

@@ -33,9 +33,17 @@ app.include_router(llm_wrapper.llm_api_routes.router)
 
 
 def start_llm_wrapper(reload=False):
-    uvicorn.run("llm_wrapper.main:app",
-                host=AI_LLM_WRAPPER_HOST, port=AI_LLM_WRAPPER_PORT, reload=reload)
+    uvicorn.run(
+        "llm_wrapper.main:app",
+        host=AI_LLM_WRAPPER_HOST,
+        port=AI_LLM_WRAPPER_PORT,
+        reload=reload,
+    )
+
+
+def main():
+    start_llm_wrapper(reload=True)
 
 
 if __name__ == "__main__":
-    start_llm_wrapper(reload=True)
+    main()

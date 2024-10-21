@@ -11,4 +11,3 @@ def list_submodules(module) -> List[str]:
     for submodule in iter_modules(module.__path__):
         submodules.append(submodule.name)
     return submodules
-

@@ -13,17 +13,24 @@ from pydantic import field_validator, validate_call
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
+<<<<<<< HEAD
+=======
+
+>>>>>>> gitbutler/integration
 
 class Chain(Chain):
-    
+
     def __init__(self, parameters: Dict[str, Any] = {}):
         super().__init__(parameters)
         logger.info(f"Creating Simple_Rag chain with parameters: {parameters}")
-        
+
     @validate_call
     @override
     def run(self, chat_request: ChatRequest) -> Message:
-        logger.info(f"Running Simple_Rag chain with {chat_request} and parameters {json.dumps(self.parameters, indent=2)}")
+        logger.info(
+            f"Running Simple_Rag chain with {chat_request} and parameters"
+            f" {json.dumps(self.parameters, indent=2)}"
+        )
 
         # If we get here, the chain should already match the chain in the chat_request
         chain_id = chat_request.chain
@@ -37,16 +44,17 @@ class Chain(Chain):
         # Get Document chunks
         question = chat_request.get_last_question()
         logger.info(f"{question=}")
-        search_request = SearchRequest(search_term=question, brain_id=self.parameters.get("brain", "default"))
+        search_request = SearchRequest(
+            search_term=question, brain_id=self.parameters.get("brain", "default")
+        )
         search_result = brain_client.search_chunks_by_text(search_request)
-        inner_working = add_inner_working(inner_working, "Step: Search Vector DB", search_result)
+        inner_working = add_inner_working(
+            inner_working, "Step: Search Vector DB", search_result
+        )
 
         documents = search_result.result.chunks_as_str()
 
-        prompt_fields = {
-            "documents": documents,
-            "question": question
-        }
+        prompt_fields = {"documents": documents, "question": question}
         prompt = get_prompt("default_rag", **prompt_fields)
 
         chat_req_for_llm = copy.deepcopy(chat_request)
@@ -61,7 +69,7 @@ class Chain(Chain):
         overall_answer.inner_working = inner_working
 
         return overall_answer
-    
+
     @override
     def get_name(self) -> str:
         return "simple_rag"
