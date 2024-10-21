@@ -19,14 +19,11 @@ from utils_tests.base_fastapi_test import BaseTest
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
-<<<<<<< HEAD
-=======
 
 
 class TestAiBrainClient(BaseTest):
     server_port = AI_BRAIN_PORT
     server_app = "ai_brain.main:app"
->>>>>>> gitbutler/integration
 
     def test_brain_list(self):
 

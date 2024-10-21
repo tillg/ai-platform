@@ -3,10 +3,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
-<<<<<<< HEAD
-=======
 
->>>>>>> gitbutler/integration
 
 def add_inner_working(
     original_inner_working: Dict[str, Any], titel: str, additional_inner_working

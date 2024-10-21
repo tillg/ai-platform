@@ -6,10 +6,7 @@ from llm_wrapper_client.llm_client import Client
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
-<<<<<<< HEAD
-=======
 
->>>>>>> gitbutler/integration
 
 class Chain(Chain):
 

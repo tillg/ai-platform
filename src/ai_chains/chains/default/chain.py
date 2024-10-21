@@ -5,10 +5,7 @@ from ai_chains.chain import Chain
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
-<<<<<<< HEAD
-=======
 
->>>>>>> gitbutler/integration
 
 class Chain(Chain):
     def run(self, chat_request: ChatRequest, options: Dict[str, Any]) -> Message:

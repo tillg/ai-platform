@@ -7,10 +7,7 @@ from utils.dict2file import read_dict_from_template_file
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
-<<<<<<< HEAD
-=======
 
->>>>>>> gitbutler/integration
 
 class TestDict2File(unittest.TestCase):
 

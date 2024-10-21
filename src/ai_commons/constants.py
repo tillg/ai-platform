@@ -10,11 +10,7 @@ AI_LLM_WRAPPER_PORT = 8002
 AI_BRAIN_HOST = "localhost"
 AI_BRAIN_PORT = 8001
 
-<<<<<<< HEAD
-#OLLAMA_BASE_URL = "http://host.docker.internal:11434"
-=======
 # OLLAMA_BASE_URL = "http://host.docker.internal:11434"
->>>>>>> gitbutler/integration
 OLLAMA_BASE_URL = "http://localhost:11434"
 
 OLLAMA_KEEP_ALIVE = "8h"

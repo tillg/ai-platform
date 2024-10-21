@@ -13,10 +13,7 @@ from pydantic import field_validator, validate_call
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
-<<<<<<< HEAD
-=======
 
->>>>>>> gitbutler/integration
 
 class Chain(Chain):
 

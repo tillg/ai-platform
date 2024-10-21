@@ -25,14 +25,6 @@ def generate_random_string(length):
 class TestBrain(unittest.TestCase):
 
     def test_brain_initialization(self):
-<<<<<<< HEAD
-        brain_parameters = BrainParameters(brain_id="whatever",
-                                           name="whatever",
-                                           description="whatever",
-                                           data_directory=get_test_filename(TMP_DATA_DIRECTORY),
-                                           scraper=None,
-                                           allow_duplicates=True)
-=======
         brain_parameters = BrainParameters(
             brain_id="whatever",
             name="whatever",
@@ -41,7 +33,6 @@ class TestBrain(unittest.TestCase):
             scraper=None,
             allow_duplicates=True,
         )
->>>>>>> gitbutler/integration
 
         brain = Brain(brain_parameters)
         self.assertIsInstance(
@@ -49,15 +40,6 @@ class TestBrain(unittest.TestCase):
         )
 
     def test_brain_import_doc(self):
-<<<<<<< HEAD
-        brain_parameters = BrainParameters(brain_id="whatever",
-                                           name="whatever",
-                                           description="whatever",
-                                           data_directory=get_test_filename(
-                                               TMP_DATA_DIRECTORY),
-                                           scraper=None,
-                                           allow_duplicates=True)
-=======
         brain_parameters = BrainParameters(
             brain_id="whatever",
             name="whatever",
@@ -66,7 +48,6 @@ class TestBrain(unittest.TestCase):
             scraper=None,
             allow_duplicates=True,
         )
->>>>>>> gitbutler/integration
         brain = Brain(brain_parameters)
         brain_size_pre = brain.number_of_documents()
         doc = Document.from_text_file(os.path.join(TEST_DATA_DIRECTORY, LONG_ARTICLE))
@@ -75,15 +56,6 @@ class TestBrain(unittest.TestCase):
         self.assertEqual(brain_size_post - brain_size_pre, 1)
 
     def test_brain_import_multiple_docs(self):
-<<<<<<< HEAD
-        brain_parameters = BrainParameters(brain_id="whatever",
-                                           name="whatever",
-                                           description="whatever",
-                                           data_directory=get_test_filename(
-                                               TMP_DATA_DIRECTORY),
-                                           scraper=None,
-                                           allow_duplicates=True)
-=======
         brain_parameters = BrainParameters(
             brain_id="whatever",
             name="whatever",
@@ -92,7 +64,6 @@ class TestBrain(unittest.TestCase):
             scraper=None,
             allow_duplicates=True,
         )
->>>>>>> gitbutler/integration
         brain = Brain(brain_parameters)
         brain.delete_all()
         brain_size_pre = brain.number_of_documents()
@@ -103,15 +74,6 @@ class TestBrain(unittest.TestCase):
         self.assertEqual(brain_size_post - brain_size_pre, 2)
 
     def test_brain_get_doc_by_id(self):
-<<<<<<< HEAD
-        brain_parameters = BrainParameters(brain_id="whatever",
-                                           name="whatever",
-                                           description="whatever",
-                                           data_directory=get_test_filename(
-                                               TMP_DATA_DIRECTORY),
-                                           scraper=None,
-                                           allow_duplicates=True)
-=======
         brain_parameters = BrainParameters(
             brain_id="whatever",
             name="whatever",
@@ -120,7 +82,6 @@ class TestBrain(unittest.TestCase):
             scraper=None,
             allow_duplicates=True,
         )
->>>>>>> gitbutler/integration
 
         brain = Brain(brain_parameters)
         doc = Document.from_text_file(os.path.join(TEST_DATA_DIRECTORY, SHORT_ARTICLE))
@@ -130,15 +91,6 @@ class TestBrain(unittest.TestCase):
         self.assertEqual(doc, doc_retrieved)
 
     def test_brain_get_doc_by_uri(self):
-<<<<<<< HEAD
-        brain_parameters = BrainParameters(brain_id="whatever",
-                                           name="whatever",
-                                           description="whatever",
-                                           data_directory=get_test_filename(
-                                               TMP_DATA_DIRECTORY),
-                                           scraper=None,
-                                           allow_duplicates=True)
-=======
         brain_parameters = BrainParameters(
             brain_id="whatever",
             name="whatever",
@@ -147,7 +99,6 @@ class TestBrain(unittest.TestCase):
             scraper=None,
             allow_duplicates=True,
         )
->>>>>>> gitbutler/integration
         brain = Brain(brain_parameters)
         doc = Document.from_text_file(os.path.join(TEST_DATA_DIRECTORY, SHORT_ARTICLE))
         doc.uri = generate_random_string(10)
@@ -156,15 +107,6 @@ class TestBrain(unittest.TestCase):
         self.assertEqual(doc, doc_retrieved)
 
     def test_brain_delete_all(self):
-<<<<<<< HEAD
-        brain_parameters = BrainParameters(brain_id="whatever",
-                                           name="whatever",
-                                           description="whatever",
-                                           data_directory=get_test_filename(
-                                               TMP_DATA_DIRECTORY),
-                                           scraper=None,
-                                           allow_duplicates=True)
-=======
         brain_parameters = BrainParameters(
             brain_id="whatever",
             name="whatever",
@@ -173,7 +115,6 @@ class TestBrain(unittest.TestCase):
             scraper=None,
             allow_duplicates=True,
         )
->>>>>>> gitbutler/integration
 
         brain = Brain(brain_parameters)
         doc = Document.from_text_file(os.path.join(TEST_DATA_DIRECTORY, SHORT_ARTICLE))
@@ -182,15 +123,6 @@ class TestBrain(unittest.TestCase):
         self.assertEqual(brain.number_of_documents(), 0)
 
     def test_brain_delete_all_and_then_add_a_doc(self):
-<<<<<<< HEAD
-        brain_parameters = BrainParameters(brain_id="whatever",
-                                           name="whatever",
-                                           description="whatever",
-                                           data_directory=get_test_filename(
-                                               TMP_DATA_DIRECTORY),
-                                           scraper=None,
-                                           allow_duplicates=True)
-=======
         brain_parameters = BrainParameters(
             brain_id="whatever",
             name="whatever",
@@ -199,7 +131,6 @@ class TestBrain(unittest.TestCase):
             scraper=None,
             allow_duplicates=True,
         )
->>>>>>> gitbutler/integration
 
         brain = Brain(brain_parameters)
         doc = Document.from_text_file(os.path.join(TEST_DATA_DIRECTORY, SHORT_ARTICLE))
@@ -210,15 +141,6 @@ class TestBrain(unittest.TestCase):
         self.assertEqual(brain.number_of_documents(), 1)
 
     def test_import_doc_without_duplicate(self):
-<<<<<<< HEAD
-        brain_parameters = BrainParameters(brain_id="whatever",
-                                           name="whatever",
-                                           description="whatever",
-                                           data_directory=get_test_filename(
-                                               TMP_DATA_DIRECTORY),
-                                           scraper=None,
-                                           allow_duplicates=True)
-=======
         brain_parameters = BrainParameters(
             brain_id="whatever",
             name="whatever",
@@ -227,7 +149,6 @@ class TestBrain(unittest.TestCase):
             scraper=None,
             allow_duplicates=True,
         )
->>>>>>> gitbutler/integration
 
         brain = Brain(brain_parameters)
         brain.delete_all()
@@ -239,15 +160,6 @@ class TestBrain(unittest.TestCase):
         self.assertEqual(brain_increase, 1)
 
     def test_get_params(self):
-<<<<<<< HEAD
-        brain_parameters = BrainParameters(brain_id="whatever",
-                                           name="whatever",
-                                           description="whatever",
-                                           data_directory=get_test_filename(
-                                               TMP_DATA_DIRECTORY),
-                                           scraper=None,
-                                           allow_duplicates=True)
-=======
         brain_parameters = BrainParameters(
             brain_id="whatever",
             name="whatever",
@@ -256,7 +168,6 @@ class TestBrain(unittest.TestCase):
             scraper=None,
             allow_duplicates=True,
         )
->>>>>>> gitbutler/integration
 
         brain = Brain(brain_parameters)
         params = brain.get_parameters()

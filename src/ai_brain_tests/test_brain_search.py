@@ -15,10 +15,7 @@ logging.basicConfig(level=logging.WARNING)
 LONG_ARTICLE = "wikipedia_peru.txt"
 SHORT_ARTICLE = "rectus_abdominus.txt"
 
-<<<<<<< HEAD
-=======
 
->>>>>>> gitbutler/integration
 class TestBrainSearch(unittest.TestCase):
 
     def prep_chunk_directory(self):
@@ -36,15 +33,6 @@ class TestBrainSearch(unittest.TestCase):
 
     def test_brain_search1(self):
         chunk_dir = self.prep_chunk_directory()
-<<<<<<< HEAD
-        brain_parameters = BrainParameters(brain_id="whatever",
-                                           name="whatever",
-                                           description="whatever",
-                                           data_directory=get_test_filename(TMP_DATA_DIRECTORY),
-                                           scraper=None,
-                                           allow_duplicates=True,
-                                           chunks_directory= chunk_dir)
-=======
         brain_parameters = BrainParameters(
             brain_id="whatever",
             name="whatever",
@@ -54,7 +42,6 @@ class TestBrainSearch(unittest.TestCase):
             allow_duplicates=True,
             chunks_directory=chunk_dir,
         )
->>>>>>> gitbutler/integration
         brain = Brain(brain_parameters)
 
         brain_size_pre = brain.number_of_documents()

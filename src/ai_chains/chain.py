@@ -6,10 +6,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
-<<<<<<< HEAD
-=======
 
->>>>>>> gitbutler/integration
 
 class Chain(ABC):
     def __init__(self, parameters: Dict[str, Any]):

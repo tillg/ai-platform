@@ -8,11 +8,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
 handler = logging.StreamHandler()
 handler.setLevel(logging.WARNING)
-<<<<<<< HEAD
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-=======
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
->>>>>>> gitbutler/integration
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 

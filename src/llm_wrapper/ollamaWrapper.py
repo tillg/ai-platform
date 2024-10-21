@@ -58,9 +58,6 @@ def get_models() -> List[Model]:
         if model["name"] == LLM_WRAPPER_DEFAULT_MODEL:
             default = True
         models.append(
-<<<<<<< HEAD
-            Model(name=model['name'], description=description, details=details, state=state, default=default))
-=======
             Model(
                 name=model["name"],
                 description=description,
@@ -69,7 +66,6 @@ def get_models() -> List[Model]:
                 default=default,
             )
         )
->>>>>>> gitbutler/integration
     logger.info(f"get_models: Models: {models}")
     return models
 
